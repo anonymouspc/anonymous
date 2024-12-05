@@ -4,24 +4,22 @@ namespace std {
 inline namespace __1 { 
 namespace ranges {
 
-    template<typename _Range, typename _Pattern>
-      concept __compatible_joinable_ranges
+  template<typename _Range, typename _Pattern>
+    concept __compatible_joinable_ranges
 	= common_with<range_value_t<_Range>, range_value_t<_Pattern>>
 	  && common_reference_with<range_reference_t<_Range>,
-				                     range_reference_t<_Pattern>>
+				   range_reference_t<_Pattern>>
 	  && common_reference_with<range_rvalue_reference_t<_Range>,
-				                     range_rvalue_reference_t<_Pattern>>;
+				   range_rvalue_reference_t<_Pattern>>;
 
-    template<typename _Range>
-      concept __bidirectional_common = bidirectional_range<_Range> && common_range<_Range>;
+  template<typename _Range>
+    concept __bidirectional_common = bidirectional_range<_Range> && common_range<_Range>;
 
-    template<typename _Tp, int _Disc>
-      struct _Absent { };
+  template<typename _Tp, int _Disc>
+    struct _Absent { };
 
-    template<bool _Present, typename _Tp, int _Disc = 0>
-      using __maybe_present = conditional_t<_Present, _Tp, _Absent<_Tp, _Disc>>;
-    
-
+  template<bool _Present, typename _Tp, int _Disc = 0>
+    using __maybe_present = __conditional_t<_Present, _Tp, _Absent<_Tp, _Disc>>;
 
   template<input_range _Vp, forward_range _Pattern>
     requires view<_Vp> && view<_Pattern>
@@ -31,19 +29,11 @@ namespace ranges {
   {
     using _InnerRange = range_reference_t<_Vp>;
 
-    using _Inner = decltype([]
-    {
-      if constexpr (!is_reference_v<_InnerRange>)
-        return __non_propagating_cache<remove_cv_t<_InnerRange>>();
-      else
-        return int();
-    } ());
-
     _Vp _M_base = _Vp();
     [[no_unique_address]]
       __maybe_present<!forward_range<_Vp>,
-	__non_propagating_cache<iterator_t<_Vp>>> _M_outer_it;
-    _Inner _M_inner = _Inner();
+	__my_non_propagating_cache<iterator_t<_Vp>>> _M_outer_it; // See libcpp_ranges_chunk.ipp
+    __my_non_propagating_cache<remove_cv_t<_InnerRange>> _M_inner; // See libcpp_ranges_chunk.ipp
     _Pattern _M_pattern = _Pattern();
 
     template<bool _Const> using _Base = __maybe_const<_Const, _Vp>;
@@ -138,7 +128,7 @@ namespace ranges {
 	}
       else
 	{
-	  _M_outer_it = ranges::begin(_M_base);
+	  _M_outer_it.__emplace(ranges::begin(_M_base));
 	  return _Iterator<false>{*this};
 	}
     }
@@ -264,7 +254,7 @@ namespace ranges {
       if constexpr (_S_ref_is_glvalue)
 	return __as_lvalue(*__outer);
       else
-	return _M_parent->_M_inner.__emplace_from(__outer);
+	return _M_parent->_M_inner.__emplace_from([&] { return *__outer; });
     }
 
     constexpr auto&
@@ -312,10 +302,8 @@ namespace ranges {
     {
       if constexpr (_S_ref_is_glvalue
 		    && bidirectional_range<_Base>
-		    && bidirectional_range<_InnerBase>
-        && common_range<_InnerBase>
-		    && bidirectional_range<_PatternBase>
-        && common_range<_PatternBase>)
+		    && __bidirectional_common<_InnerBase>
+		    && __bidirectional_common<_PatternBase>)
 	return bidirectional_iterator_tag{};
       else if constexpr (_S_ref_is_glvalue
 			 && forward_range<_Base>
@@ -392,10 +380,8 @@ namespace ranges {
     operator--()
       requires _S_ref_is_glvalue
 	&& bidirectional_range<_Base>
-	&& bidirectional_range<_InnerBase>
-  && common_range<_InnerBase>
-	&& bidirectional_range<_PatternBase>
-  && common_range<_PatternBase>
+	&& __bidirectional_common<_InnerBase>
+	&& __bidirectional_common<_PatternBase>
     {
       if (_M_outer_it == ranges::end(_M_parent->_M_base))
 	{
@@ -437,10 +423,8 @@ namespace ranges {
     constexpr _Iterator
     operator--(int)
       requires _S_ref_is_glvalue && bidirectional_range<_Base>
-	&& bidirectional_range<_InnerBase>
-  && common_range<_InnerBase>
-	&& bidirectional_range<_PatternBase>
-  && common_range<_PatternBase>
+	&& __bidirectional_common<_InnerBase>
+	&& __bidirectional_common<_PatternBase>
     {
       _Iterator __tmp = *this;
       --*this;
@@ -458,9 +442,9 @@ namespace ranges {
     iter_move(const _Iterator& __x)
     {
       if (__x._M_inner_it.index() == 0)
-	return iter_move(std::get<0>(__x._M_inner_it));
+	return ranges::iter_move(std::get<0>(__x._M_inner_it));
       else
-	return iter_move(std::get<1>(__x._M_inner_it));
+	return ranges::iter_move(std::get<1>(__x._M_inner_it));
     }
 
     friend constexpr void
@@ -470,16 +454,16 @@ namespace ranges {
       if (__x._M_inner_it.index() == 0)
 	{
 	  if (__y._M_inner_it.index() == 0)
-	    iter_swap(std::get<0>(__x._M_inner_it), std::get<0>(__y._M_inner_it));
+	    ranges::iter_swap(std::get<0>(__x._M_inner_it), std::get<0>(__y._M_inner_it));
 	  else
-	    iter_swap(std::get<0>(__x._M_inner_it), std::get<1>(__y._M_inner_it));
+	    ranges::iter_swap(std::get<0>(__x._M_inner_it), std::get<1>(__y._M_inner_it));
 	}
       else
 	{
 	  if (__y._M_inner_it.index() == 0)
-	    iter_swap(std::get<1>(__x._M_inner_it), std::get<0>(__y._M_inner_it));
+	    ranges::iter_swap(std::get<1>(__x._M_inner_it), std::get<0>(__y._M_inner_it));
 	  else
-	    iter_swap(std::get<1>(__x._M_inner_it), std::get<1>(__y._M_inner_it));
+	    ranges::iter_swap(std::get<1>(__x._M_inner_it), std::get<1>(__y._M_inner_it));
 	}
     }
   };
@@ -526,7 +510,7 @@ namespace ranges {
 	concept __can_join_with_view
 	  = requires { join_with_view(std::declval<_Range>(), std::declval<_Pattern>()); };
 
-    struct _JoinWith // : public __range_adaptor_closure<_JoinWith>
+    struct _JoinWith : __range_adaptor_closure<_JoinWith>
     {
       template<viewable_range _Range, typename _Pattern>
 	requires __can_join_with_view<_Range, _Pattern>
@@ -536,12 +520,19 @@ namespace ranges {
 	  return join_with_view(std::forward<_Range>(__r), std::forward<_Pattern>(__f));
 	}
 
-  template <typename _Pattern>
+      template<typename _Pattern>
   constexpr auto
   operator() [[nodiscard]] (_Pattern&& __f) const
   {
     return __range_adaptor_closure_t(std::__bind_back(*this, std::forward<_Pattern>(__f)));
   }
+
+
+      static constexpr int _S_arity = 2;
+      template<typename _Pattern>
+	static constexpr bool _S_has_simple_extra_args
+	 // = _LazySplit::_S_has_simple_extra_args<_Pattern>;
+      = true;
     };
 
     inline constexpr _JoinWith join_with;
