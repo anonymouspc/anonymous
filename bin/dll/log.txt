@@ -1,0 +1,155 @@
+In file included from generic/basic/abi.hpp:25,
+                 from generic/basic/interface.hpp:240,
+                 from main.cpp:1:
+generic/basic/abi.cpp: In function 'std::string ap::abi::demangle(const std::stacktrace&)':
+generic/basic/abi.cpp:24:18: error: no match for 'operator|' (operand types are 'const std::stacktrace' and 'const std::ranges::views::_Reverse')
+   24 |     return trace | std::views::reverse
+      |            ~~~~~ ^ ~~~~~~~~~~~~~~~~~~~
+      |            |                   |
+      |            |                   const std::ranges::views::_Reverse
+      |            const std::stacktrace
+In file included from generic/basic/interface.hpp:50:
+/opt/homebrew/include/stdexec/execution.hpp:77:6: note: candidate: 'template<class _Ignore, class _Sender>  requires (sender<_Ignore>) && (sender<_Sender>) && (__ok<stdexec::_ERROR_<stdexec::_CANNOT_PIPE_INTO_A_SENDER_<stdexec::__mstring<41>{"You cannot pipe one sender into another."}>, stdexec::__errs::_WITH_SENDER_<typename stdexec::__i<_Ok<_Sender>, _Ok<decltype(__name_of_v<_Sender>)> >::__f::__f<_Sender> > > >) auto operator|(_Ignore&&, _Sender&&)'
+   77 | auto operator|(_Ignore&&, _Sender&&) noexcept;
+      |      ^~~~~~~~
+/opt/homebrew/include/stdexec/execution.hpp:77:6: note:   template argument deduction/substitution failed:
+/opt/homebrew/include/stdexec/execution.hpp:77:6: note: constraints not satisfied
+In file included from /opt/homebrew/include/stdexec/__detail/__senders.hpp:29,
+                 from /opt/homebrew/include/stdexec/__detail/__as_awaitable.hpp:26,
+                 from /opt/homebrew/include/stdexec/execution.hpp:21:
+/opt/homebrew/include/stdexec/__detail/__senders_core.hpp: In substitution of 'template<class _Ignore, class _Sender>  requires (sender<_Ignore>) && (sender<_Sender>) && (__ok<stdexec::_ERROR_<stdexec::_CANNOT_PIPE_INTO_A_SENDER_<stdexec::__mstring<41>{"You cannot pipe one sender into another."}>, stdexec::__errs::_WITH_SENDER_<typename stdexec::__i<_Ok<_Sender>, _Ok<decltype(__name_of_v<_Sender>)> >::__f::__f<_Sender> > > >) auto operator|(_Ignore&&, _Sender&&) [with _Ignore = const std::stacktrace&; _Sender = const std::ranges::views::_Reverse&]':
+generic/basic/abi.cpp:24:32:   required from here
+   24 |     return trace | std::views::reverse
+      |                                ^~~~~~~
+/opt/homebrew/include/stdexec/__detail/__senders_core.hpp:48:11:   required for the satisfaction of 'sender<_Ignore>' [with _Ignore = const std::stacktrace&]
+/opt/homebrew/include/stdexec/__detail/__senders_core.hpp:49:5: note: the expression 'enable_sender<typename'decltype_type' not supported by pp_cxx_unqualified_id::__f<_Ty> > [with _Sender = const std::stacktrace&]' evaluated to 'false'
+   49 |     enable_sender<__decay_t<_Sender>>                     //
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/regex:40,
+                 from generic/basic/interface.hpp:36:
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bitset:1567:5: note: candidate: 'template<long unsigned int _Nb> constexpr std::bitset<_Nb> std::operator|(const bitset<_Nb>&, const bitset<_Nb>&)'
+ 1567 |     operator|(const bitset<_Nb>& __x, const bitset<_Nb>& __y) _GLIBCXX_NOEXCEPT
+      |     ^~~~~~~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bitset:1567:5: note:   template argument deduction/substitution failed:
+generic/basic/abi.cpp:24:32: note:   'const std::stacktrace' is not derived from 'const std::bitset<_Nb>'
+   24 |     return trace | std::views::reverse
+      |                                ^~~~~~~
+In file included from generic/basic/interface.hpp:35:
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/ranges:955:5: note: candidate: 'template<class _Self, class _Range>  requires (__is_range_adaptor_closure<_Self>) && (__adaptor_invocable<_Self, _Range>) constexpr auto std::ranges::views::__adaptor::operator|(_Range&&, _Self&&)'
+  955 |     operator|(_Range&& __r, _Self&& __self)
+      |     ^~~~~~~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/ranges:955:5: note:   template argument deduction/substitution failed:
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/ranges:955:5: note: constraints not satisfied
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/ranges: In substitution of 'template<class _Self, class _Range>  requires (__is_range_adaptor_closure<_Self>) && (__adaptor_invocable<_Self, _Range>) constexpr auto std::ranges::views::__adaptor::operator|(_Range&&, _Self&&) [with _Self = const std::ranges::views::_Reverse&; _Range = const std::stacktrace&]':
+generic/basic/abi.cpp:24:32:   required from here
+   24 |     return trace | std::views::reverse
+      |                                ^~~~~~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/ranges:914:13:   required for the satisfaction of '__adaptor_invocable<_Self, _Range>' [with _Self = const std::ranges::views::_Reverse&; _Range = const std::stacktrace&]
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/ranges:915:9:   in requirements  [with _Adaptor = const std::ranges::views::_Reverse&; _Args = {const std::stacktrace&}]
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/ranges:915:44: note: the required expression 'declval<_Adaptor>()((declval<_Args>)()...)' is invalid
+  915 |       = requires { std::declval<_Adaptor>()(declval<_Args>()...); };
+      |                    ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
+cc1plus: note: set '-fconcepts-diagnostics-depth=' to at least 2 for more detail
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/ranges:964:5: note: candidate: 'template<class _Lhs, class _Rhs>  requires (__is_range_adaptor_closure<_Lhs>) && (__is_range_adaptor_closure<_Rhs>) constexpr auto std::ranges::views::__adaptor::operator|(_Lhs&&, _Rhs&&)'
+  964 |     operator|(_Lhs&& __lhs, _Rhs&& __rhs)
+      |     ^~~~~~~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/ranges:964:5: note:   template argument deduction/substitution failed:
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/ranges:964:5: note: constraints not satisfied
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/ranges: In substitution of 'template<class _Lhs, class _Rhs>  requires (__is_range_adaptor_closure<_Lhs>) && (__is_range_adaptor_closure<_Rhs>) constexpr auto std::ranges::views::__adaptor::operator|(_Lhs&&, _Rhs&&) [with _Lhs = const std::stacktrace&; _Rhs = const std::ranges::views::_Reverse&]':
+generic/basic/abi.cpp:24:32:   required from here
+   24 |     return trace | std::views::reverse
+      |                                ^~~~~~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/ranges:945:13:   required for the satisfaction of '__is_range_adaptor_closure<_Lhs>' [with _Lhs = const std::stacktrace&]
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/ranges:946:9:   in requirements with '_Tp __t' [with _Tp = const std::stacktrace&]
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/ranges:946:70: note: the required expression 'std::ranges::views::__adaptor::__is_range_adaptor_closure_fn(__t, __t)' is invalid
+  946 |       = requires (_Tp __t) { __adaptor::__is_range_adaptor_closure_fn(__t, __t); };
+      |                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~
+In file included from generic/basic/interface.hpp:22:
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/charconv:627:3: note: candidate: 'constexpr std::chars_format std::operator|(chars_format, chars_format)'
+  627 |   operator|(chars_format __lhs, chars_format __rhs) noexcept
+      |   ^~~~~~~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/charconv:627:26: note:   no known conversion for argument 1 from 'const std::stacktrace' to 'std::chars_format'
+  627 |   operator|(chars_format __lhs, chars_format __rhs) noexcept
+      |             ~~~~~~~~~~~~~^~~~~
+In file included from /opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/memory_resource.h:38,
+                 from /opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/string:67,
+                 from /opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/locale_classes.h:40,
+                 from /opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ios_base.h:41,
+                 from /opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/ios:44,
+                 from /opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/istream:40,
+                 from /opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/sstream:40,
+                 from /opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/chrono:45,
+                 from generic/basic/interface.hpp:23:
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/cstddef:136:3: note: candidate: 'constexpr std::byte std::operator|(byte, byte)'
+  136 |   operator|(byte __l, byte __r) noexcept
+      |   ^~~~~~~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/cstddef:136:18: note:   no known conversion for argument 1 from 'const std::stacktrace' to 'std::byte'
+  136 |   operator|(byte __l, byte __r) noexcept
+      |             ~~~~~^~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ios_base.h:89:3: note: candidate: 'constexpr std::_Ios_Fmtflags std::operator|(_Ios_Fmtflags, _Ios_Fmtflags)'
+   89 |   operator|(_Ios_Fmtflags __a, _Ios_Fmtflags __b) _GLIBCXX_NOTHROW
+      |   ^~~~~~~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ios_base.h:89:27: note:   no known conversion for argument 1 from 'const std::stacktrace' to 'std::_Ios_Fmtflags'
+   89 |   operator|(_Ios_Fmtflags __a, _Ios_Fmtflags __b) _GLIBCXX_NOTHROW
+      |             ~~~~~~~~~~~~~~^~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ios_base.h:139:3: note: candidate: 'constexpr std::_Ios_Openmode std::operator|(_Ios_Openmode, _Ios_Openmode)'
+  139 |   operator|(_Ios_Openmode __a, _Ios_Openmode __b) _GLIBCXX_NOTHROW
+      |   ^~~~~~~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ios_base.h:139:27: note:   no known conversion for argument 1 from 'const std::stacktrace' to 'std::_Ios_Openmode'
+  139 |   operator|(_Ios_Openmode __a, _Ios_Openmode __b) _GLIBCXX_NOTHROW
+      |             ~~~~~~~~~~~~~~^~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ios_base.h:186:3: note: candidate: 'constexpr std::_Ios_Iostate std::operator|(_Ios_Iostate, _Ios_Iostate)'
+  186 |   operator|(_Ios_Iostate __a, _Ios_Iostate __b) _GLIBCXX_NOTHROW
+      |   ^~~~~~~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ios_base.h:186:26: note:   no known conversion for argument 1 from 'const std::stacktrace' to 'std::_Ios_Iostate'
+  186 |   operator|(_Ios_Iostate __a, _Ios_Iostate __b) _GLIBCXX_NOTHROW
+      |             ~~~~~~~~~~~~~^~~
+In file included from /opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/atomic:50,
+                 from /opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/stop_token:39,
+                 from /opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/thread:42,
+                 from generic/basic/interface.hpp:41:
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/atomic_base.h:103:3: note: candidate: 'constexpr std::memory_order std::operator|(memory_order, __memory_order_modifier)'
+  103 |   operator|(memory_order __m, __memory_order_modifier __mod) noexcept
+      |   ^~~~~~~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/atomic_base.h:103:26: note:   no known conversion for argument 1 from 'const std::stacktrace' to 'std::memory_order'
+  103 |   operator|(memory_order __m, __memory_order_modifier __mod) noexcept
+      |             ~~~~~~~~~~~~~^~~
+In file included from /opt/homebrew/include/boost/asio/detail/future.hpp:19,
+                 from /opt/homebrew/include/boost/asio/packaged_task.hpp:19,
+                 from /opt/homebrew/include/boost/asio.hpp:149,
+                 from generic/basic/interface.hpp:95:
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/future:163:20: note: candidate: 'constexpr std::launch std::operator|(launch, launch)'
+  163 |   constexpr launch operator|(launch __x, launch __y) noexcept
+      |                    ^~~~~~~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/future:163:37: note:   no known conversion for argument 1 from 'const std::stacktrace' to 'std::launch'
+  163 |   constexpr launch operator|(launch __x, launch __y) noexcept
+      |                              ~~~~~~~^~~
+In file included from generic/basic/exception.hpp:77,
+                 from generic/basic/interface.hpp:242:
+generic/basic/exception.cpp: In member function 'virtual const char* ap::exception::what() const':
+generic/basic/exception.cpp:16:33: error: no match for call to '(const std::ranges::__all_of_fn) (const std::stacktrace&, ap::exception::what() const::<lambda(const auto:115&)>)'
+   16 |     if ( not std::ranges::all_of(trace, [] (const auto& e) { return e.description() == ""; }) ) // Not all empty.
+      |              ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/algorithm:63,
+                 from generic/basic/interface.hpp:20:
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ranges_algo.h:80:7: note: candidate: 'template<class _Iter, class _Sent, class _Proj, class _Pred>  requires (input_iterator<_Iter>) && (sentinel_for<_Sent, _Iter>) && (indirect_unary_predicate<_Pred, typename std::__detail::__projected<_Iter, _Proj>::__type>) constexpr bool std::ranges::__all_of_fn::operator()(_Iter, _Sent, _Pred, _Proj) const'
+   80 |       operator()(_Iter __first, _Sent __last,
+      |       ^~~~~~~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ranges_algo.h:80:7: note:   candidate expects 3 arguments, 2 provided
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ranges_algo.h:93:7: note: candidate: 'template<class _Range, class _Proj, class _Pred>  requires (input_range<_Range>) && (indirect_unary_predicate<_Pred, typename std::__detail::__projected<decltype(std::ranges::__access::__begin((declval<_Container&>)())), _Proj>::__type>) constexpr bool std::ranges::__all_of_fn::operator()(_Range&&, _Pred, _Proj) const'
+   93 |       operator()(_Range&& __r, _Pred __pred, _Proj __proj = {}) const
+      |       ^~~~~~~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ranges_algo.h:93:7: note:   template argument deduction/substitution failed:
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ranges_algo.h:93:7: note: constraints not satisfied
+In file included from /opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ranges_algobase.h:38,
+                 from /opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ranges_algo.h:38:
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ranges_base.h: In substitution of 'template<class _Range, class _Proj, class _Pred>  requires (input_range<_Range>) && (indirect_unary_predicate<_Pred, typename std::__detail::__projected<decltype(std::ranges::__access::__begin((declval<_Container&>)())), _Proj>::__type>) constexpr bool std::ranges::__all_of_fn::operator()(_Range&&, _Pred, _Proj) const [with _Range = const std::stacktrace&; _Proj = std::identity; _Pred = ap::exception::what() const::<lambda(const auto:115&)>]':
+generic/basic/exception.cpp:16:33:   required from here
+   16 |     if ( not std::ranges::all_of(trace, [] (const auto& e) { return e.description() == ""; }) ) // Not all empty.
+      |              ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ranges_base.h:499:13:   required for the satisfaction of 'range<_Tp>' [with _Tp = const std::stacktrace&]
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ranges_base.h:588:13:   required for the satisfaction of 'input_range<_Range>' [with _Range = const std::stacktrace&]
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ranges_base.h:499:21:   in requirements with '_Tp& __t' [with _Tp = const std::stacktrace&]
+/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/bits/ranges_base.h:502:20: note: the required expression 'std::ranges::_Cpo::end(__t)' is invalid
+  502 |         ranges::end(__t);
+      |         ~~~~~~~~~~~^~~~~
