@@ -1,17 +1,19 @@
 #pragma once
 
-std::uint32_t opencl::execution_context_type::available_parallelism ( ) const
+// This file is inside struct opencl { **this position** }.
+
+std::uint32_t execution_context_t::available_parallelism ( ) const
 {
     return boost::compute::system::default_device().compute_units();
 }
 
-boost::compute::command_queue& opencl::execution_context_type::command_queue ( )
+boost::compute::command_queue& execution_context_t::get_command_queue ( )
 {
     thread_local auto cmd_queue = boost::compute::command_queue(boost::compute::system::default_context(), boost::compute::system::default_device());
     return cmd_queue;
 }
 
-void opencl::execution_context_type::enqueue ( execpools::task_base* task, std::uint32_t tid ) noexcept
+void execution_context_t::enqueue ( execpools::task_base* task, std::uint32_t tid ) noexcept
 {
     if ( boost::compute::system::default_device().get_info<CL_DEVICE_EXECUTION_CAPABILITIES>() & CL_EXEC_NATIVE_KERNEL )
         try
@@ -28,12 +30,12 @@ void opencl::execution_context_type::enqueue ( execpools::task_base* task, std::
         throw_device_error(); // Always calls std::terminate due to noexcept attribute.
 }
 
-void opencl::execution_context_type::throw_opencl_error ( const boost::compute::opencl_error& e )
+void execution_context_t::throw_opencl_error ( const boost::compute::opencl_error& e )
 {
     throw device_error("failed to enqueue task [[caused by {}: {}]]", typeid(e), e.what());
 }
 
-void opencl::execution_context_type::throw_device_error ( )
+void execution_context_t::throw_device_error ( )
 {
     throw device_error("failed to enqueue task: opencl device does not supports executing host function (with name = {}, vendor = {}, profile = {}, version = {}, driver_version = {}, capability = {{exec_kernel = {}, exec_native_kernel = {}}})",
                     boost::compute::system::default_device().name(),
@@ -45,7 +47,7 @@ void opencl::execution_context_type::throw_device_error ( )
                     boost::compute::system::default_device().get_info<CL_DEVICE_EXECUTION_CAPABILITIES>() & CL_EXEC_NATIVE_KERNEL);
 }
 
-void BOOST_COMPUTE_CL_CALLBACK opencl::execution_context_type::enqueue_callback ( void* args )
+void BOOST_COMPUTE_CL_CALLBACK execution_context_t::enqueue_callback ( void* args )
 {
     let ptr = static_cast<task_type*>(args);
     ptr->task->__execute(ptr->task, /*tid=*/ptr->tid);
