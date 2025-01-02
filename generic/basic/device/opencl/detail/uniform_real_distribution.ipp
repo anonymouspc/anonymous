@@ -13,6 +13,7 @@ class opencl::uniform_real_distribution
         {
             let result = boost::compute::vector<type>(1);
             base::generate(result.begin(), result.end(), random_engine, opencl::execution_context.get_command_queue());
+            opencl::execution_context.get_command_queue().finish();
             return type(result[0]);
         } 
 }; 
