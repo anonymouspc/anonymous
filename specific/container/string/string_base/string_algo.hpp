@@ -1,34 +1,11 @@
 #pragma once
 
-namespace aux
-{
-    template < class input_type, class char_type >
-    concept char_type_or_general_string_type = std::same_as<input_type,char_type> or general_string_type<input_type,char_type>;
-}
-
-
-
-/// Class string_algo
-
 template < class string_type,
            class char_type >
 class string_algo
 {
     private: // Traits
         constexpr static const bool is_view = not requires { &string_type::resize; };
-        using string_view_type    = conditional<not aux::string_view_type<string_type>/*see string_global.ipp*/,basic_string_range_view<char_type>,basic_string_view<char_type>>;
-        using regex               = basic_regex<char_type>;
-        using encode_type         = std::text_encoding;
-
-    public: // Abbreviation
-        constexpr int            size        ( ) const;
-        constexpr bool           empty       ( ) const;
-        constexpr decltype(auto) begin       ( );
-        constexpr decltype(auto) begin       ( ) const;
-        constexpr decltype(auto) end         ( );
-        constexpr decltype(auto) end         ( ) const;
-        constexpr decltype(auto) operator [] ( int );
-        constexpr decltype(auto) operator [] ( int ) const;
 
     public: // Array algo
         constexpr       string_type& insert ( aux::array_type_dim_range<int,0,1> auto, const aux::char_type_or_general_string_type<char_type> auto&, const aux::char_type_or_general_string_type<char_type> auto&... ) requires ( not is_view );
