@@ -138,4 +138,4 @@ template < char_type type >               basic_string_view ( type )            
 template < char_type type >               basic_string_view ( const type* )               -> basic_string_view<type>;
 template < char_type type, class device > basic_string_view ( basic_string<type,device> ) -> basic_string_view<type,device>;
 
-#include "string_view.ipp"
+#include "basic_string_view.ipp"

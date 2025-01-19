@@ -2,13 +2,13 @@
 
 namespace detail
 {
-    class opencl_thread_pool
-        extends public execpools::thread_pool_base<opencl_thread_pool>
+    class opencl_stream_context
+        extends public execpools::thread_pool_base<opencl_stream_context>
     {
         public: // Constructor
-            opencl_thread_pool ( ) = default;
+            opencl_stream_context ( ) = default;
 
-            explicit opencl_thread_pool ( int )
+            explicit opencl_stream_context ( int )
             {
                 
             }
@@ -30,8 +30,9 @@ namespace detail
                     try
                     {
                         // TODO: I currently have no environment to check it.
-                        boost::compute::system::default_queue().enqueue_native_kernel(enqueue_callback, new task_type(task, tid), sizeof(task_type), 0, 0, 0);
-                        boost::compute::system::default_queue().flush();
+                        thread_local auto cmd_queue = boost::compute::command_queue(boost::compute::system::default_context(), boost::compute::system::default_device());
+                        cmd_queue.enqueue_native_kernel(enqueue_callback, new task_type(task, tid), sizeof(task_type), 0, 0, 0);
+                        cmd_queue.flush();
                     }
                     catch ( const boost::compute::opencl_error& e )
                     {
@@ -41,8 +42,15 @@ namespace detail
                     throw_capatability_error();
             }
 
+            static boost::compute::command_queue& get_command_queue ( )
+            {
+                // thread_local auto cmd_queue = boost::compute::command_queue(boost::compute::system::default_context(), boost::compute::system::default_device());
+                // return cmd_queue;
+                return boost::compute::system::default_queue();
+            }
+
         public: // Friend
-            friend execpools::thread_pool_base<opencl_thread_pool>;
+            friend execpools::thread_pool_base<opencl_stream_context>;
             template < class pool_type, class receiver > friend struct execpools::operation;  
 
         private: // Member
