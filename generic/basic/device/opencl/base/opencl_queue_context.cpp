@@ -1,6 +1,6 @@
 #pragma once
 
-detail::opencl_queue_context::opencl_queue_context ( int )
+detail::opencl_queue_context::execution_context_type ( int )
 {
     
 }
@@ -8,6 +8,24 @@ detail::opencl_queue_context::opencl_queue_context ( int )
 std::uint32_t detail::opencl_queue_context::available_parallelism ( ) const
 {
     return boost::compute::system::default_device().compute_units();
+}
+
+const boost::compute::device& detail::opencl_queue_context::device ( )
+{
+    thread_local let dvc = boost::compute::system::default_device();
+    return dvc;
+}
+
+const boost::compute::context& detail::opencl_queue_context::context ( )
+{
+    thread_local let ctx = boost::compute::system::default_context();
+    return ctx;
+}
+
+boost::compute::command_queue& detail::opencl_queue_context::queue ( )
+{
+    thread_local let que = boost::compute::command_queue(boost::compute::system::default_context(), boost::compute::system::default_device());
+    return que;
 }
 
 void detail::opencl_queue_context::enqueue ( execpools::task_base* task, std::uint32_t tid ) noexcept
@@ -28,10 +46,10 @@ void detail::opencl_queue_context::enqueue ( execpools::task_base* task, std::ui
         throw_capatability_error();
 }
 
-boost::compute::command_queue& detail::opencl_queue_context::get_command_queue ( )
+BOOST_COMPUTE_CL_CALLBACK void detail::opencl_queue_context::enqueue_callback ( void* args )
 {
-    thread_local let que = boost::compute::command_queue(boost::compute::system::default_context(), boost::compute::system::default_device());
-    return que;
+    let ptr = static_cast<task_type*>(args);
+    ptr->task->__execute(ptr->task, /*tid=*/ptr->tid);
 }
 
 void detail::opencl_queue_context::throw_opencl_error ( const boost::compute::opencl_error& e )
@@ -49,10 +67,4 @@ void detail::opencl_queue_context::throw_capatability_error ( )
                         boost::compute::system::default_device().driver_version(),
                         boost::compute::system::default_device().get_info<CL_DEVICE_EXECUTION_CAPABILITIES>() & CL_EXEC_KERNEL,
                         boost::compute::system::default_device().get_info<CL_DEVICE_EXECUTION_CAPABILITIES>() & CL_EXEC_NATIVE_KERNEL);
-}
-
-BOOST_COMPUTE_CL_CALLBACK void detail::opencl_queue_context::enqueue_callback ( void* args )
-{
-    let ptr = static_cast<task_type*>(args);
-    ptr->task->__execute(ptr->task, /*tid=*/ptr->tid);
 }
