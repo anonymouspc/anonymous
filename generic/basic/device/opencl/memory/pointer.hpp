@@ -33,6 +33,7 @@ class opencl::pointer
         operator  boost::compute::buffer_iterator<type> ( ) const;
         pointer ( boost::compute::detail::device_ptr<type> );
         operator  boost::compute::detail::device_ptr<type> ( ) const;
+        template < class expr > auto operator [] ( const boost::compute::detail::meta_kernel_variable<expr>& ) const;
 
     public: // Member
         boost::compute::buffer get_buffer ( ) const;
@@ -72,6 +73,7 @@ class opencl::const_pointer
         operator        boost::compute::buffer_iterator<type> ( ) const = delete;
         const_pointer ( boost::compute::detail::device_ptr<type> );
         operator        boost::compute::detail::device_ptr<type> ( ) const = delete; 
+        template < class expr > auto operator [] ( const boost::compute::detail::meta_kernel_variable<expr>& ) const;
 
     public: // Member
         boost::compute::buffer get_buffer ( ) const;

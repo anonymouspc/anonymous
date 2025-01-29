@@ -1,6 +1,6 @@
 #pragma once
 
-detail::opencl_queue_context::execution_context_type ( int )
+detail::opencl_queue_context::opencl_queue_context ( int )
 {
     
 }
@@ -22,7 +22,7 @@ const boost::compute::context& detail::opencl_queue_context::context ( )
     return ctx;
 }
 
-boost::compute::command_queue& detail::opencl_queue_context::queue ( )
+boost::compute::command_queue& detail::opencl_queue_context::command_queue ( )
 {
     thread_local let que = boost::compute::command_queue(boost::compute::system::default_context(), boost::compute::system::default_device());
     return que;

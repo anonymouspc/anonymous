@@ -13,8 +13,8 @@ class opencl::basic_string
         using const_reference = opencl::template const_reference<type>;
         using pointer         = opencl::template pointer        <type>;
         using const_pointer   = opencl::template const_pointer  <type>;
-        using iterator        = base::iterator;
-        using const_iterator  = base::const_iterator;
+        using iterator        = pointer;
+        using const_iterator  = const_pointer;
 
     public: // Core
         basic_string ( ) = default;
@@ -24,19 +24,40 @@ class opencl::basic_string
 
         basic_string ( const_pointer init_data, int init_size )
         {
-            resize(init_size);
-            boost::compute::copy(init_data, init_data + init_size, self.data());
+            as_vector().resize(init_size, opencl::execution_context.command_queue());
+            boost::compute::copy(init_data, init_data + init_size, self.data(), opencl::execution_context.command_queue());
+            opencl::execution_context.command_queue().finish();
         }
 
     public: // Member  
+        iterator begin ( )
+        {
+            return base::begin();
+        }
+
+        const_iterator begin ( ) const
+        {
+            return base::begin();
+        }
+
+        iterator end ( )
+        {
+            return base::end();
+        }
+
+        const_iterator end ( ) const
+        {
+            return base::end();
+        }
+
         pointer data ( )
         {
-            return pointer(self.begin().get_buffer(), self.begin().get_index());
+            return base::begin();
         }
 
         const_pointer data ( ) const
         {
-            return const_pointer(self.begin().get_buffer(), self.begin().get_index());
+            return base::begin();
         }
 
         void resize ( int new_size )
@@ -44,23 +65,26 @@ class opencl::basic_string
             as_vector().resize(new_size);
         }
 
-        basic_string& erase ( int old_pos, int old_count )
-        {
-            as_vector().erase(self.begin() + old_pos, self.begin() + old_pos + old_count);
-            return self;
-        }
-        
-        basic_string& insert ( int new_pos, const_pointer new_data, int new_size )
-        {
-            as_vector().insert(self.begin() + new_pos, new_data, new_data + new_size);
-            return self;
-        }
-
         basic_string& append ( const_pointer new_data, int new_size )
         {
             let old_size = self.size();
-            as_vector().resize(self.size() + new_size);
-            boost::compute::copy(new_data, new_data + new_size, self.begin() + old_size);
+            as_vector().resize(self.size() + new_size, opencl::execution_context.command_queue());
+            boost::compute::copy(new_data, new_data + new_size, self.data() + old_size, opencl::execution_context.command_queue());
+            opencl::execution_context.command_queue().finish();
+            return self;
+        }
+
+        basic_string& insert ( int new_pos, const_pointer new_data, int new_size )
+        {
+            as_vector().insert(self.data() + new_pos, new_data, new_data + new_size, opencl::execution_context.command_queue());
+            opencl::execution_context.command_queue().finish();
+            return self;
+        }
+
+        basic_string& erase ( int old_pos, int old_count )
+        {
+            as_vector().erase(self.data() + old_pos, self.data() + old_pos + old_count, opencl::execution_context.command_queue());
+            opencl::execution_context.command_queue().finish();
             return self;
         }
 

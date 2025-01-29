@@ -14,16 +14,16 @@ namespace detail
             std::uint32_t available_parallelism ( ) const;
 
         public: // Command queue
-            static const boost::compute::device&        device  ( );
-            static const boost::compute::context&       context ( );
-            static       boost::compute::command_queue& queue   ( );
+            static const boost::compute::device&        device        ( );
+            static const boost::compute::context&       context       ( );
+            static       boost::compute::command_queue& command_queue ( );
             /* Imagine cpu-thread 1 is solving a quite complex math problem on opencl,
-                * while cpu-thread 2 want to copy a single device value.
-                * There is no need for cpu-thread 2 to command_queue().flush(), which waits until
-                * cpu-thread 1 completed its task.
-                * Meanwhile, everything happens sequencely in same cpu-thread, which does not
-                * requires re-construct a new command_queue. 
-                */
+             * while cpu-thread 2 want to copy a single device value.
+             * There is no need for cpu-thread 2 to command_queue().flush(), which waits until
+             * cpu-thread 1 completed its task.
+             * Meanwhile, everything happens sequencely in same cpu-thread, which does not
+             * requires re-construct a new command_queue. 
+             */
 
         public: // Task
             void enqueue ( execpools::task_base*, std::uint32_t tid = 0 ) noexcept;
@@ -45,5 +45,5 @@ namespace detail
 }
 
 #if dll
-    #include "execution_context_type.cpp"
+    #include "opencl_queue_context.cpp"
 #endif

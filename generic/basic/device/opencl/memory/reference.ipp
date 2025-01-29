@@ -3,7 +3,7 @@
 #define build_with_source_type1_type2(src) build_with_source(std::regex_replace(std::regex_replace(#src, std::regex("type1"), demangle(typeid(type1))), std::regex("type2"), demangle(typeid(type2))), opencl::execution_context.context())
 
 template < class type >
-opencl::template reference<type> opencl::template reference<type>::operator = ( opencl::template const_reference<type> right )
+opencl::template reference<type> opencl::reference<type>::operator = ( opencl::template const_reference<type> right )
 {
     static let program = boost::compute::program::build_with_source_type(
         __kernel void assign ( __global type* self_buf, int self_idx, __global type* right_buf, int right_idx )
@@ -14,13 +14,13 @@ opencl::template reference<type> opencl::template reference<type>::operator = ( 
     
     let kernel = boost::compute::kernel(program, "assign");
     kernel.set_args(self.get_buffer(), self.get_index(), right.get_buffer(), right.get_index());
-    opencl::execution_context.queue().enqueue_task(kernel);
-    opencl::execution_context.queue().finish();
+    opencl::execution_context.command_queue().enqueue_task(kernel);
+    opencl::execution_context.command_queue().finish();
     return self;
 }
 
 template < class type >
-opencl::template reference<type>::reference ( opencl::template const_reference<type> cvt )
+opencl::reference<type>::reference ( opencl::template const_reference<type> cvt )
     extends reference ( cvt.get_buffer(), cvt.get_index() )
 {
     
@@ -28,7 +28,7 @@ opencl::template reference<type>::reference ( opencl::template const_reference<t
 
 template < class type >
 template < class type2 >
-opencl::template reference<type> opencl::template reference<type>::operator = ( opencl::template const_reference<type2> cvt )
+opencl::template reference<type> opencl::reference<type>::operator = ( opencl::template const_reference<type2> cvt )
 {
     using type1 = type;
     static let program = boost::compute::program::build_with_source_type1_type2(
@@ -40,29 +40,29 @@ opencl::template reference<type> opencl::template reference<type>::operator = ( 
     
     let kernel = boost::compute::kernel(program, "assign");
     kernel.set_args(self.get_buffer(), self.get_index(), cvt.get_buffer(), cvt.get_index());
-    opencl::execution_context.queue().enqueue_task(kernel);
-    opencl::execution_context.queue().finish();
+    opencl::execution_context.command_queue().enqueue_task(kernel);
+    opencl::execution_context.command_queue().finish();
     return self;
 }
 
 template < class type >
-opencl::template reference<type> opencl::template reference<type>::operator = ( type cvt )
+opencl::template reference<type> opencl::reference<type>::operator = ( type cvt )
 {
-    boost::compute::detail::write_single_value<type>(cvt, buf, idx, opencl::execution_context.queue());
-    opencl::execution_context.queue().finish();
+    boost::compute::detail::write_single_value<type>(cvt, buf, idx, opencl::execution_context.command_queue());
+    opencl::execution_context.command_queue().finish();
     return self;
 }
 
 template < class type >
-opencl::template reference<type>::operator type ( ) const
+opencl::reference<type>::operator type ( ) const
 {
-    let cvt = boost::compute::detail::read_single_value<type>(buf, idx, opencl::execution_context.queue());
-    opencl::execution_context.queue().finish();
+    let cvt = boost::compute::detail::read_single_value<type>(buf, idx, opencl::execution_context.command_queue());
+    opencl::execution_context.command_queue().finish();
     return cvt;
 }
 
 template < class type >
-opencl::template reference<type>::reference ( boost::compute::buffer cvt_buf, size_t cvt_idx )
+opencl::reference<type>::reference ( boost::compute::buffer cvt_buf, size_t cvt_idx )
     extends buf ( cvt_buf ),
             idx ( cvt_idx )
 {
@@ -70,26 +70,26 @@ opencl::template reference<type>::reference ( boost::compute::buffer cvt_buf, si
 }
 
 template < class type >
-opencl::template reference<type>::reference ( boost::compute::detail::buffer_value<type> cvt )
+opencl::reference<type>::reference ( boost::compute::detail::buffer_value<type> cvt )
     extends reference ( (&cvt).get_buffer(), (&cvt).get_index() / sizeof(type) )
 {
     
 }
 
 template < class type >
-opencl::template reference<type>::operator boost::compute::detail::buffer_value<type> ( ) const
+opencl::reference<type>::operator boost::compute::detail::buffer_value<type> ( ) const
 {
     return boost::compute::detail::buffer_value<type>(get_buffer(), get_index() * sizeof(type));
 }
 
 template < class type >
-boost::compute::buffer opencl::template reference<type>::get_buffer ( ) const
+boost::compute::buffer opencl::reference<type>::get_buffer ( ) const
 {
     return buf;
 }
 
 template < class type >
-size_t opencl::template reference<type>::get_index ( ) const
+size_t opencl::reference<type>::get_index ( ) const
 {
     return idx;
 }
@@ -98,22 +98,22 @@ size_t opencl::template reference<type>::get_index ( ) const
 
 
 template < class type >
-opencl::template const_reference<type>::const_reference ( opencl::template reference<type> cvt )
+opencl::const_reference<type>::const_reference ( opencl::template reference<type> cvt )
     extends const_reference ( cvt.get_buffer(), cvt.get_index() )
 {
     
 }
 
 template < class type >
-opencl::template const_reference<type>::operator type ( ) const
+opencl::const_reference<type>::operator type ( ) const
 {
-    let cvt = boost::compute::detail::read_single_value<type>(buf, idx, opencl::execution_context.queue());
-    opencl::execution_context.queue().finish();
+    let cvt = boost::compute::detail::read_single_value<type>(buf, idx, opencl::execution_context.command_queue());
+    opencl::execution_context.command_queue().finish();
     return cvt;
 }
 
 template < class type >
-opencl::template const_reference<type>::const_reference ( boost::compute::buffer cvt_buf, size_t cvt_idx )
+opencl::const_reference<type>::const_reference ( boost::compute::buffer cvt_buf, size_t cvt_idx )
     extends buf ( cvt_buf ),
             idx ( cvt_idx )
 {
@@ -121,20 +121,20 @@ opencl::template const_reference<type>::const_reference ( boost::compute::buffer
 }
 
 template < class type >
-opencl::template const_reference<type>::const_reference ( boost::compute::detail::buffer_value<type> cvt )
+opencl::const_reference<type>::const_reference ( boost::compute::detail::buffer_value<type> cvt )
     extends const_reference ( (&cvt).get_buffer(), (&cvt).get_index() / sizeof(type) )
 {
     
 }
 
 template < class type >
-boost::compute::buffer opencl::template const_reference<type>::get_buffer ( ) const
+boost::compute::buffer opencl::const_reference<type>::get_buffer ( ) const
 {
     return buf;
 }
 
 template < class type >
-size_t opencl::template const_reference<type>::get_index ( ) const
+size_t opencl::const_reference<type>::get_index ( ) const
 {
     return idx;
 }
@@ -196,9 +196,9 @@ bool operator == ( opencl::template const_reference<type1> left, opencl::templat
     let kernel = boost::compute::kernel(program, "equal_to");
     let result = boost::compute::buffer(opencl::execution_context.context(), sizeof(bool));
     kernel.set_args(left.get_buffer(), left.get_index(), right.get_buffer(), right.get_index(), result);
-    opencl::execution_context.queue().enqueue_task(kernel);
-    let sign = boost::compute::detail::read_single_value<bool>(result, 0, opencl::execution_context.queue());
-    opencl::execution_context.queue().finish();
+    opencl::execution_context.command_queue().enqueue_task(kernel);
+    let sign = boost::compute::detail::read_single_value<bool>(result, 0, opencl::execution_context.command_queue());
+    opencl::execution_context.command_queue().finish();
     return sign;
 }
 
@@ -242,9 +242,9 @@ compare_result<type1,type2> operator <=> ( opencl::template const_reference<type
         let kernel = boost::compute::kernel(program, "three_way_compare");
         let result = boost::compute::buffer(opencl::execution_context.context(), sizeof(int));
         kernel.set_args(left.get_buffer(), left.get_index(), right.get_buffer(), right.get_index(), result);
-        opencl::execution_context.queue().enqueue_task(kernel);
-        let sign = boost::compute::detail::read_single_value<int>(result, 0, opencl::execution_context.queue());
-        opencl::execution_context.queue().finish();
+        opencl::execution_context.command_queue().enqueue_task(kernel);
+        let sign = boost::compute::detail::read_single_value<int>(result, 0, opencl::execution_context.command_queue());
+        opencl::execution_context.command_queue().finish();
         return sign ==  0 ? compare_result<type1,type2>::equivalent otherwise
                sign == -1 ? compare_result<type1,type2>::less       otherwise
                             compare_result<type1,type2>::greater; 
@@ -265,9 +265,9 @@ compare_result<type1,type2> operator <=> ( opencl::template const_reference<type
         let kernel = boost::compute::kernel(program, "three_way_compare");
         let result = boost::compute::buffer(opencl::execution_context.context(), sizeof(int));
         kernel.set_args(left.get_buffer(), left.get_index(), right.get_buffer(), right.get_index(), result);
-        opencl::execution_context.queue().enqueue_task(kernel);
-        let sign = boost::compute::detail::read_single_value<int>(result, 0, opencl::execution_context.queue());
-        opencl::execution_context.queue().finish();
+        opencl::execution_context.command_queue().enqueue_task(kernel);
+        let sign = boost::compute::detail::read_single_value<int>(result, 0, opencl::execution_context.command_queue());
+        opencl::execution_context.command_queue().finish();
         return sign ==  0 ? compare_result<type1,type2>::equivalent otherwise
                sign == -1 ? compare_result<type1,type2>::less       otherwise
                sign ==  1 ? compare_result<type1,type2>::greater    otherwise
@@ -298,8 +298,8 @@ opencl::template reference<type1> operator += ( opencl::template reference<type1
 
     let kernel = boost::compute::kernel(program, "plus_assign");
     kernel.set_args(left.get_buffer(), left.get_index(), right.get_buffer(), right.get_index());
-    opencl::execution_context.queue().enqueue_task(kernel);
-    opencl::execution_context.queue().finish();
+    opencl::execution_context.command_queue().enqueue_task(kernel);
+    opencl::execution_context.command_queue().finish();
     return left;
 }
 
@@ -323,8 +323,8 @@ opencl::template reference<type1> operator -= ( opencl::template reference<type1
 
     let kernel = boost::compute::kernel(program, "minus_assign");
     kernel.set_args(left.get_buffer(), left.get_index(), right.get_buffer(), right.get_index());
-    opencl::execution_context.queue().enqueue_task(kernel);
-    opencl::execution_context.queue().finish();
+    opencl::execution_context.command_queue().enqueue_task(kernel);
+    opencl::execution_context.command_queue().finish();
     return left;
 }
 
@@ -348,8 +348,8 @@ opencl::template reference<type1> operator *= ( opencl::template reference<type1
 
     let kernel = boost::compute::kernel(program, "multiplies_assign");
     kernel.set_args(left.get_buffer(), left.get_index(), right.get_buffer(), right.get_index());
-    opencl::execution_context.queue().enqueue_task(kernel);
-    opencl::execution_context.queue().finish();
+    opencl::execution_context.command_queue().enqueue_task(kernel);
+    opencl::execution_context.command_queue().finish();
     return left;
 }
 
@@ -373,8 +373,8 @@ opencl::template reference<type1> operator /= ( opencl::template reference<type1
 
     let kernel = boost::compute::kernel(program, "divides_assign");
     kernel.set_args(left.get_buffer(), left.get_index(), right.get_buffer(), right.get_index());
-    opencl::execution_context.queue().enqueue_task(kernel);
-    opencl::execution_context.queue().finish();
+    opencl::execution_context.command_queue().enqueue_task(kernel);
+    opencl::execution_context.command_queue().finish();
     return left;
 }
 
@@ -398,8 +398,8 @@ opencl::template reference<type1> operator %= ( opencl::template reference<type1
 
     let kernel = boost::compute::kernel(program, "modulus_assign");
     kernel.set_args(left.get_buffer(), left.get_index(), right.get_buffer(), right.get_index());
-    opencl::execution_context.queue().enqueue_task(kernel);
-    opencl::execution_context.queue().finish();
+    opencl::execution_context.command_queue().enqueue_task(kernel);
+    opencl::execution_context.command_queue().finish();
     return left;
 }
 
@@ -423,8 +423,8 @@ opencl::template reference<type1> operator &= ( opencl::template reference<type1
 
     let kernel = boost::compute::kernel(program, "bitand_assign");
     kernel.set_args(left.get_buffer(), left.get_index(), right.get_buffer(), right.get_index());
-    opencl::execution_context.queue().enqueue_task(kernel);
-    opencl::execution_context.queue().finish();
+    opencl::execution_context.command_queue().enqueue_task(kernel);
+    opencl::execution_context.command_queue().finish();
     return left;
 }
 
@@ -448,8 +448,8 @@ opencl::template reference<type1> operator |= ( opencl::template reference<type1
 
     let kernel = boost::compute::kernel(program, "bitor_assign");
     kernel.set_args(left.get_buffer(), left.get_index(), right.get_buffer(), right.get_index());
-    opencl::execution_context.queue().enqueue_task(kernel);
-    opencl::execution_context.queue().finish();
+    opencl::execution_context.command_queue().enqueue_task(kernel);
+    opencl::execution_context.command_queue().finish();
     return left;
 }
 
@@ -473,8 +473,8 @@ opencl::template reference<type1> operator ^= ( opencl::template reference<type1
 
     let kernel = boost::compute::kernel(program, "bitxor_assign");
     kernel.set_args(left.get_buffer(), left.get_index(), right.get_buffer(), right.get_index());
-    opencl::execution_context.queue().enqueue_task(kernel);
-    opencl::execution_context.queue().finish();
+    opencl::execution_context.command_queue().enqueue_task(kernel);
+    opencl::execution_context.command_queue().finish();
     return left;
 }
 
@@ -498,8 +498,8 @@ opencl::template reference<type1> operator <<= ( opencl::template reference<type
 
     let kernel = boost::compute::kernel(program, "left_shift_assign");
     kernel.set_args(left.get_buffer(), left.get_index(), right.get_buffer(), right.get_index());
-    opencl::execution_context.queue().enqueue_task(kernel);
-    opencl::execution_context.queue().finish();
+    opencl::execution_context.command_queue().enqueue_task(kernel);
+    opencl::execution_context.command_queue().finish();
     return left;
 }
 
@@ -523,8 +523,8 @@ opencl::template reference<type1> operator >>= ( opencl::template reference<type
 
     let kernel = boost::compute::kernel(program, "right_shift_assign");
     kernel.set_args(left.get_buffer(), left.get_index(), right.get_buffer(), right.get_index());
-    opencl::execution_context.queue().enqueue_task(kernel);
-    opencl::execution_context.queue().finish();
+    opencl::execution_context.command_queue().enqueue_task(kernel);
+    opencl::execution_context.command_queue().finish();
     return left;
 }
 
@@ -541,8 +541,8 @@ opencl::template reference<type> operator ++ ( opencl::template reference<type> 
 
     let kernel = boost::compute::kernel(program, "increment");
     kernel.set_args(left.get_buffer(), left.get_index());
-    opencl::execution_context.queue().enqueue_task(kernel);
-    opencl::execution_context.queue().finish();
+    opencl::execution_context.command_queue().enqueue_task(kernel);
+    opencl::execution_context.command_queue().finish();
     return left;
 }
 
@@ -568,8 +568,8 @@ opencl::template reference<type> operator -- ( opencl::template reference<type> 
 
     let kernel = boost::compute::kernel(program, "decrement");
     kernel.set_args(left.get_buffer(), left.get_index());
-    opencl::execution_context.queue().enqueue_task(kernel);
-    opencl::execution_context.queue().finish();
+    opencl::execution_context.command_queue().enqueue_task(kernel);
+    opencl::execution_context.command_queue().finish();
     return left;
 }
 

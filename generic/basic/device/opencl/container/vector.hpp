@@ -18,38 +18,42 @@ class opencl::vector
 
     public: // Core
         vector ( )
-            extends base ( opencl::execution_context.queue() )
+            extends base ( opencl::execution_context.context() )
         {
 
         }
 
         vector ( const vector& init )
-            extends base ( static_cast<const base&>(init), opencl::execution_context.queue() )
+            extends base ( static_cast<const base&>(init), opencl::execution_context.command_queue() )
         {
-            
+            opencl::execution_context.command_queue().finish();
         }
 
         vector ( vector&& ) = default;
 
         vector& operator = ( const vector& right )
         {
-            base::resize(right.size(), opencl::execution_context.queue());
-            boost::compute::copy(right.base::begin(), right.base::end(), self.base::begin(), opencl::execution_context.queue());
+            base::resize(right.size(), opencl::execution_context.command_queue());
+            boost::compute::copy(right.begin(), right.end(), self.begin(), opencl::execution_context.command_queue());
+            opencl::execution_context.command_queue().finish();
+            return self;
         }
+
+        vector& operator = ( vector&& ) = default;
 
     public: // Constructor
         vector ( auto&&... args )
             requires constructible_from<base,decltype(args)...,const boost::compute::context&>
             extends base ( std::forward<decltype(args)>(args)..., opencl::execution_context.context() )
         {
-            
+            opencl::execution_context.command_queue().finish();
         }
 
         vector ( auto&&... args )
             requires constructible_from<base,decltype(args)...,boost::compute::command_queue&>
-            extends base ( std::forward<decltype(args)>(args)..., opencl::execution_context.queue() )
+            extends base ( std::forward<decltype(args)>(args)..., opencl::execution_context.command_queue() )
         {
-            
+            opencl::execution_context.command_queue().finish();
         }
 
     public: // Override
@@ -95,35 +99,45 @@ class opencl::vector
 
         void resize ( auto&&... args )
         {
-            base::resize(std::forward<decltype(args)>(args)..., opencl::execution_context.queue());
-            opencl::execution_context.queue().finish();   
+            base::resize(std::forward<decltype(args)>(args)..., opencl::execution_context.command_queue());
+            opencl::execution_context.command_queue().finish();
+        }
+
+        void reserve ( auto&&... args )
+        {
+            base::reserve(std::forward<decltype(args)>(args)..., opencl::execution_context.command_queue());
+            opencl::execution_context.command_queue().finish();
+        }
+
+        void shrink_to_fit ( auto&&... args )
+        {
+            base::shrink_to_fit(std::forward<decltype(args)>(args)..., opencl::execution_context.command_queue());
+            opencl::execution_context.command_queue().finish();
         }
 
         void push_back ( auto&&... args )
         {
-            base::push_back(std::forward<decltype(args)>(args)..., opencl::execution_context.queue());
-            opencl::execution_context.queue().finish();   
+            base::push_back(std::forward<decltype(args)>(args)..., opencl::execution_context.command_queue());
+            opencl::execution_context.command_queue().finish();
         }
 
         void pop_back ( auto&&... args )
         {
-            base::push_back(std::forward<decltype(args)>(args)..., opencl::execution_context.queue());
-            opencl::execution_context.queue().finish();   
+            base::pop_back(std::forward<decltype(args)>(args)..., opencl::execution_context.command_queue()); 
+            opencl::execution_context.command_queue().finish();
         }
 
         iterator insert ( auto&&... args )
         {
-            let it = base::insert(std::forward<decltype(args)>(args)..., opencl::execution_context.queue());
-            opencl::execution_context.queue().finish(); 
-            return it; 
+            let it = base::insert(std::forward<decltype(args)>(args)..., opencl::execution_context.command_queue());
+            opencl::execution_context.command_queue().finish();
+            return it;
         }
 
         iterator erase ( auto&&... args )
         {
-            let it = base::erase(std::forward<decltype(args)>(args)..., opencl::execution_context.queue());
-            opencl::execution_context.queue().finish(); 
-            return it; 
+            let it = base::erase(std::forward<decltype(args)>(args)..., opencl::execution_context.command_queue());
+            opencl::execution_context.command_queue().finish();
+            return it;
         }
-
-
 };

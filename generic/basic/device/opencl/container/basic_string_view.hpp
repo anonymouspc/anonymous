@@ -4,13 +4,13 @@ template < class type, class traits >
 class opencl::basic_string_view
 {
     public: // Typedef
-        using value_type      = type;
-        using reference       =       boost::compute::detail::buffer_value<type>;
-        using const_reference = const boost::compute::detail::buffer_value<type>;
-        using pointer         =       boost::compute::detail::device_ptr<type>;
-        using const_pointer   = const boost::compute::detail::device_ptr<type>;
-        using iterator        =       boost::compute::buffer_iterator<type>;
-        using const_iterator  = const boost::compute::buffer_iterator<type>;
+        using value_type      = opencl::template value_type     <type>;
+        using reference       = opencl::template reference      <type>;
+        using const_reference = opencl::template const_reference<type>;
+        using pointer         = opencl::template pointer        <type>;
+        using const_pointer   = opencl::template const_pointer  <type>;
+        using iterator        = pointer;
+        using const_iterator  = const_pointer;
 
     private: // Data
         const_pointer ptr_1 = const_pointer();
@@ -39,12 +39,12 @@ class opencl::basic_string_view
 
         const_iterator begin ( ) const
         {
-            return const_iterator(ptr_1.get_buffer(), ptr_1.get_index());
+            return ptr_1;
         }
 
         const_iterator end ( ) const
         {
-            return const_iterator(ptr_2.get_buffer(), ptr_2.get_index());
+            return ptr_2;
         }
 
         const_pointer data ( ) const

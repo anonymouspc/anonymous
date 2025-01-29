@@ -1,7 +1,7 @@
 #pragma once
 
 template < class type >
-opencl::template pointer<type>& opencl::template pointer<type>::operator = ( opencl::template const_pointer<type> right )
+opencl::template pointer<type>& opencl::pointer<type>::operator = ( opencl::template const_pointer<type> right )
 {
     buf = right.get_buffer();
     idx = right.get_index();
@@ -9,19 +9,19 @@ opencl::template pointer<type>& opencl::template pointer<type>::operator = ( ope
 }
 
 template < class type > 
-opencl::template reference<type> opencl::template pointer<type>::operator * ( ) const
+opencl::template reference<type> opencl::pointer<type>::operator * ( ) const
 {
     return opencl::template reference<type>(get_buffer(), get_index());
 }
 
 template < class type > 
-opencl::template reference<type> opencl::template pointer<type>::operator [] ( int ofs ) const
+opencl::template reference<type> opencl::pointer<type>::operator [] ( int ofs ) const
 {
     return opencl::template reference<type>(get_buffer(), get_index() + ofs);
 }
 
 template < class type >
-opencl::template pointer<type>::pointer ( opencl::template const_pointer<type> cvt )
+opencl::pointer<type>::pointer ( opencl::template const_pointer<type> cvt )
     extends buf ( cvt.get_buffer() ),
             idx ( cvt.get_index() )
 {
@@ -29,7 +29,7 @@ opencl::template pointer<type>::pointer ( opencl::template const_pointer<type> c
 }
 
 template < class type >
-opencl::template pointer<type>::pointer ( boost::compute::buffer cvt_buf, size_t cvt_idx )
+opencl::pointer<type>::pointer ( boost::compute::buffer cvt_buf, size_t cvt_idx )
     extends buf ( cvt_buf ),
             idx ( cvt_idx )
 {
@@ -37,39 +37,46 @@ opencl::template pointer<type>::pointer ( boost::compute::buffer cvt_buf, size_t
 }
 
 template < class type > 
-opencl::template pointer<type>::pointer ( boost::compute::buffer_iterator<type> cvt )
+opencl::pointer<type>::pointer ( boost::compute::buffer_iterator<type> cvt )
     extends pointer ( cvt.get_buffer(), cvt.get_index() )
 {
 
 }
 
 template < class type >
-opencl::template pointer<type>::operator boost::compute::buffer_iterator<type> ( ) const
+opencl::pointer<type>::operator boost::compute::buffer_iterator<type> ( ) const
 {
     return boost::compute::buffer_iterator<type>(get_buffer(), get_index());
 }
 
 template < class type > 
-opencl::template pointer<type>::pointer ( boost::compute::detail::device_ptr<type> cvt )
+opencl::pointer<type>::pointer ( boost::compute::detail::device_ptr<type> cvt )
     extends pointer ( cvt.get_buffer(), cvt.get_index() )
 {
 
 }
 
 template < class type >
-opencl::template pointer<type>::operator boost::compute::detail::device_ptr<type> ( ) const
+opencl::pointer<type>::operator boost::compute::detail::device_ptr<type> ( ) const
 {
     return boost::compute::detail::device_ptr<type>(get_buffer(), get_index());
 }
 
 template < class type >
-boost::compute::buffer opencl::template pointer<type>::get_buffer ( ) const
+template < class expr >
+auto opencl::pointer<type>::operator [] ( const boost::compute::detail::meta_kernel_variable<expr>& idx ) const
+{
+    return boost::compute::buffer_iterator<type>(get_buffer(), get_index())[idx];
+}
+
+template < class type >
+boost::compute::buffer opencl::pointer<type>::get_buffer ( ) const
 {
     return buf;
 }
 
 template < class type >
-size_t opencl::template pointer<type>::get_index ( ) const
+size_t opencl::pointer<type>::get_index ( ) const
 {
     return idx;
 }
@@ -78,7 +85,7 @@ size_t opencl::template pointer<type>::get_index ( ) const
 
 
 template < class type >
-opencl::template const_pointer<type>& opencl::template const_pointer<type>::operator = ( opencl::template const_pointer<type> right )
+opencl::template const_pointer<type>& opencl::const_pointer<type>::operator = ( opencl::template const_pointer<type> right )
 {
     buf = right.get_buffer();
     idx = right.get_index();
@@ -86,19 +93,19 @@ opencl::template const_pointer<type>& opencl::template const_pointer<type>::oper
 }
 
 template < class type > 
-opencl::template const_reference<type> opencl::template const_pointer<type>::operator * ( ) const
+opencl::template const_reference<type> opencl::const_pointer<type>::operator * ( ) const
 {
     return opencl::template const_reference<type>(get_buffer(), get_index());
 }
 
 template < class type > 
-opencl::template const_reference<type> opencl::template const_pointer<type>::operator [] ( int ofs ) const
+opencl::template const_reference<type> opencl::const_pointer<type>::operator [] ( int ofs ) const
 {
     return opencl::template const_reference<type>(get_buffer(), get_index() + ofs);
 }
 
 template < class type >
-opencl::template const_pointer<type>::const_pointer ( opencl::template pointer<type> cvt )
+opencl::const_pointer<type>::const_pointer ( opencl::template pointer<type> cvt )
     extends buf ( cvt.get_buffer() ),
             idx ( cvt.get_index() )
 {
@@ -106,7 +113,7 @@ opencl::template const_pointer<type>::const_pointer ( opencl::template pointer<t
 }
 
 template < class type >
-opencl::template const_pointer<type>::const_pointer ( boost::compute::buffer cvt_buf, size_t cvt_idx )
+opencl::const_pointer<type>::const_pointer ( boost::compute::buffer cvt_buf, size_t cvt_idx )
     extends buf ( cvt_buf ),
             idx ( cvt_idx )
 {
@@ -114,27 +121,34 @@ opencl::template const_pointer<type>::const_pointer ( boost::compute::buffer cvt
 }
 
 template < class type > 
-opencl::template const_pointer<type>::const_pointer ( boost::compute::buffer_iterator<type> cvt )
+opencl::const_pointer<type>::const_pointer ( boost::compute::buffer_iterator<type> cvt )
     extends const_pointer ( cvt.get_buffer(), cvt.get_index() )
 {
 
 }
 
 template < class type > 
-opencl::template const_pointer<type>::const_pointer ( boost::compute::detail::device_ptr<type> cvt )
+opencl::const_pointer<type>::const_pointer ( boost::compute::detail::device_ptr<type> cvt )
     extends const_pointer ( cvt.get_buffer(), cvt.get_index() )
 {
 
 }
 
 template < class type >
-boost::compute::buffer opencl::template const_pointer<type>::get_buffer ( ) const
+template < class expr >
+auto opencl::const_pointer<type>::operator [] ( const boost::compute::detail::meta_kernel_variable<expr>& idx ) const
+{
+    return boost::compute::buffer_iterator<type>(get_buffer(), get_index())[idx];
+}
+
+template < class type >
+boost::compute::buffer opencl::const_pointer<type>::get_buffer ( ) const
 {
     return buf;
 }
 
 template < class type >
-size_t opencl::template const_pointer<type>::get_index ( ) const
+size_t opencl::const_pointer<type>::get_index ( ) const
 {
     return idx;
 }
