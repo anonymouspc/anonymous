@@ -1,13 +1,13 @@
 #pragma once
 
 template < class type >
-class opencl::accessor_type
+class cpu::accessor_type
 {
     public: // Typedef
         using offset_policy    = accessor_type;
         using element_type     = type;
-        using reference        = opencl::template reference<type>;
-        using data_handle_type = opencl::template pointer  <type>;
+        using reference        = cpu::template reference<type>;
+        using data_handle_type = cpu::template pointer  <type>;
 
     public: // Member
         constexpr reference access ( data_handle_type p, std::size_t i ) const
@@ -22,13 +22,13 @@ class opencl::accessor_type
 };
 
 template < class type >
-class opencl::const_accessor_type
+class cpu::const_accessor_type
 {
     public: // Typedef
         using offset_policy    = const_accessor_type;
         using element_type     = type;
-        using reference        = opencl::template const_reference<type>;
-        using data_handle_type = opencl::template const_pointer  <type>;
+        using reference        = cpu::template const_reference<type>;
+        using data_handle_type = cpu::template const_pointer  <type>;
 
     public: // Member
         constexpr reference access ( data_handle_type p, std::size_t i ) const
@@ -41,6 +41,5 @@ class opencl::const_accessor_type
             return p + i;
         }
 };
-
 
 
