@@ -5,18 +5,19 @@ class complex
     extends public std::complex<type>
 {
     public: // Typedef
-        using value_type = type;
+        using  value_type = type;
         struct complex_tag { };
 
     public: // Core
         constexpr complex ( ) = default;
+        constexpr complex ( type );
         constexpr complex ( type, type );
-        constexpr const type& real ( ) const;
-        constexpr const type& imag ( ) const;
 
-    public: // Conversion
-        constexpr complex ( number_type  auto );
-        constexpr complex ( complex_type auto );
+    public: // Member
+        constexpr       type& real ( );
+        constexpr const type& real ( ) const;
+        constexpr       type& imag ( );
+        constexpr const type& imag ( ) const;
 };
 
 
@@ -26,36 +27,54 @@ class complex
 
 
 template < number_type type >
-constexpr complex<type>::complex ( type r, type i )
-    extends std::complex<type> ( r, i )
+constexpr complex<type>::complex ( type r )
+    extends std::complex<type> ( std::move(r) )
 {
 
+}
+
+template < number_type type >
+constexpr complex<type>::complex ( type r, type i )
+    extends std::complex<type> ( std::move(r), std::move(i) )
+{
+
+}
+
+template < number_type type >
+constexpr type& complex<type>::real ( )
+{
+    struct raw_complex { type r; type i; };
+    return reinterpret_cast<raw_complex&>(self).r;
 }
 
 template < number_type type >
 constexpr const type& complex<type>::real ( ) const
 {
-    return std::complex<type>::real();
+    struct raw_complex { type r; type i; }; 
+    return reinterpret_cast<const raw_complex&>(self).r;
+}
+
+template < number_type type >
+constexpr type& complex<type>::imag ( )
+{
+    struct raw_complex { type r; type i; };
+    return reinterpret_cast<raw_complex&>(self).i;
 }
 
 template < number_type type >
 constexpr const type& complex<type>::imag ( ) const
 {
-    return std::complex<type>::imag();
+    struct raw_complex { type r; type i; };
+    return reinterpret_cast<const raw_complex&>(self).i;
 }
 
-template < number_type type >
-constexpr complex<type>::complex ( number_type auto cvt )
-    extends complex ( type(cvt), type(0) )
+
+
+
+
+namespace constants
 {
-
-}
-
-template < number_type type >
-constexpr complex<type>::complex ( complex_type auto cvt )
-    extends complex ( type(cvt.real()), type(cvt.imag()) )
-{
-
+    constexpr const complex<double> i = complex<double>(0, 1);
 }
 
 
@@ -106,58 +125,58 @@ constexpr bool operator == ( const number_type auto& left, const complex_type au
 
 constexpr complex_type auto operator + ( const complex_type auto& right )
 {
-    return complex ( + right.real(), + right.imag() );
+    return complex(+right.real(), +right.imag());
 }
 
 constexpr complex_type auto operator - ( const complex_type auto& right )
 {
-    return complex ( - right.real(), - right.imag() );
+    return complex(-right.real(), -right.imag());
 }
 
 constexpr complex_type auto operator + ( const complex_type auto& left, const complex_type auto& right )
 {
-    return complex ( left.real() + right.real(), left.imag() + right.imag() );
+    return complex(left.real() + right.real(), left.imag() + right.imag());
 }
 
 constexpr complex_type auto operator + ( const complex_type auto& left, const number_type auto& right )
 {
-    return complex ( left.real() + right, left.imag() );
+    return complex(left.real() + right, left.imag());
 }
 
 constexpr complex_type auto operator + ( const number_type auto& left, const complex_type auto& right )
 {
-    return complex ( left + right.real(), right.imag() );
+    return complex(left + right.real(), right.imag());
 }
 
 constexpr complex_type auto operator - ( const complex_type auto& left, const complex_type auto& right )
 {
-    return complex ( left.real() - right.real(), left.imag() - right.imag() );
+    return complex(left.real() - right.real(), left.imag() - right.imag());
 }
 
 constexpr complex_type auto operator - ( const complex_type auto& left, const number_type auto& right )
 {
-    return complex ( left.real() - right, left.imag() );
+    return complex(left.real() - right, left.imag());
 }
 
 constexpr complex_type auto operator - ( const number_type auto& left, const complex_type auto& right )
 {
-    return complex ( left - right.real(), - right.imag() );
+    return complex(left - right.real(), - right.imag());
 }
 
 constexpr complex_type auto operator * ( const complex_type auto& left, const complex_type auto& right )
 {
-    return complex ( left.real() * right.real() - left.imag() * right.imag(),
-                     left.real() * right.imag() + left.imag() * right.real() );
+    return complex(left.real() * right.real() - left.imag() * right.imag(),
+                   left.real() * right.imag() + left.imag() * right.real());
 }
 
 constexpr complex_type auto operator * ( const complex_type auto& left, const number_type auto& right )
 {
-    return complex ( left.real() * right, left.imag() * right );
+    return complex(left.real() * right, left.imag() * right);
 }
 
 constexpr complex_type auto operator * ( const number_type auto& left, const complex_type auto& right )
 {
-    return complex ( left * right.real(), left * right.imag() );
+    return complex(left * right.real(), left * right.imag());
 }
 
 constexpr complex_type auto operator / ( const complex_type auto& left, const complex_type auto& right )
@@ -167,8 +186,8 @@ constexpr complex_type auto operator / ( const complex_type auto& left, const co
 
     let div = right.real() * right.real() + right.imag() * right.imag();
 
-    return complex ( ( left.real() * right.real() + left.imag() * right.imag() ) / div,
-                     ( left.imag() * right.real() - left.real() * right.imag() ) / div );
+    return complex((left.real() * right.real() + left.imag() * right.imag()) / div,
+                   (left.imag() * right.real() - left.real() * right.imag()) / div);
 }
 
 constexpr complex_type auto operator / ( const complex_type auto& left, const number_type auto& right )
@@ -176,7 +195,7 @@ constexpr complex_type auto operator / ( const complex_type auto& left, const nu
     if ( right == 0 )
         throw math_error("{} / {}", left, right);
 
-    return complex ( left.real() / right, left.imag() / right );
+    return complex(left.real() / right, left.imag() / right);
 }
 
 constexpr complex_type auto operator / ( const number_type auto& left, const complex_type auto& right )
@@ -226,3 +245,55 @@ constexpr complex_type auto& operator /= ( complex_type auto& left, const number
 {
     return left = left / right;
 }
+
+
+
+
+
+constexpr float_type auto abs ( complex_type auto x )
+{
+    return hypot(x.real(), x.imag());
+}
+
+constexpr complex_type auto pow ( complex_type auto x, complex_type auto y )
+{
+    return exp(y * ln(x));
+}
+
+constexpr complex_type auto exp ( complex_type auto x )
+{
+    return exp(x.real()) * (std::cos(x.imag()) + i * std::sin(x.imag()));
+}
+
+constexpr complex_type auto sqrt ( complex_type auto x )
+{
+    let r = abs(x);
+    let t = x.real() > 0 ?                std::atan(x.imag() / x.real())      otherwise
+            x.real() < 0 ? x.imag() > 0 ? std::atan(x.imag() / x.real()) + pi otherwise
+                                          std::atan(x.imag() / x.real()) - pi otherwise
+         /*x.real() == 0*/ x.imag() > 0 ?  pi / 2                             otherwise
+                           x.imag() < 0 ? -pi / 2                             otherwise
+                         /*x.imag() == 0*/ 0;
+    return complex(std::sqrt(r) * std::cos(t / 2), 
+                   std::sqrt(r) * std::sin(t / 2));
+}
+
+constexpr complex_type auto ln ( complex_type auto x )
+{
+    let r = abs(x);
+    let t = x.real() > 0 ?                std::atan(x.imag() / x.real())      otherwise
+            x.real() < 0 ? x.imag() > 0 ? std::atan(x.imag() / x.real()) + pi otherwise
+                                          std::atan(x.imag() / x.real()) - pi otherwise
+         /*x.real() == 0*/ x.imag() > 0 ?  pi / 2                             otherwise
+                           x.imag() < 0 ? -pi / 2                             otherwise
+                         /*x.imag() == 0*/ 0;
+    return ln(r) + i * t;
+}
+
+constexpr complex_type auto conj ( complex_type auto x )
+{
+    return complex(x.real(), -x.imag());
+}
+
+
+
