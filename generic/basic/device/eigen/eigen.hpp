@@ -1,11 +1,11 @@
 #pragma once
 
-class tbb
+class eigen
     extends protected cpu
 {
     public: // Execution
-        using  execution_context_type = execpools::tbb_thread_pool;
-        static execution_context_type execution_context;
+        using  cpu::execution_context_type;
+        static execution_context_type& execution_context;
 
     public: // Type
         using cpu::value_type;
@@ -17,11 +17,11 @@ class tbb
         using cpu::const_stride_pointer;
 
     public: // Allocator
-        template < class type > using allocator = ::tbb::tbb_allocator<type>;
+        template < class type > using allocator = Eigen::aligned_allocator<type>;
 
     public: // Memory
-        using cpu::layout_type;
-        using cpu::accessor_type;
+                                using layout_type   = std::layout_left;
+        template < class type > using accessor_type = std::aligned_accessor<type>;
 
     public: // Operator
         using cpu::plus;
@@ -46,20 +46,20 @@ class tbb
         using cpu::hash;
         
     public: // Container
-     // template < class type, int len >                                                                                                                 using array             = unsupported;
+        template < class type, int len >                                                                                                                 using array             = Eigen::Vector<type,len>;
      // template < class type, class traits = std::char_traits<type>, class alloc = allocator<type> >                                                    using basic_string      = unsupported;
      // template < class type, class traits = std::char_traits<type> >                                                                                   using basic_string_view = unsupported;
      // template < class type, class alloc = allocator<type> >                                                                                           using deque             = unsupported;
      // template < class type, int len >                                                                                                                 using inplace_vector    = unsupported;
      // template < class type, class alloc = allocator<type> >                                                                                           using list              = unsupported;
-        template < class type1, class type2, class compare = less<>, class alloc = allocator<std::pair<const type1,type2>> >                             using map               = ::tbb::concurrent_map<type1,type2,compare,alloc>;
-        template < class type, class compare = less<>, class alloc = allocator<type> >                                                                   class priority_queue;    // Override pop().
-        template < class type, class alloc = allocator<type> >                                                                                           class queue;             // Override size(), pop().
-        template < class type, class compare = less<>, class alloc = allocator<type> >                                                                   using set               = ::tbb::concurrent_set<type,compare,alloc>;
+     // template < class type1, class type2, class compare = less<>, class alloc = allocator<std::pair<const type1,type2>> >                             using map               = unsupported;
+     // template < class type, class compare = less<>, class alloc = allocator<type> >                                                                   class priority_queue;   = unsupported;
+     // template < class type, class alloc = allocator<type> >                                                                                           class queue;            = unsupported;
+     // template < class type, class compare = less<>, class alloc = allocator<type> >                                                                   using set               = unsupported;
      // template < class type, class alloc = allocator<type> >                                                                                           using stack             = unsupported;
-        template < class type1, class type2, class hash = hash<type1>, class equal = equal_to<>, class alloc = allocator<std::pair<const type1,type2>> > using unordered_map     = ::tbb::concurrent_unordered_map<type1,type2,hash,equal>; // Use default allocator<std::pair>
-        template < class type, class hash = hash<type>, class equal = equal_to<>,  class alloc = allocator<type> >                                       using unordered_set     = ::tbb::concurrent_unordered_set<type,hash,equal,alloc>;
-     // template < class type, class alloc = allocator<type> >                                                                                           using vector            = supported, but memory is not contiguous.
+     // template < class type1, class type2, class hash = hash<type1>, class equal = equal_to<>, class alloc = allocator<std::pair<const type1,type2>> > using unordered_map     = unsupported;
+     // template < class type, class hash = hash<type>, class equal = equal_to<>,  class alloc = allocator<type> >                                       using unordered_set     = unsupported;
+        template < class type, class alloc = allocator<type> >                                                                                           using vector            = Eigen::Vector<type,Eigen::Dynamic>;
 
     public: // Algorithm
         using cpu::accumulate;
@@ -151,9 +151,43 @@ class tbb
         using cpu::unique;
         using cpu::unique_copy;
         using cpu::upper_bound;
+
+    public: // Linalg
+        struct linalg
+        {
+            constexpr static void unary_plus      ( const auto,             auto );
+            constexpr static void unary_minus     ( const auto,             auto );
+            constexpr static void plus            ( const auto, const auto, auto );
+            constexpr static void minus           ( const auto, const auto, auto );
+            constexpr static void multiply        ( const auto, const auto, auto );
+            constexpr static void divide          ( const auto, const auto, auto );
+            constexpr static void dot             ( const auto, const auto, auto );
+            constexpr static void cross           ( const auto, const auto, auto );
+            constexpr static void convolve        ( const auto, const auto, auto );
+
+            constexpr static auto transpose       ( const auto,             auto );
+            constexpr static auto hermitian       ( const auto,             auto );
+
+            constexpr static void det             ( const auto,             auto& );
+            constexpr static void eigen           ( const auto,             auto, auto );
+            constexpr static void eigen_value     ( const auto,             auto );
+            constexpr static void eigen_vector    ( const auto,             auto );
+            constexpr static void evd             ( const auto,             auto, auto, auto );
+            constexpr static void inverse         ( const auto,             auto );
+            constexpr static void lu              ( const auto,             auto, auto, auto );
+            constexpr static void qr              ( const auto,             auto, auto );
+            constexpr static void rank            ( const auto,             int& );
+            constexpr static void singular        ( const auto,             auto, auto, auto );
+            constexpr static void singular_value  ( const auto,             auto );
+            constexpr static void singular_vector ( const auto,             auto, auto );
+            constexpr static void svd             ( const auto,             auto, auto, auto );
+            constexpr static void tr              ( const auto,             auto& );
+
+            constexpr static void fft             ( auto,                   auto );
+            constexpr static void ifft            ( auto,                   auto );
+        };
 };
 
-#include "container/priority_queue.hpp"
-#include "container/queue.hpp"
+eigen::execution_context_type& eigen::execution_context = cpu::execution_context;
 
-tbb::execution_context_type tbb::execution_context = tbb::execution_context_type(0 /*::tbb::this_task_arena::max_concurrency()*/);
+#include "linalg/linalg.hpp"
