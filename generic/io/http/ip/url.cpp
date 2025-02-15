@@ -11,6 +11,12 @@ const std::regex url::regex = std::regex
     R"((\#(?:[a-zA-Z0-9\-._~%!$&'()*+,;=:@/?]+)?)?)"                                                                                                    // Optional:  fragment.
 );
 
+url::url ( const char* website )
+    extends string ( website )
+{
+    
+}
+
 url::url ( string website )
     extends string ( std::move(website) )
 {

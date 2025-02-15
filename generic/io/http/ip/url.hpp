@@ -4,7 +4,8 @@ class url
     extends public string
 {
     public: // Core
-        using string::string;
+        url ( ) = default;
+        url ( const char* );
         url ( string );
 
     public: // Parse
