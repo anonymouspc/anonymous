@@ -26,7 +26,7 @@ class basic_socket_buf
         auto   resolve                  ( const url& );
 
     private: // Typedef
-        constexpr static const int default_buffer_size = 3;
+        constexpr static const int default_buffer_size = 4096;
 
     private: // Data
         typename protocol::socket socket       = typename protocol::socket(io_context);
@@ -36,4 +36,4 @@ class basic_socket_buf
 };
 
 
-#include "basic_socket_buf.ipp"
+#include "socket_buf.ipp"
