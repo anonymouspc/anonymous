@@ -2,29 +2,29 @@
 
 string detail::encode_base64 ( const string& inputs )
 {
-    constexpr static const string_view chars =
+    constexpr static const char* chars =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         "abcdefghijklmnopqrstuvwxyz"
         "0123456789+/";
 
     let outputs = string((inputs.size() + 2) / 3 * 4);
 
-    int val  = 0;
-    int valb = -6;
+    int c  = 0;
+    int b = -6;
     for ( uint8_t ch in inputs )
     {
-        val   = (val << 8) + ch;
-        valb += 8;
+        c  = (c << 8) + ch;
+        b += 8;
 
-        while (valb >= 0)
+        while (b >= 0)
         {
-            outputs.push(chars[((val >> valb) & 0x3F) + 1]);
-            valb -= 6;
+            outputs.push(chars[((c >> b) & 0x3F)]);
+            b -= 6;
         }
     }
 
-    if ( valb > -6 )
-        outputs.push(chars[(((val << 8) >> (valb + 8)) & 0x3F) + 1]);
+    if ( b > -6 )
+        outputs.push(chars[(((c << 8) >> (b + 8)) & 0x3F)]);
 
     while ( outputs.size() % 4 != 0 )
         outputs.push('=');
