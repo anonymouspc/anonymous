@@ -71,3 +71,12 @@
 	url = https://github.com/facebook/zstd
 	branch = dev
 
+[submodule "package/fmt"]
+	path = package/fmt
+	url = https://github.com/fmtlib/fmt
+[submodule "package/proxy"]
+	path = package/proxy
+	url = https://github.com/microsoft/proxy
+[submodule "package/scnlib"]
+	path = package/scnlib
+	url = https://github.com/eliaskosunen/scnlib
