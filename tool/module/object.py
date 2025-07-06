@@ -14,9 +14,9 @@ class Object:
             self = super().__new__(self)
             Object.pool[name] = self
 
-
             # Info
             self.name            = name
+            self.code_file   = f"./{self.name.replace('.', '/')}.cpp"
             self.object_file     = f"./bin/{type}/module/{self.name}.{object_suffix}"
             self.library_file    = f"./bin/{type}/module/{self.name}.{library_suffix}"                  if os.path.isfile(f"./bin/{type}/module/{self.name}.{library_suffix}") else None
             self.executable_file = f"./bin/{type}/{self.name.replace('.', '/', 1)}.{executable_suffix}" if executable_suffix != "" else f"./bin/{type}/{self.name.replace('.', '/', 1)}"
@@ -28,7 +28,10 @@ class Object:
                 self.import_objects = [Object(import_module.name) for import_module in Module(name=self.name).import_modules]
 
             # Built
-            self.is_linked = self.name in Source.pool.keys() and os.path.isfile(self.executable_file) and os.path.getmtime(self.object_file) <= os.path.getmtime(self.executable_file)
+            self.is_linked = self.name in Source.pool.keys()                                              and \
+                             os.path.isfile(self.executable_file)                                         and \
+                             os.path.getmtime(self.code_file)   <= os.path.getmtime(self.executable_file) and \
+                             os.path.getmtime(self.object_file) <= os.path.getmtime(self.executable_file)
             if not self.is_linked:
                 Object.total += 1
 

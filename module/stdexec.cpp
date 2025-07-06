@@ -13,5 +13,9 @@ import std.compiler; // This library might be depended by std.sender.
 
 export namespace stdexec 
 { 
-
+    using stdexec::just;
+    using stdexec::receiver;
+    using stdexec::sender;
+    using stdexec::sync_wait;
+    using stdexec::then;
 }

@@ -26,7 +26,9 @@ class Source:
                 self.import_modules.append(Module(name=import_name))
 
             # Built
-            self.is_compiled = all(module.is_compiled for module in self.import_modules) and os.path.isfile(self.object_file) and os.path.getmtime(self.code_file) <= os.path.getmtime(self.object_file)
+            self.is_compiled = all(module.is_compiled for module in self.import_modules)              and \
+                               os.path.isfile(self.object_file)                                       and \
+                               os.path.getmtime(self.code_file) <= os.path.getmtime(self.object_file)
             if not self.is_compiled:
                 Source.total += 1
 

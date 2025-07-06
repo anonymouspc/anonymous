@@ -15,6 +15,8 @@ if __name__ == "__main__":
                     Executable(unit)
                     units += [unit]
 
+        for module in set(import_module.name for unit in units for import_module in Source(unit).import_modules):
+            Module(module).compile()
         for unit in units:
             Source(unit).compile()
         for unit in units:

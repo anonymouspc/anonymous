@@ -32,7 +32,9 @@ class Module:
                     self.import_modules.append(Module(name=import_name, from_modules=self.from_modules + [self]))
 
                 # Built
-                self.is_compiled = all(module.is_compiled for module in self.import_modules) and os.path.isfile(self.module_file) and os.path.getmtime(self.code_file) <= os.path.getmtime(self.module_file)
+                self.is_compiled = all(module.is_compiled for module in self.import_modules)              and \
+                                   os.path.isfile(self.module_file)                                       and \
+                                   os.path.getmtime(self.code_file) <= os.path.getmtime(self.module_file)
                 if not self.is_compiled:
                     Module.total += 1
 
