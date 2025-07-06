@@ -12,10 +12,10 @@
 // DO NOT MODIFY!
 
 module;
+#undef in
 #ifdef __clang__
     #pragma clang diagnostic ignored "-Wreserved-module-identifier"
 #endif
-#undef in
 
 #include <__config>
 
