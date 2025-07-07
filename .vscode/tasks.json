@@ -3,6 +3,7 @@
     "tasks": [
         {
             "label": "debug.clean",
+            "detail": "debug.clean",
             "group": "none",
             "type": "shell",
             "problemMatcher": [],
@@ -10,6 +11,7 @@
         },
         {
             "label": "debug.build",
+            "detail": "debug.build",
             "group": "none",
             "type": "shell",
             "problemMatcher": [],
@@ -17,6 +19,7 @@
         },
         {
             "label": "debug.test",
+            "detail": "debug.test",
             "group": "test",
             "type": "shell",
             "problemMatcher": [],
@@ -24,6 +27,7 @@
         },
         {
             "label": "debug.run",
+            "detail": "debug.run",
             "group": "test",
             "type": "shell",
             "problemMatcher": [],
@@ -31,18 +35,19 @@
         },
         {
             "label": "debug",
+            "detail": "debug",
             "group": "build",
             "type": "shell",
             "problemMatcher": [],
-            "dependsOn": ["debug.build", "debug.run"],
-            "dependsOrder": "sequence",
+            "dependsOn": [
+                "debug.build",
+                "debug.run"
+            ],
+            "dependsOrder": "sequence"
         },
-
-
-
-
         {
             "label": "release.clean",
+            "detail": "release.clean",
             "group": "none",
             "type": "shell",
             "problemMatcher": [],
@@ -50,6 +55,7 @@
         },
         {
             "label": "release.build",
+            "detail": "release.build",
             "group": "none",
             "type": "shell",
             "problemMatcher": [],
@@ -57,6 +63,7 @@
         },
         {
             "label": "release.test",
+            "detail": "release.test",
             "group": "test",
             "type": "shell",
             "problemMatcher": [],
@@ -64,6 +71,7 @@
         },
         {
             "label": "release.run",
+            "detail": "release.run",
             "group": "test",
             "type": "shell",
             "problemMatcher": [],
@@ -71,12 +79,15 @@
         },
         {
             "label": "release",
+            "detail": "release",
             "group": "build",
             "type": "shell",
             "problemMatcher": [],
-            "dependsOn": ["release.build", "release.run"],
-            "dependsOrder": "sequence",
+            "dependsOn": [
+                "release.build",
+                "release.run"
+            ],
+            "dependsOrder": "sequence"
         },
-
     ]
 }
