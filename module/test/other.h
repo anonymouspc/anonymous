@@ -1,0 +1,1 @@
+void hello() { std::println("hello"); }
