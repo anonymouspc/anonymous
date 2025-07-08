@@ -1,7 +1,9 @@
-export module test.b;
-export import test.a;
+module;
+#include "a.cpp"
 
-void b ( )
+export module test.b;
+
+export namespace test
 {
-    a();
+    using test::a;
 }

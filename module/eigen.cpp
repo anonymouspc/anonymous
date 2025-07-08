@@ -15,9 +15,13 @@ import std;
 
 export namespace Eigen
 {
+    using Eigen::ColMajor;
     using Eigen::Dynamic;
+    using Eigen::InnerStride;
     using Eigen::Map;
     using Eigen::Matrix;
+    using Eigen::RowMajor;
+    using Eigen::Unaligned;
     using Eigen::Vector;
     using Eigen::operator<<;
 }

@@ -6,7 +6,8 @@ module;
 #undef in
 #include <iterator>
 """
-with open("./package/scnlib/src/scn/scn.cppm", 'r') as reader, open("./module/scn.cpp", 'w') as writer:
+with open("./package/scnlib/src/scn/scn.cppm", 'r') as reader, \
+     open("./module/scn.cpp",                  'w') as writer:
     content = reader.read()
     content = content.replace("module;", global_module)
     writer.write(content)
