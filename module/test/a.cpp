@@ -1,9 +1,4 @@
-export module test.a;
-import        std;
-export struct a;
-
-// module:private;
-struct a
+namespace test
 {
-    void hello() { std::println("a"); }
-};
+    inline const int a = -1;
+}

@@ -11,7 +11,8 @@ module;
 #include <cstdlib>
 #include <cstring>
 """
-with open("./package/fmt/src/fmt.cc", 'r') as reader, open("./module/fmt.cpp", 'w') as writer:
+with open("./package/fmt/src/fmt.cc", 'r') as reader, \
+     open("./module/fmt.cpp",         'w') as writer:
     content = reader.read()
     content = content.replace("module;",                      global_module)
     content = content.replace('FMT_HAS_INCLUDE("format.cc")', "false"      )
