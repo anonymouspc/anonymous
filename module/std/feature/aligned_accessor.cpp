@@ -4,11 +4,11 @@ module;
 #endif
 #include <version>
 
-export module std.feature.aligned_accessor;
-import std.compiler;
+export module std.feature:aligned_accessor;
 #ifndef __cpp_lib_mdspan
-    import std.feature.mdspan;
+    import :mdspan;
 #endif
+import        std.compiler;
 
 export namespace std
 {

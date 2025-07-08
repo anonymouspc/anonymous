@@ -16,9 +16,9 @@ class Object:
 
             # Info
             self.name            = name
-            self.code_file   = f"./{self.name.replace('.', '/')}.cpp"
-            self.object_file     = f"./bin/{type}/module/{self.name}.{object_suffix}"
-            self.library_file    = f"./bin/{type}/module/{self.name}.{library_suffix}"                  if os.path.isfile(f"./bin/{type}/module/{self.name}.{library_suffix}") else None
+            self.code_file       = f"./{self.name.replace('.', '/').replace(':', '-')}.cpp"
+            self.object_file     = f"./bin/{type}/module/{self.name.replace(':', '-')}.{object_suffix}"
+            self.library_file    = f"./bin/{type}/module/{self.name.replace(':', '-')}.{library_suffix}"                  if os.path.isfile(f"./bin/{type}/module/{self.name}.{library_suffix}") else None
             self.executable_file = f"./bin/{type}/{self.name.replace('.', '/', 1)}.{executable_suffix}" if executable_suffix != "" else f"./bin/{type}/{self.name.replace('.', '/', 1)}"
                 
             # Import

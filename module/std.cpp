@@ -5,4 +5,5 @@ module;
 
 export module std;
 export import std.compiler;
+export import std.extension;
 export import std.feature;

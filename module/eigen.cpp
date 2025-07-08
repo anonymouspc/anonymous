@@ -15,6 +15,8 @@ import std;
 
 export namespace Eigen
 {
+    using Eigen::Dynamic;
+    using Eigen::Map;
     using Eigen::Matrix;
     using Eigen::Vector;
     using Eigen::operator<<;

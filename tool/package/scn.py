@@ -8,10 +8,9 @@ module;
 """
 with open("./package/scnlib/src/scn/scn.cppm", 'r') as reader, open("./module/scn.cpp", 'w') as writer:
     content = reader.read()
-    content = reader.sub("module;", global_module)
+    content = content.replace("module;", global_module)
     writer.write(content)
     
-
 cmake(
     name="scn",
     dir="./package/scnlib",

@@ -1,7 +1,15 @@
-export module anonymous.basic.algorithm.for_constexpr;
+export module anonymous.basic.algorithm:loop;
+import        std;
 
 export namespace anonymous
 {
+    template < int min, int max, int stride > constexpr void for_constexpr     ( auto&& );
+    template < int min, int max, int stride > constexpr void all_of_constexpr  ( auto&& );
+    template < int min, int max, int stride > constexpr void any_of_constexpr  ( auto&& );
+    template < int min, int max, int stride > constexpr void none_of_constexpr ( auto&& );
+
+
+
     template < int min, int max, int stride >
     constexpr void for_constexpr ( auto&& ops )
     {

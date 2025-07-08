@@ -4,8 +4,8 @@ module;
 #endif
 #include <cassert>
 
-export module std.feature.mdspan;
-import std.compiler;
+export module std.feature:mdspan;
+import        std.compiler;
 
 export namespace std
 {

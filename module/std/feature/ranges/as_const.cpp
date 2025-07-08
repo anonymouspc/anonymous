@@ -4,8 +4,8 @@ module;
 #endif
 #include <ranges>
 
-export module std.feature.ranges.as_const;
-import std.compiler;
+export module std.feature:ranges.as_const;
+import        std.compiler;
 
 export namespace std
 {

@@ -3,8 +3,8 @@ module;
     #pragma clang diagnostic ignored "-Wreserved-module-identifier"
 #endif
 
-export module std.feature.stacktrace;
-import std.compiler;
+export module std.feature:stacktrace;
+import        std.compiler;
 export import boost.stacktrace;
 
 export namespace std

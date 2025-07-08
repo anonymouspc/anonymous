@@ -48,10 +48,10 @@ if compiler == "g++":
     ]
     link_flags = ["-static"]
     if type == "debug":
-        compile_flags += ["-g",  "-O0", "-DDEBUG" ]
+        compile_flags += ["-g", "-O0", "-DDEBUG" ]
     elif type == "release":
-        compile_flags += [       "-O3", "-DNDEBUG"]
-        link_flags    += ["-s"]
+        compile_flags += [      "-O3", "-DNDEBUG"]
+        compile_flags += ["-s"]
     module_suffix  = "gcm"
     object_suffix  = "o"
     library_suffix = "a"
@@ -64,9 +64,9 @@ elif compiler == "clang++":
     ]
     link_flags = []
     if type == "debug":
-        compile_flags += ["-g",  "-O0", "-DDEBUG" ]
+        compile_flags += ["-g", "-O0", "-DDEBUG" ]
     elif type == "release":
-        compile_flags += [       "-O3", "-DNDEBUG"]
+        compile_flags += [      "-O3", "-DNDEBUG"]
         link_flags    += ["-s"]
     module_suffix  = "pcm"
     object_suffix  = "o"
