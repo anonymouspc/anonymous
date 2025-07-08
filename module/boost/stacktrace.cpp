@@ -7,7 +7,7 @@ module;
 #include <boost/stacktrace.hpp>
 
 export module boost.stacktrace;
-import std.compiler; // This library might be depended by std.stacktrace.
+import std.compiler; // This module might be depended by std.stacktrace.
 
 export namespace boost::stacktrace
 {

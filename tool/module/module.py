@@ -15,10 +15,10 @@ class Module:
             try:
                 # Info
                 self.name         = name
-                self.code_file    = f"./module/{self.name.replace('.', '/')}.cpp"
-                self.module_file  = f"./bin/{type}/module/{self.name}.{module_suffix}"
-                self.object_file  = f"./bin/{type}/module/{self.name}.{object_suffix}"
-                self.library_file = f"./bin/{type}/module/{self.name}.{library_suffix}" if os.path.isfile(f"./bin/{type}/module/{self.name}.{library_suffix}") else None
+                self.code_file    = f"./module/{self.name.replace('.', '/').replace(':', '/')}.cpp"
+                self.module_file  = f"./bin/{type}/module/{self.name.replace(':', '-')}.{module_suffix}"
+                self.object_file  = f"./bin/{type}/module/{self.name.replace(':', '-')}.{object_suffix}"
+                self.library_file = f"./bin/{type}/module/{self.name.replace(':', '-')}.{library_suffix}" if os.path.isfile(f"./bin/{type}/module/{self.name}.{library_suffix}") else None
                 self.tool_file    = f"./tool/package/{self.name.partition('.')[0]}.py"  if os.path.isfile(f"./tool/package/{self.name.partition('.')[0]}.py")  else None
                 self.from_modules = from_modules
                 self.content      = preprocess_file(code_file=self.code_file, name=self.name, module_file=self.module_file)
@@ -27,6 +27,8 @@ class Module:
                 self.import_modules = []
                 import_names = re.findall(r'^\s*(?:export\s+)?import\s+([\w\.:]+)\s*;\s*$', self.content, flags=re.MULTILINE)
                 for import_name in import_names:
+                    if import_name.startswith(':'):
+                        import_name = f"{self.name.partition(':')[0]}{import_name}"
                     if import_name in self.from_modules:
                         raise Exception(f"fatal error: dependency circle detected when trying to import module {import_name}")
                     self.import_modules.append(Module(name=import_name, from_modules=self.from_modules + [self]))

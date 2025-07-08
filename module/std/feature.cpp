@@ -7,39 +7,43 @@ module;
 export module std.feature;
 
 #ifndef __cpp_lib_aligned_accessor
-    export import std.feature.aligned_accessor;
+    export import :aligned_accessor;
 #endif
 
 #ifndef __cpp_lib_hive
-    export import std.feature.hive;
+    export import :hive;
 #endif
 
 #ifndef __cpp_lib_inplace_vector
-    export import std.feature.inplace_vector;
+    export import :inplace_vector;
 #endif
 
 #ifndef __cpp_lib_is_layout_compatible
-    export import std.feature.is_layout_compatible;
+    export import :is_layout_compatible;
+#endif
+
+#ifndef __cpp_lib_linalg
+    export import :linalg;
 #endif
 
 #ifndef __cpp_lib_mdspan
-    export import std.feature.mdspan;
+    export import :mdspan;
 #endif
 
-export import std.feature.ranges;
+export import :ranges;
 
 #ifndef __cpp_lib_sender
-    export import std.feature.sender;
+    export import :sender;
 #endif
 
 #ifndef __cpp_lib_stacktrace
-    export import std.feature.stacktrace;
+    export import :stacktrace;
 #endif
 
 #ifndef __cpp_lib_submdpsan
-    export import std.feature.submdspan;
+    export import :submdspan;
 #endif
 
 #ifndef __cpp_lib_text_encoding
-    export import std.feature.text_encoding;
+    export import :text_encoding;
 #endif

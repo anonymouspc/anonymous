@@ -2,6 +2,7 @@ export module boost;
 export import boost.asio;
 export import boost.beast;
 export import boost.charconv;
+export import boost.core;
 export import boost.date_time;
 export import boost.dll;
 export import boost.filesystem;

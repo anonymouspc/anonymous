@@ -9,7 +9,7 @@ module;
 #include <stdexec/stop_token.hpp>
 
 export module stdexec;
-import std.compiler; // This library might be depended by std.sender.
+import std.compiler; // This module might be depended by std.sender.
 
 export namespace stdexec 
 { 

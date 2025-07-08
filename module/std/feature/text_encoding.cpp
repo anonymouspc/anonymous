@@ -3,8 +3,8 @@ module;
     #pragma clang diagnostic ignored "-Wreserved-module-identifier"
 #endif
 
-export module std.feature.text_encoding;
-import std.compiler;
+export module std.feature:text_encoding;
+import        std.compiler;
 
 export namespace std
 {

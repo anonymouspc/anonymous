@@ -3,8 +3,8 @@ module;
     #pragma clang diagnostic ignored "-Wreserved-module-identifier"
 #endif
 
-export module std.feature.ranges.starts_ends_with;
-import std.compiler;
+export module std.feature:ranges.starts_ends_with;
+import        std.compiler;
 
 export namespace std
 {

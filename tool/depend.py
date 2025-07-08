@@ -47,5 +47,5 @@ if __name__ == "__main__":
     rank_dict   = {node: ancest_seq.index(ancest_dict[node]) for node in G.nodes}
     node_color  = [_get_rgb(rank=rank_dict[node], total=len(ancest_seq)) for node in G.nodes]
     nx.draw                (G, pos=node_pos,  node_size=100, node_shape='.', edge_color="#B0B0B0", width=0.5, with_labels=False, node_color=node_color)
-    nx.draw_networkx_labels(G, pos=label_pos, font_size=8,   font_weight="bold")
+    nx.draw_networkx_labels(G, pos=label_pos, font_size=6,   font_weight="bold")
     plt.show()
