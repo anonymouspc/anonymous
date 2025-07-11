@@ -3,6 +3,6 @@ module;
     #pragma clang diagnostic ignored "-Wreserved-module-identifier"
 #endif
 
-export module std.extension;
-export import              :formatter;
-export import              :numeric;
+export module std:extension;
+export import    :extension.formatter;
+export import    :extension.numeric;

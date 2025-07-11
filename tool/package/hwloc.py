@@ -1,4 +1,5 @@
-from module.make import *
+from common.config import system, type
+from common.make   import cmake, autogen, configure, make
 
 if system == "windows":
     cmake(
@@ -31,10 +32,6 @@ elif system == "linux" or system == "macos":
         name="hwloc",
         dir="./third_aprty/hwloc"
     )
-archieve(
-    name="hwloc",
-    libs=["libhwloc"]
-)
     
 """ 
 >>> cat ./package/hwloc/contrib/windows-cmake/CMakeLists.txt | grep option

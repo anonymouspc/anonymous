@@ -1,4 +1,4 @@
-from module.make import *
+from common.make import cmake
 
 cmake(
     name="zlib",
@@ -9,10 +9,6 @@ cmake(
         "-DZLIB_BUILD_STATIC=true",
         "-DZLIB_BUILD_MINIZIP=false"
     ]
-)
-archieve(
-    name="zlib",
-    libs=["libz"]
 )
 
 """

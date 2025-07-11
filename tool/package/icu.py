@@ -1,4 +1,5 @@
-from module.make import *
+from common.config import type
+from common.make   import configure, make
 
 configure(
     name="icu",
@@ -18,17 +19,6 @@ configure(
 make(
     name="icu",
     dir="./package/icu/icu4c/source"
-)
-archieve(
-    name="icu",
-    libs=[
-        "libicudata",
-        "libicui18n",
-        "libicuio",
-        "libicutest",
-        "libicutu",
-        "libicuuc"
-    ]
 )
 
 """

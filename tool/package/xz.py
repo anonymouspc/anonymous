@@ -1,4 +1,4 @@
-from module.make import *
+from common.make import cmake
 
 cmake(
     name="xz",
@@ -15,10 +15,6 @@ cmake(
         "-DXZ_DOXYGEN=false",
         "-DXZ_DOC=false"
     ]
-)
-archieve(
-    name="xz",
-    libs=["liblzma"]
 )
 
 """

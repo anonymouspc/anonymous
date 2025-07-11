@@ -1,11 +1,12 @@
-from module.make import *
+from common.config import type
+from common.make   import cmake
 
 cmake(
     name="bzip2",
     dir="./package/bzip2",
     args=[
         "-DENABLE_WERROR=false",
-       f"-DENABLE_DEBUG={type=='debug'}",
+        f"-DENABLE_DEBUG={type=='debug'}",
         "-DENABLE_APP=false",
         "-DENABLE_TESTS=false",
         "-DENABLE_DOCS=false",
@@ -14,10 +15,6 @@ cmake(
         "-DENABLE_STATIC_LIB=true",
         "-DENABLE_SHARED_LIB=false"
     ]
-)
-archieve(
-    name="bzip2",
-    libs=["libbz2_static"]
 )
 
 """

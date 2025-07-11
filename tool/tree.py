@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import networkx as nx
-from module.source import *
-from module.init   import *
+from common.source import *
 
 if __name__ == "__main__":
     G = nx.DiGraph()
@@ -40,12 +39,12 @@ if __name__ == "__main__":
         return r, g, b
 
     _summon_graph(Source("main"))
-    node_pos    = nx.spring_layout(G, k=1.6, iterations=100, scale=1.0)
+    node_pos    = nx.spring_layout(G, k=12.5/(len(G.nodes)**0.5), iterations=100, scale=1.0)
     label_pos   = {k: (v[0], v[1] + 0.05) for k, v in node_pos.items()}
     ancest_dict = {node: len(nx.ancestors(G, node)) for node in G.nodes}
     ancest_seq  = list(reversed(sorted(list(set(ancest_dict.values())))))
     rank_dict   = {node: ancest_seq.index(ancest_dict[node]) for node in G.nodes}
     node_color  = [_get_rgb(rank=rank_dict[node], total=len(ancest_seq)) for node in G.nodes]
-    nx.draw                (G, pos=node_pos,  node_size=100, node_shape='.', edge_color="#B0B0B0", width=0.5, with_labels=False, node_color=node_color)
-    nx.draw_networkx_labels(G, pos=label_pos, font_size=6,   font_weight="bold")
+    nx.draw                (G, pos=node_pos,  node_size=1000/(len(G.nodes)**0.5), node_shape='.', edge_color="#B0B0B0", width=0.5, with_labels=False, node_color=node_color)
+    nx.draw_networkx_labels(G, pos=label_pos, font_size=  60/(len(G.nodes)**0.5), font_weight="bold")
     plt.show()

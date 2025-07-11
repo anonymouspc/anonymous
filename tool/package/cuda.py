@@ -1,5 +1,6 @@
-import shutil
-from module.config import *
+from common.make import include
 
-shutil.copytree("./package/cccl/libcudacxx/include", f"./bin/{type}/package/install/include",        dirs_exist_ok=True)
-shutil.copytree("./package/cccl/thrust/thrust",      f"./bin/{type}/package/install/include/thrust", dirs_exist_ok=True)
+include(
+    name="cuda",
+    dir="./package/cccl/libcudacxx/include"
+)

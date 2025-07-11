@@ -3,8 +3,8 @@ module;
     #pragma clang diagnostic ignored "-Wreserved-module-identifier"
 #endif
 
-export module std.feature:submdspan;
-import        std.compiler;
+export module std:feature.submdspan;
+import           :compiler;
 
 export namespace std
 {

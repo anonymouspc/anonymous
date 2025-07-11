@@ -15,11 +15,10 @@
 // This file is a part of scnlib:
 //     https://github.com/eliaskosunen/scnlib
 
-
 module;
-#undef in
 #include <iterator>
-
+#undef in
+#undef self
 
 #define SCN_MODULE 1
 

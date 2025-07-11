@@ -1,7 +1,6 @@
-from module.compiler import *
-from module.module   import *
-from module.source   import *
-from module.object   import *
+from common.compiler import run_executable
+from common.config   import executable_suffix, type
+from common.object   import Object
 
 class Executable:
     pool    = {}
@@ -19,13 +18,25 @@ class Executable:
             self.name            = name
             self.executable_file = f"./bin/{type}/{self.name.replace('.', '/', 1)}.{executable_suffix}" if executable_suffix != "" else f"./bin/{type}/{self.name.replace('.', '/', 1)}"
             
-            # Built
+            # Subtask
+            Object(self.name)
+
+            # Status
+            self.runned = False
             Executable.total += 1
 
             # Return
             return self
 
     def run(self):
-        Executable.current += 1
-        print(f"run executable [{Executable.current}/{Executable.total}]: {self.name}")
-        run(f"./{self.executable_file}")
+        if not self.runned:
+            # Subtask
+            Object(self.name).link()
+
+            # Self
+            Executable.current += 1
+            print(f"run executable [{Executable.current}/{Executable.total}]: {self.name}")
+            run_executable(executable_file=f"./{self.executable_file}")
+
+            # Status
+            self.runned = True

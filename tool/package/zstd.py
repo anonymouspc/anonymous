@@ -1,4 +1,4 @@
-from module.make import *
+from common.make import cmake
 
 cmake(
     name="zstd",
@@ -10,10 +10,6 @@ cmake(
         "-DZSTD_BUILD_STATIC=true",
         "-DZSTD_BUILD_SHARED=false"
     ]
-)
-archieve(
-    name="zstd",
-    libs=["libzstd"]
 )
 
 """

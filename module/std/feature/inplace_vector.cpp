@@ -3,8 +3,8 @@ module;
     #pragma clang diagnostic ignored "-Wreserved-module-identifier"
 #endif
 
-export module std.feature:inplace_vector;
-import        std.compiler;
+export module std:feature.inplace_vector;
+import           :compiler;
 
 export namespace std
 {

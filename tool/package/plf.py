@@ -1,4 +1,6 @@
-import shutil
-from module.config import *
+from common.make import include
 
-shutil.copyfile("./package/plf_hive/plf_hive.h", f"./bin/{type}/package/install/include/plf_hive.h")
+include(
+    name="plf",
+    file="./package/plf_hive/plf_hive.h"
+)

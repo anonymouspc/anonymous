@@ -4,6 +4,6 @@ module;
 #endif
 
 export module std;
-export import std.compiler;
-export import std.extension;
-export import std.feature;
+export import    :compiler;
+export import    :extension;
+export import    :feature;

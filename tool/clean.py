@@ -1,5 +1,4 @@
-from module.config import *
-from module.init   import *
+from common.config import type
 import shutil
 
 if __name__ == "__main__":
