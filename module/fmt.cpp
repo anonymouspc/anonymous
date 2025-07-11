@@ -1,12 +1,13 @@
 
-module;
+            module;
+            #define FMT_HEADER_ONLY
+            #define FMT_IMPORT_STD
+            #ifdef __clang__
+                #pragma clang diagnostic ignored "-Winclude-angled-in-module-purview"
+            #endif
+            
 #undef in
 #undef self
-#define FMT_IMPORT_STD
-#define FMT_HEADER_ONLY
-#include <cstdlib>
-#include <cstring>
-
 
 #define FMT_MODULE
 
@@ -58,6 +59,8 @@ module;
 #  include <limits.h>
 #  include <stdint.h>
 #  include <stdio.h>
+#  include <stdlib.h>
+#  include <string.h>
 #  include <time.h>
 #endif
 #include <cerrno>

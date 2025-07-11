@@ -1,4 +1,4 @@
-from module.make import *
+from common.make import cmake
 
 cmake(
     name="tiff",
@@ -10,13 +10,6 @@ cmake(
         "-Dtiff-tests=false",
         "-Dtiff-contrib=false",
         "-Dtiff-docs=false",
-    ]
-)
-archieve(
-    name="tiff",
-    libs=[
-        "libtiff",
-        "libtiffxx"
     ]
 )
 

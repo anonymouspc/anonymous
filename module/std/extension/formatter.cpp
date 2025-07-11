@@ -3,8 +3,8 @@ module;
     #pragma clang diagnostic ignored "-Wreserved-module-identifier"
 #endif
 
-export module std.extension:formatter;
-import        std.compiler;
+export module std:extension.formatter;
+import           :compiler;
 import        boost.core;
 
 export namespace std

@@ -1,16 +1,11 @@
-import shutil
-from module.config import *
+from common.make import include, module
 
-global_module = \
-"""
-module;
-#undef in
-#undef self
-"""
-with open("./package/proxy/include/proxy/v4/proxy.ixx", 'r') as reader, \
-     open("./module/proxy/v4.cpp",                      'w') as writer:
-    content = reader.read()
-    content = content.replace("module;", global_module)
-    writer.write(content)
-
-shutil.copytree("./package/proxy/include", f"./bin/{type}/package/install/include", dirs_exist_ok=True)
+include(
+    name="proxy",
+    dir="./package/proxy/include"
+)
+module(
+    name="proxy",
+    file="./package/proxy/include/proxy/v4/proxy.ixx",
+    replace={"proxy.v4": "proxy"}
+)

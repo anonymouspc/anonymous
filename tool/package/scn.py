@@ -1,17 +1,5 @@
-from module.make import *
-
-global_module = \
-"""
-module;
-#undef in
-#include <iterator>
-"""
-with open("./package/scnlib/src/scn/scn.cppm", 'r') as reader, \
-     open("./module/scn.cpp",                  'w') as writer:
-    content = reader.read()
-    content = content.replace("module;", global_module)
-    writer.write(content)
-    
+from common.make import cmake, module
+  
 cmake(
     name="scn",
     dir="./package/scnlib",
@@ -23,9 +11,10 @@ cmake(
       # "-DSCN_DISABLE_FAST_FLOAT=true" TODO: =false
     ]
 )
-archieve(
+module(
     name="scn",
-    libs=["libscn"]
+    file="./package/scnlib/src/scn/scn.cppm",
+    replace={"module;": "module;\n#include <iterator>"}
 )
 
 """

@@ -1,4 +1,4 @@
-from module.make import *
+from common.make import cmake
 
 cmake(
     name="jpeg",
@@ -9,13 +9,6 @@ cmake(
         "-DWITH_TOOLS=false",
         "-DWITH_TESTS=false",
         "-DWITH_FUZZ=false",
-    ]
-)
-archieve(
-    name="jpeg",
-    libs=[
-        "libjpeg", 
-        "libturbojpeg"
     ]
 )
 

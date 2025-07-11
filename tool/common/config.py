@@ -17,26 +17,27 @@ verbose = argv.verbose
 
 
 
-# Config
+# System
 
 if sys.platform == "win32":
     system            = "windows"
     compiler          = "cl"
-    linker            = "cl"
-    archiever         = "lib"
     executable_suffix = "exe"
+    shared_suffix     = "dll"
 elif sys.platform == "linux":
     system            = "linux"
     compiler          = "g++"
-    linker            = "g++"
-    archiever         = "ar"
     executable_suffix = ""
+    shared_suffix     = "so"
 elif sys.platform == "darwin":
     system            = "macos"
     compiler          = "clang++"
-    linker            = "clang++"
-    archiever         = "ar"
     executable_suffix = ""
+    shared_suffix     = "dylib"
+
+
+
+# Flags
 
 if compiler == "g++":
     compile_flags = [
@@ -86,7 +87,7 @@ elif compiler == "cl":
     object_suffix  = "obj"
     library_suffix = "lib"
 
-define_flags = {
+define_flags  = {
     "abstract": '0', 
     "extends" : ':',
     "in"      : ':', 

@@ -48,7 +48,7 @@ module;
 // #include <tbb/src/tbbmalloc_proxy/proxy.cpp>
 
 export module tbb;
-import std.compiler; // This module might be depended by stdexec by std.sender.
+// import std; This module might be depended by stdexec by std:feature.sender by std:feature by std.
 import hwloc;
 
 export namespace tbb

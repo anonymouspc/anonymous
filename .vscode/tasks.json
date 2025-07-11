@@ -2,6 +2,14 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "config",
+            "group": "none",
+            "type": "shell",
+            "problemMatcher": [],
+            "command": "clang++ --version"
+        }
+
+        {
             "label": "debug.clean",
             "group": "none",
             "type": "shell",

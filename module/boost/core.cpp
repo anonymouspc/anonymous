@@ -52,8 +52,7 @@ module;
 #include <boost/core/yield_primitives.hpp>
 
 export module boost.core;
-import std.compiler; // This module might be depended by std.extension.formatter.
-
+// import std; This module might be depended by std:extension.formatter by std:extension by std.
 export namespace boost::core
 {
     using boost::core::demangle;

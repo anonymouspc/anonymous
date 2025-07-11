@@ -1,4 +1,4 @@
-from module.make import *
+from common.make import cmake
 
 cmake(
     name="png",
@@ -10,10 +10,6 @@ cmake(
         "-DPNG_TOOLS=false",
       # "-DPNG_EXECUTABLES=false"
     ]
-)
-archieve(
-    name="png",
-    libs=["libpng"]
 )
 
 """

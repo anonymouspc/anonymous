@@ -3,12 +3,12 @@ module;
     #pragma clang diagnostic ignored "-Wreserved-module-identifier"
 #endif
 
-export module std.compiler;
+export module std:compiler;
 
 #if defined(__GNUC__) and not defined(__clang__)
-    export import :gcc;
+    export import :compiler.gcc;
 #elifdef __clang__
-    export import :clang;
+    export import :compiler.clang;
 #elif defined(_MSC_VER) and not defined(__clang__)
-    export import :msvc;
+    export import :compiler.msvc;
 #endif

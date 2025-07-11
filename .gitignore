@@ -1,4 +1,5 @@
-bin/*
+bin
+include
 .log
 
 __pycache__

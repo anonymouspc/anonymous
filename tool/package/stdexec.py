@@ -1,4 +1,6 @@
-import shutil
-from module.config import *
+from common.make import include
 
-shutil.copytree("./package/stdexec/include", f"./bin/{type}/package/install/include", dirs_exist_ok=True)
+include(
+    name="stdexec",
+    dir="./package/stdexec/include"
+)

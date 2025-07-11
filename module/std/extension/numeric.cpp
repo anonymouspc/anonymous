@@ -3,8 +3,8 @@ module;
     #pragma clang diagnostic ignored "-Wreserved-module-identifier"
 #endif
 
-export module std.extension:numeric;
-import        std.compiler;
+export module std:extension.numeric;
+import           :compiler;
 
 export
 {

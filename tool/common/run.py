@@ -1,5 +1,7 @@
+from common.error  import BuildError
+from common.config import verbose
 import subprocess
-from module.config import *
+import sys
 
 def run(command, quiet=False, **kwargs):
     if verbose:
@@ -11,11 +13,11 @@ def run(command, quiet=False, **kwargs):
         if p.poll() == 0:
             print(e, end="", file=sys.stderr)
         else:
-            raise Exception(e)
+            raise BuildError(e)
     else:
         try:
             p = subprocess.run(command, shell=True, check=True, capture_output=True, text=True, **kwargs)
             if not quiet:
                 print(p.stderr, end="", file=sys.stderr)
         except subprocess.CalledProcessError as e:
-            raise Exception(e.stderr)
+            raise BuildError(e.stderr)

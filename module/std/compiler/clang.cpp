@@ -198,7 +198,7 @@ module;
 #  endif // __has_include(<text_encoding>)
 #endif // _WIN32
 
-export module std.compiler:clang;
+export module std:compiler.clang;
 
 export namespace std {
   namespace ranges {

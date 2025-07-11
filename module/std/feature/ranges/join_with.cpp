@@ -4,8 +4,8 @@ module;
 #endif
 #include <ranges>
 
-export module std.feature:ranges.join_with;
-import        std.compiler;
+export module std:feature.ranges.join_with;
+import           :compiler;
 
 export namespace std
 {

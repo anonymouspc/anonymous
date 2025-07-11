@@ -17,10 +17,14 @@ export namespace Eigen
 {
     using Eigen::ColMajor;
     using Eigen::Dynamic;
+    using Eigen::FFT;
     using Eigen::InnerStride;
     using Eigen::Map;
     using Eigen::Matrix;
     using Eigen::RowMajor;
+    using Eigen::Stride;
+    using Eigen::Tensor;
+    using Eigen::TensorMap;
     using Eigen::Unaligned;
     using Eigen::Vector;
     using Eigen::operator<<;

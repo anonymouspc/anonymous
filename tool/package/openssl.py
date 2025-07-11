@@ -1,4 +1,4 @@
-from module.make import *
+from common.make import configure, make
 
 configure(
     name="openssl",
@@ -15,14 +15,6 @@ make(
     name="openssl",
     dir="./package/openssl",
 )
-archieve(
-    name="openssl",
-    libs=[
-        "libssl",
-        "libcrypto"
-    ]
-)
-
 
 """
 >>> cd ./package/openssl && ./Configure && perl configdata.pm --dump

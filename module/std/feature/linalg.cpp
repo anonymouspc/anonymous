@@ -3,7 +3,7 @@ module;
     #pragma clang diagnostic ignored "-Wreserved-module-identifier"
 #endif
 
-export module std.feature:linalg;
+export module std:feature.linalg;
 
 export namespace std
 {

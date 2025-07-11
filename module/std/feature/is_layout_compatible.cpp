@@ -3,7 +3,7 @@ module;
     #pragma clang diagnostic ignored "-Wreserved-module-identifier"
 #endif
 
-export module std.feature:is_layout_compatible;
+export module std:feature.is_layout_compatible;
 
 export namespace std
 {

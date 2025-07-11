@@ -1,4 +1,4 @@
-from module.make import *
+from common.make import cmake
 
 cmake(
     name="lz4",
@@ -9,10 +9,6 @@ cmake(
         "-DBUILD_SHARED_LIBS=false",
         "-DBUILD_STATIC_LIBS=true"
     ]
-)
-archieve(
-    name="lz4",
-    libs=["liblz4"]
 )
 
 """
