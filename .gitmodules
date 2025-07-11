@@ -1,82 +1,82 @@
 [submodule "package/boost"]
-	path = package/boost
+	path = package/boost/git
 	url = https://github.com/boostorg/boost
 	branch = master
 	shallow = true
 [submodule "package/bzip2"]
-	path = package/bzip2
+	path = package/bzip2/git
 	url = https://gitlab.com/bzip2/bzip2
 	branch = master
 [submodule "package/cccl"]
-	path = package/cccl
+	path = package/cccl/git
 	url = https://github.com/NVIDIA/cccl
 	branch = main
 [submodule "package/eigen"]
-	path = package/eigen
+	path = package/eigen/git
 	url = https://gitlab.com/libeigen/eigen
 	branch = master
 [submodule "package/hwloc"]
-	path = package/hwloc
+	path = package/hwloc/git
 	url = https://github.com/open-mpi/hwloc
 	branch = master
 [submodule "package/icu"]
-	path = package/icu
+	path = package/icu/git
 	url = https://github.com/unicode-org/icu
 	branch = main
 	shallow = true
 [submodule "package/libjpeg-turbo"]
-	path = package/libjpeg-turbo
+	path = package/libjpeg-turbo/git
 	url = https://github.com/libjpeg-turbo/libjpeg-turbo
 	branch = main
 [submodule "package/libpng"]
-	path = package/libpng
+	path = package/libpng/git
 	url = https://github.com/pnggroup/libpng
 	branch = libpng16
 [submodule "package/libtiff"]
-	path = package/libtiff
+	path = package/libtiff/git
 	url = https://gitlab.com/libtiff/libtiff
 	branch = master
 [submodule "package/lz4"]
-	path = package/lz4
+	path = package/lz4/git
 	url = https://github.com/lz4/lz4
 	branch = dev
 [submodule "package/oneTBB"]
-	path = package/oneTBB
+	path = package/oneTBB/git
 	url = https://github.com/uxlfoundation/oneTBB
 	branch = master
 [submodule "package/openssl"]
-	path = package/openssl
+	path = package/openssl/git
 	url = https://github.com/openssl/openssl
 	branch = master
 	shallow = true
 	fetchRecurseSubmodules = false
 [submodule "package/plf_hive"]
-	path = package/plf_hive
+	path = package/plf_hive/git
 	url = https://github.com/mattreecebentley/plf_hive
 	branch = main
 [submodule "package/stdexec"]
-	path = package/stdexec
+	path = package/stdexec/git
 	url = https://github.com/NVIDIA/stdexec
 	branch = main
 [submodule "package/xz"]
-	path = package/xz
+	path = package/xz/git
 	url = https://github.com/tukaani-project/xz
 	branch = master
 [submodule "package/zlib"]
-	path = package/zlib
+	path = package/zlib/git
 	url = https://github.com/madler/zlib
 	branch = develop
 [submodule "package/zstd"]
-	path = package/zstd
+	path = package/zstd/git
 	url = https://github.com/facebook/zstd
 	branch = dev
 
 [submodule "package/fmt"]
-	path = package/fmt
+	path = package/fmt/git
 	url = https://github.com/fmtlib/fmt
 [submodule "package/proxy"]
-	path = package/proxy
+	path = package/proxy/git
 	url = https://github.com/microsoft/proxy
 [submodule "package/scnlib"]
-	path = package/scnlib
+	path = package/scnlib/git
 	url = https://github.com/eliaskosunen/scnlib
