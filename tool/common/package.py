@@ -44,7 +44,6 @@ class Package:
             for by_module in self.by_modules:
                 for import_package in recursive_find(node=by_module, func=lambda module: Package(module.name) if Package.exist(module.name) else None):
                     if import_package not in from_packages and import_package is not self:
-                        print(f"package {self.name} import {import_package.name}")
                         import_package.build(from_packages=from_packages + [self])
 
             # Self

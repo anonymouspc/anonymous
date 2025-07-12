@@ -1,4 +1,4 @@
-export module anonymous.basic.algorithm:pack;
+export module anonymous:basic.algorithm:pack;
 
 export namespace anonymous
 {

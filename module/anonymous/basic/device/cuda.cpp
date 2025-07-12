@@ -1,1 +1,1 @@
-export module anonymous.basic.device.cuda;
+export module anonymous:basic.device.cuda;

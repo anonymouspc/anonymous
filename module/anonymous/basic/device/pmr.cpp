@@ -1,1 +1,1 @@
-export module anonymous.basic.device.pmr;
+export module anonymous:basic.device.pmr;

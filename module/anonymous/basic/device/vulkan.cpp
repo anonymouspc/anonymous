@@ -1,1 +1,1 @@
-export module anonymous.basic.device.vulkan;
+export module anonymous:basic.device.vulkan;

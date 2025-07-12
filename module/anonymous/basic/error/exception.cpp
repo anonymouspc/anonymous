@@ -1,4 +1,4 @@
-export module anonymous.basic.error:exception;
+export module anonymous:basic.error:exception;
 import                             :detail.format_string;
 import                             :detail.stringify_stacktrace;
 import        anonymous.basic.concepts;

@@ -1,1 +1,1 @@
-export module anonymous.basic.device.opencl;
+export module anonymous:basic.device.opencl;

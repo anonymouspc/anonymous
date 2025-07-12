@@ -1,1 +1,1 @@
-export module anonymous.basic.device.rocm;
+export module anonymous:basic.device.rocm;
