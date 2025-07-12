@@ -1,1 +1,1 @@
-export module anonymous.basic.device.system;
+export module anonymous:basic.device.system;

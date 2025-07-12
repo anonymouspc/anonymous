@@ -1,1 +1,1 @@
-export module anonymous.basic.device.tbb;
+export module anonymous:basic.device.tbb;

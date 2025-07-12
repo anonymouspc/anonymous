@@ -1,2 +1,2 @@
-export module anonymous.basic.config;
+export module anonymous:basic.config;
 export import                       :debug;

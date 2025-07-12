@@ -1,4 +1,4 @@
-export module anonymous.basic.error:signal;
+export module anonymous:basic.error:signal;
 import                             :detail.signal_initializer;
 
 export namespace anonymous

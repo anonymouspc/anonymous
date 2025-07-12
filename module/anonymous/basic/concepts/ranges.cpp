@@ -1,4 +1,4 @@
-export module anonymous.basic.concepts:ranges;
+export module anonymous:basic.concepts:ranges;
 import        std;
 
 export namespace anonymous

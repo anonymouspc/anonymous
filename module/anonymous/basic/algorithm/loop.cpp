@@ -1,4 +1,4 @@
-export module anonymous.basic.algorithm:loop;
+export module anonymous:basic.algorithm:loop;
 import        std;
 
 export namespace anonymous

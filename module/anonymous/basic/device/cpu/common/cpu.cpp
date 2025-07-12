@@ -1,4 +1,4 @@
-export module anonymous.basic.device.cpu:common.cpu;
+export module anonymous:basic.device.cpu:common.cpu;
 import        anonymous.basic.concepts;
 import        std;
 import        exec;

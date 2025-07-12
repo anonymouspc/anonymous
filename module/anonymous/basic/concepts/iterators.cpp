@@ -1,4 +1,4 @@
-export module anonymous.basic.concepts:iterators;
+export module anonymous:basic.concepts:iterators;
 import        std;
 
 export namespace anonymous

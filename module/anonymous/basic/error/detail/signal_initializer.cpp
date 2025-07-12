@@ -1,7 +1,7 @@
 module;
 #include <csignal>
 
-export module anonymous.basic.error:detail.signal_initializer;
+export module anonymous:basic.error:detail.signal_initializer;
 import                             :exception;
 
 export namespace anonymous

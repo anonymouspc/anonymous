@@ -26,7 +26,7 @@ import zlib;
 import zstd;
 
 import std;
-// import anonymous;
+import anonymous;
 
 int main ( )
 {
