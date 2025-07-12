@@ -1,4 +1,4 @@
-export module anonymous:basic.concepts:traits;
+export module anonymous:basic.concepts.traits;
 import        std;
 
 export namespace anonymous

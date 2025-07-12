@@ -29,6 +29,8 @@ class Package:
             # Status
             self.is_configured = os.path.isdir(f"./bin/{type}/package/{self.name}/build")
             self.is_built      = os.path.isdir(f"./bin/{type}/package/{self.name}/install")
+            self.is_installed  = (not os.path.isdir(f"./bin/{type}/package/{self.name}/install/include") or os.path.getmtime(f"./bin/{type}/package/{self.name}/install/include") < os.path.getmtime("./include")) and \
+                                 (not os.path.isdir(f"./bin/{type}/package/{self.name}/install/lib"    ) or os.path.getmtime(f"./bin/{type}/package/{self.name}/install/lib"    ) < os.path.getmtime("./lib"    ))
             if not self.is_built:
                 Package.total += 1
 

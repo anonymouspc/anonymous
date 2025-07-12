@@ -1,4 +1,4 @@
-export module anonymous:basic.config:debug;
+export module anonymous:basic.config.debug;
 
 export namespace anonymous
 {

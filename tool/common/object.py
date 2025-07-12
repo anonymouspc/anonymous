@@ -19,17 +19,18 @@ class Object:
 
             # Info
             self.name            = name
-            self.object_file     = f"./bin/{type}/module/{self.name.replace(':', '-')}.{object_suffix}"
-            self.executable_file = f"./bin/{type}/{self.name.replace('.', '/', 1)}.{executable_suffix}" if executable_suffix != "" else f"./bin/{type}/{self.name.replace('.', '/', 1)}"
-
+            self.object_file     = f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
+            self.executable_file = f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}.{executable_suffix}" if executable_suffix != "" else \
+                                   f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}"
+            
             # Subtask
             Source(self.name)
 
             # Status
-            self.is_linked = Source(self.name).is_compiled                                                and \
-                                os.path.isfile(self.object_file)                                             and \
-                                os.path.isfile(self.executable_file)                                         and \
-                                os.path.getmtime(self.object_file) <= os.path.getmtime(self.executable_file)
+            self.is_linked = Source(self.name).is_compiled                                               and \
+                             os.path.isfile(self.object_file)                                            and \
+                             os.path.isfile(self.executable_file)                                        and \
+                             os.path.getmtime(self.object_file) <= os.path.getmtime(self.executable_file)
             if not self.is_linked:
                 Object.total += 1
 

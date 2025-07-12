@@ -19,10 +19,10 @@ class Source:
             Source.pool[name] = self
 
             # Info
-            self.name         = name
-            self.code_file    = f"./{self.name.replace('.', '/')}.cpp"
-            self.object_file  = f"./bin/{type}/module/{self.name}.{object_suffix}"
-            self.content      = preprocess_file(code_file=self.code_file)
+            self.name        = name
+            self.code_file   =            f"./source/{self.name.replace('.', '/').replace(':', '/')}.cpp"
+            self.object_file = f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
+            self.content     = preprocess_file(code_file=self.code_file)
 
             # Import
             self.import_modules = []
@@ -32,8 +32,8 @@ class Source:
 
             # Status
             self.is_compiled = all(module.is_compiled for module in self.import_modules)              and \
-                                os.path.isfile(self.object_file)                                       and \
-                                os.path.getmtime(self.code_file) <= os.path.getmtime(self.object_file)
+                               os.path.isfile(self.object_file)                                       and \
+                               os.path.getmtime(self.code_file) <= os.path.getmtime(self.object_file)
             if not self.is_compiled:
                 Source.total += 1
 
