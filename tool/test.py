@@ -11,7 +11,7 @@ if __name__ == "__main__":
     open(".log", 'w')
 
     try:
-        for root, _, files in os.walk("./test"):
+        for root, _, files in os.walk("./source/test"):
             for file in files:
                 Executable(f"{root.replace('/', '.').lstrip('.')}.{file.removesuffix(".cpp")}")
         for package in Package.pool.values():

@@ -1,4 +1,4 @@
-export module anonymous:basic.device.cpu:container.detail.enum_bool;
+export module anonymous:basic.device.cpu.container.detail.enum_bool;
 
 export namespace anonymous
 {

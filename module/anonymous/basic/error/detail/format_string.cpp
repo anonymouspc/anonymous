@@ -1,4 +1,4 @@
-export module anonymous:basic.error:detail.format_string;
+export module anonymous:basic.error.detail.format_string;
 import        anonymous.basic.concepts;
 import        std;
 

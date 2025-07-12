@@ -1,4 +1,4 @@
-export module anonymous:basic.algorithm:range;
+export module anonymous:basic.algorithm.range;
 import        anonymous.basic.concepts;
 import        std;
 

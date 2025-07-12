@@ -16,7 +16,8 @@ class Executable:
 
             # Info
             self.name            = name
-            self.executable_file = f"./bin/{type}/{self.name.replace('.', '/', 1)}.{executable_suffix}" if executable_suffix != "" else f"./bin/{type}/{self.name.replace('.', '/', 1)}"
+            self.executable_file = f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '/')}.{executable_suffix}" if executable_suffix != "" else \
+                                   f"./bin/{type}/source/{self.name.replace('.' ,'.').replace(':', '/')}"
             
             # Subtask
             Object(self.name)

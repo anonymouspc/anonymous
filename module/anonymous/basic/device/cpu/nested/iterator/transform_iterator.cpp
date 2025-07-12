@@ -1,5 +1,5 @@
-export module anonymous:basic.device.cpu:iterator.transform_iterator;
-import                                  :common.cpu;
+export module anonymous:basic.device.cpu.iterator.transform_iterator;
+import                 :basic.device.cpu.common.cpu;
 
 export namespace anonymous
 {

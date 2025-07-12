@@ -1,6 +1,6 @@
-export module anonymous:basic.device.cpu:container.vector;
-import                                  :container.detail.enum_bool;
-import                                  :common.cpu;
+export module anonymous:basic.device.cpu.container.vector;
+import                 :basic.device.cpu.container.detail.enum_bool;
+import                 :basic.device.cpu.common.cpu;
 import        std;
 
 export namespace anonymous

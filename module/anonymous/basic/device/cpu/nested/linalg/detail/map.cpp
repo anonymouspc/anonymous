@@ -1,5 +1,5 @@
-export module anonymous:basic.device.cpu:linalg.detail.map;
-import        anonymous.basic.concepts;
+export module anonymous:basic.device.cpu.linalg.detail.map;
+import                 :basic.concepts;
 import        std;
 import        eigen;
 

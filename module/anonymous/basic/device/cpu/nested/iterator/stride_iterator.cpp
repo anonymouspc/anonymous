@@ -1,6 +1,6 @@
-export module anonymous:basic.device.cpu:iterator.stride_iterator;
-import                                  :common.cpu;
-import        anonymous.basic.config;
+export module anonymous:basic.device.cpu.iterator.stride_iterator;
+import                 :basic.device.cpu.common.cpu;
+import                 :basic.config;
 
 export namespace anonymous
 {
