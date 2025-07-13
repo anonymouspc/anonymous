@@ -25,7 +25,7 @@ cmake(
     # entries where "-O3" would appear as part of some other option,
 # aren't needed, those are optional in C11/C17). C11 is preferred since C11
 # features may be optionally used if they are available.
-# in "XZx20Utils" in the compiled binary. The option --use-temp-file
+# in "XZx20Utils" in the compiled bin. The option --use-temp-file
 # the /MANIFEST:NO option, other manifest-related linker flags are
     option(XZ_ASM_I386 "Enable 32-bit x86 assembly code"
 option(XZ_NLS "Native Language Support (translated messages and man pages)"

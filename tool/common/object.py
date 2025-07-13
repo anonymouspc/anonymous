@@ -19,9 +19,9 @@ class Object:
 
             # Info
             self.name            = name
-            self.object_file     = f"./binary/{type}/source/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
-            self.executable_file = f"./binary/{type}/source/{self.name.replace('.', '.').replace(':', '-')}.{executable_suffix}" if executable_suffix != "" else \
-                                   f"./binary/{type}/source/{self.name.replace('.', '.').replace(':', '-')}"
+            self.object_file     = f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
+            self.executable_file = f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}.{executable_suffix}" if executable_suffix != "" else \
+                                   f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}"
             
             # Subtask
             Source(self.name)

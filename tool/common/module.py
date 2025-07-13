@@ -21,8 +21,8 @@ class Module:
             # Info
             self.name        = name
             self.code_file   =            f"./module/{self.name.replace('.', '/').replace(':', '/')}.cpp"
-            self.module_file = f"./binary/{type}/module/{self.name.replace('.', '.').replace(':', '-')}.{module_suffix}"
-            self.object_file = f"./binary/{type}/module/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
+            self.module_file = f"./bin/{type}/module/{self.name.replace('.', '.').replace(':', '-')}.{module_suffix}"
+            self.object_file = f"./bin/{type}/module/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
             self.content     = preprocess_file(code_file=self.code_file, name=self.name, module_file=self.module_file)
 
             # Import

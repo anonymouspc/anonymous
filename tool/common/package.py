@@ -27,10 +27,10 @@ class Package:
             self.update()
             
             # Status
-            self.is_configured = os.path.isdir(f"./binary/{type}/package/{self.name}/build")
-            self.is_built      = os.path.isdir(f"./binary/{type}/package/{self.name}/install")
-            self.is_installed  = (not os.path.isdir(f"./binary/{type}/package/{self.name}/install/include") or os.path.getmtime(f"./binary/{type}/package/{self.name}/install/include") < os.path.getmtime("./include")) and \
-                                 (not os.path.isdir(f"./binary/{type}/package/{self.name}/install/lib"    ) or os.path.getmtime(f"./binary/{type}/package/{self.name}/install/lib"    ) < os.path.getmtime("./lib"    ))
+            self.is_configured = os.path.isdir(f"./bin/{type}/package/{self.name}/build")
+            self.is_built      = os.path.isdir(f"./bin/{type}/package/{self.name}/install")
+            self.is_installed  = (not os.path.isdir(f"./bin/{type}/package/{self.name}/install/include") or os.path.getmtime(f"./bin/{type}/package/{self.name}/install/include") < os.path.getmtime("./include")) and \
+                                 (not os.path.isdir(f"./bin/{type}/package/{self.name}/install/lib"    ) or os.path.getmtime(f"./bin/{type}/package/{self.name}/install/lib"    ) < os.path.getmtime("./lib"    ))
             if not self.is_built:
                 Package.total += 1
 
@@ -62,12 +62,12 @@ class Package:
         return os.path.isfile(f"./tool/package/{name}.py")
     
     def update(self):
-        self.install_dir   =  f"./binary/{type}/package/{self.name}/install"         if os.path.isdir (f"./binary/{type}/package/{self.name}/install")         else None
-        self.include_dir   =  f"./binary/{type}/package/{self.name}/install/include" if os.path.isdir (f"./binary/{type}/package/{self.name}/install/include") else None
-        self.library_files = [f"./binary/{type}/package/{self.name}/install/lib/{file}"                                                                                                              \
-                              for file in os.listdir    (f"./binary/{type}/package/{self.name}/install/lib")                                                                                         \
-                              if          os.path.isfile(f"./binary/{type}/package/{self.name}/install/lib/{file}") and (file.endswith(f".{library_suffix}") or file.endswith(f".{shared_suffix}"))] \
-                              if          os.path.isdir (f"./binary/{type}/package/{self.name}/install/lib") else None
+        self.install_dir   =  f"./bin/{type}/package/{self.name}/install"         if os.path.isdir (f"./bin/{type}/package/{self.name}/install")         else None
+        self.include_dir   =  f"./bin/{type}/package/{self.name}/install/include" if os.path.isdir (f"./bin/{type}/package/{self.name}/install/include") else None
+        self.library_files = [f"./bin/{type}/package/{self.name}/install/lib/{file}"                                                                                                              \
+                              for file in os.listdir    (f"./bin/{type}/package/{self.name}/install/lib")                                                                                         \
+                              if          os.path.isfile(f"./bin/{type}/package/{self.name}/install/lib/{file}") and (file.endswith(f".{library_suffix}") or file.endswith(f".{shared_suffix}"))] \
+                              if          os.path.isdir (f"./bin/{type}/package/{self.name}/install/lib") else None
                 
     def __eq__(self, str):
         return self.name == str
