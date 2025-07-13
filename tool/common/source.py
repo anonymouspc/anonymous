@@ -21,7 +21,7 @@ class Source:
             # Info
             self.name        = name
             self.code_file   =            f"./source/{self.name.replace('.', '/').replace(':', '/')}.cpp"
-            self.object_file = f"./binary/{type}/source/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
+            self.object_file = f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
             self.content     = preprocess_file(code_file=self.code_file)
 
             # Import
