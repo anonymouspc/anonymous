@@ -14,10 +14,10 @@ def preprocess_file(code_file, name=None, module_file=None):
                   f"-o -"
         if compiler == "g++":
             if not hasattr(preprocess_file, "initialized"):
-                open(f"./binary/{type}/module/mapper.txt", 'w')
+                open(f"./bin/{type}/module/mapper.txt", 'w')
                 preprocess_file.initialized = True
             if name is not None and module_file is not None:
-                with open(f"./binary/{type}/module/mapper.txt", 'a') as writer:
+                with open(f"./bin/{type}/module/mapper.txt", 'a') as writer:
                     writer.write(f"{name} {module_file}\n")
     elif compiler == "cl":
         command = f"{compiler} "    \

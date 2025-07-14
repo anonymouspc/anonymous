@@ -45,7 +45,7 @@ if compiler == "g++":
         "-Wall",
         "-fdiagnostics-color=always",
         "-fmodules",
-       f"-fmodule-mapper=./binary/{type}/module/mapper.txt",
+       f"-fmodule-mapper=./bin/{type}/module/mapper.txt",
     ]
     link_flags = ["-static"]
     if type == "debug":
@@ -61,7 +61,7 @@ elif compiler == "clang++":
         "-std=c++26", 
         "-Wall", 
         "-fdiagnostics-color=always",
-       f"-fprebuilt-module-path=./binary/{type}/module",
+       f"-fprebuilt-module-path=./bin/{type}/module",
     ]
     link_flags = []
     if type == "debug":
