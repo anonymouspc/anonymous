@@ -1,6 +1,4 @@
-binary
-include
-library
+bin
 .log
 
 __pycache__
