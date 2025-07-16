@@ -1,6 +1,6 @@
-export module anonymous:basic.device.cpu.linalg.eigen;
-import                 :basic.device.cpu.linalg.detail.map;
-import                 :basic.device.cpu.common.cpu;
+export module anonymous:basic.device.cpu.impl.linalg.eigen;
+import                 :basic.device.cpu.impl.linalg.detail.map;
+import                 :basic.device.cpu.decl;
 import        eigen;
 
 export namespace anonymous

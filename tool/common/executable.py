@@ -1,5 +1,6 @@
 from common.compiler import run_executable
 from common.config   import executable_suffix, type
+from common.error    import BuildError
 from common.object   import Object
 
 class Executable:
@@ -8,26 +9,30 @@ class Executable:
     total   = 0
     
     def __new__(self, name):
-        if name in Executable.pool.keys():
-            return Executable.pool[name]
-        else:
-            self = super().__new__(self)
-            Executable.pool[name] = self
+        try:
+            if name in Executable.pool.keys():
+                return Executable.pool[name]
+            else:
+                self = super().__new__(self)
+                Executable.pool[name] = self
 
-            # Info
-            self.name            = name
-            self.executable_file = f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '/')}.{executable_suffix}" if executable_suffix != "" else \
-                                   f"./bin/{type}/source/{self.name.replace('.' ,'.').replace(':', '/')}"
+                # Info
+                self.name            = name
+                self.executable_file = f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '/')}.{executable_suffix}" if executable_suffix != "" else \
+                                       f"./bin/{type}/source/{self.name.replace('.' ,'.').replace(':', '/')}"
+                
+                # Subtask
+                Object(self.name)
+
+                # Status
+                self.runned = False
+                Executable.total += 1
+
+                # Return
+                return self
             
-            # Subtask
-            Object(self.name)
-
-            # Status
-            self.runned = False
-            Executable.total += 1
-
-            # Return
-            return self
+        except BuildError as e:
+            raise BuildError(f"In executable {self.name}:\n{e}")
 
     def run(self):
         if not self.runned:

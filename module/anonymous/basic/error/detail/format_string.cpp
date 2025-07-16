@@ -1,5 +1,5 @@
 export module anonymous:basic.error.detail.format_string;
-import        anonymous.basic.concepts;
+import                 :basic.concepts;
 import        std;
 
 export namespace anonymous

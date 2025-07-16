@@ -13,7 +13,7 @@ if __name__ == "__main__":
     try:
         for root, _, files in os.walk("./source/test"):
             for file in files:
-                Executable(f"{root.replace('/', '.').lstrip('.')}.{file.removesuffix(".cpp")}")
+                Executable(f"{root.removeprefix('./source/').replace('/', '.')}.{file.removesuffix(".cpp")}")
         for package in Package.pool.values():
             package.build()
         for module in Module.pool.values():

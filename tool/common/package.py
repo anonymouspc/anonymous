@@ -1,5 +1,6 @@
 from common.algorithm import recursive_find
 from common.config    import type, library_suffix, shared_suffix
+from common.error     import BuildError
 import os
 
 class Package:
@@ -7,38 +8,40 @@ class Package:
     current = 0
     total   = 0
 
-    def __new__(self, name, by_module=None):       
-        name = name.partition('.')[0]
+    def __new__(self, name, by_module=None):
+        try:
+            name = name.partition('.')[0]
 
-        if name in Package.pool.keys():
-            Package.pool[name].by_modules += [by_module] if by_module is not None else []
-            return Package.pool[name]
-        else:
-            self = super().__new__(self)
-            self.by_modules = [by_module] if by_module is not None else []
-            Package.pool[name] = self
+            if name in Package.pool.keys():
+                Package.pool[name].by_modules += [by_module] if by_module is not None else []
+                return Package.pool[name]
+            else:
+                self = super().__new__(self)
+                self.by_modules = [by_module] if by_module is not None else []
+                Package.pool[name] = self
 
-            # Info
-            self.name          = name
-            self.package_file  = f"./tool/package/{self.name.replace('.', '/').replace(':', '/')}.py"
-            self.install_dir   = None
-            self.include_dir   = None
-            self.library_files = None
-            self.update()
-            
-            # Status
-            self.is_configured = os.path.isdir(f"./bin/{type}/package/{self.name}/build")
-            self.is_built      = os.path.isdir(f"./bin/{type}/package/{self.name}/install")
-            self.is_installed  = (not os.path.isdir(f"./bin/{type}/package/{self.name}/install/include") or os.path.getmtime(f"./bin/{type}/package/{self.name}/install/include") < os.path.getmtime("./include")) and \
-                                 (not os.path.isdir(f"./bin/{type}/package/{self.name}/install/lib"    ) or os.path.getmtime(f"./bin/{type}/package/{self.name}/install/lib"    ) < os.path.getmtime("./lib"    ))
-            if not self.is_built:
-                Package.total += 1
+                # Info
+                self.name          = name
+                self.package_file  = f"./tool/package/{self.name.replace('.', '/').replace(':', '/')}.py"
+                self.install_dir   = None
+                self.include_dir   = None
+                self.library_files = None
+                self.update()
+                
+                # Status
+                self.is_configured = os.path.isdir(f"./bin/{type}/package/{self.name}/build")
+                self.is_built      = os.path.isdir(f"./bin/{type}/package/{self.name}/install")
+                if not self.is_built:
+                    Package.total += 1
 
-            # Check
-            assert Package.exist(self.name)
+                # Check
+                assert Package.exist(self.name)
 
-            # Return
-            return self
+                # Return
+                return self
+
+        except BuildError as e:
+            raise BuildError(f"In Package {self.name}:\n{e}")
         
     def build(self, from_packages=[]):
         if not self.is_built:

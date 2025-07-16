@@ -1,6 +1,7 @@
 from common.algorithm import recursive_find
 from common.compiler  import link_object
 from common.config    import type, object_suffix, executable_suffix
+from common.error     import BuildError
 from common.package   import Package
 from common.source    import Source
 import os
@@ -11,31 +12,35 @@ class Object:
     total   = 0
     
     def __new__(self, name):
-        if name in Object.pool.keys():
-            return Object.pool[name]
-        else:
-            self = super().__new__(self)
-            Object.pool[name] = self
+        try:
+            if name in Object.pool.keys():
+                return Object.pool[name]
+            else:
+                self = super().__new__(self)
+                Object.pool[name] = self
 
-            # Info
-            self.name            = name
-            self.object_file     = f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
-            self.executable_file = f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}.{executable_suffix}" if executable_suffix != "" else \
-                                   f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}"
+                # Info
+                self.name            = name
+                self.object_file     = f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
+                self.executable_file = f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}.{executable_suffix}" if executable_suffix != "" else \
+                                       f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}"
+                
+                # Subtask
+                Source(self.name)
+
+                # Status
+                self.is_linked = Source(self.name).is_compiled                                               and \
+                                os.path.isfile(self.object_file)                                            and \
+                                os.path.isfile(self.executable_file)                                        and \
+                                os.path.getmtime(self.object_file) <= os.path.getmtime(self.executable_file)
+                if not self.is_linked:
+                    Object.total += 1
+
+                # Return
+                return self
             
-            # Subtask
-            Source(self.name)
-
-            # Status
-            self.is_linked = Source(self.name).is_compiled                                               and \
-                             os.path.isfile(self.object_file)                                            and \
-                             os.path.isfile(self.executable_file)                                        and \
-                             os.path.getmtime(self.object_file) <= os.path.getmtime(self.executable_file)
-            if not self.is_linked:
-                Object.total += 1
-
-            # Return
-            return self
+        except BuildError as e:
+            raise BuildError(f"In object {self.name}:\n{e}")
 
     def link(self):
         if not self.is_linked:

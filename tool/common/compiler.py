@@ -28,7 +28,7 @@ def preprocess_file(code_file, name=None, module_file=None):
         reader = re.sub(r'^\s*#\s*include\s+(?!<version>).*$', "", reader, flags=re.MULTILINE)
         return subprocess.run(command, shell=True, check=True, capture_output=True, text=True, input=reader).stdout
     except FileNotFoundError as e:
-        raise BuildError(f"fatal error: {e.filename} not found")
+        raise BuildError(f"fatal error: file {e.filename} not found")
     except subprocess.CalledProcessError as e:
         raise BuildError(e.stderr)
     

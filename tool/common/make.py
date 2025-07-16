@@ -31,11 +31,11 @@ def module(name, file, replace={}):
 
 def cmake(name, dir, args=[]):
     run(f"cmake -S ./{dir} "
-            f"      -B ./bin/{type}/package/{name}/build "
-            f'      -DCMAKE_PREFIX_PATH="{';'.join(recursive_find(node=Module(name), func=lambda module: Package(module.name).install_dir if Package.exist(module.name) else None, root=True))}" '
-            f"      -DCMAKE_INSTALL_PREFIX=./bin/{type}/package/{name}/install "
-            f"      -DCMAKE_BUILD_TYPE={type} "
-            f"{' '.join(args)}")
+        f"      -B ./bin/{type}/package/{name}/build "
+        f'      -DCMAKE_PREFIX_PATH="{';'.join(recursive_find(node=Module(name), func=lambda module: Package(module.name).install_dir if Package.exist(module.name) else None, root=True))}" '
+        f"      -DCMAKE_INSTALL_PREFIX=./bin/{type}/package/{name}/install "
+        f"      -DCMAKE_BUILD_TYPE={type} "
+        f"{' '.join(args)}")
     run(f"cmake --build   ./bin/{type}/package/{name}/build -j {os.cpu_count()}", quiet=True)
     run(f"cmake --install ./bin/{type}/package/{name}/build -j {os.cpu_count()}")
 
