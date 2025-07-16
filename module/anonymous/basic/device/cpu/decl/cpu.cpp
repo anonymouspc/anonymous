@@ -1,5 +1,5 @@
-export module anonymous:basic.device.cpu.type.cpu;
-import        anonymous.basic.concepts;
+export module anonymous:basic.device.cpu.decl.cpu;
+import                 :basic.concepts;
 import        std;
 import        exec;
 
@@ -9,7 +9,7 @@ export namespace anonymous
     {
         public: // Execution
             using execution_context_type = exec::static_thread_pool;
-            inline static execution_context_type execution_context = execution_context_type(1);
+            inline static execution_context_type execution_context = execution_context_type(std::thread::hardware_concurrency());
 
         public: // Type
             template < class type > using value_type      =       type;
@@ -59,14 +59,8 @@ export namespace anonymous
             template < class scale, class accessor > using scaled_accessor     = std::linalg::scaled_accessor    <scale,accessor>;
             template < class accessor >              using conjugated_accessor = std::linalg::conjugated_accessor<accessor>;
 
-
         public: // Hash
             template < class type = void > using hash = std::hash<type>;
-
-        public: // Traits
-            template < class type > using allocator_traits = std::allocator_traits<type>;
-            template < class type > using iterator_traits  = std::iterator_traits <type>;
-            template < class type > using char_traits      = std::char_traits     <type>;
 
         public: // Structure
             template < class type1, class type2 > using pair  = std::pair <type1,type2>;
@@ -75,7 +69,7 @@ export namespace anonymous
         public: // Container
                                                                                                                                                         using any            = std::any;
             template < class type, int len >                                                                                                            using array          = std::array            <type,len>;
-            template < class type, class traits = char_traits<type>, class alloc = allocator<type> >                                                    using basic_string   = std::basic_string     <type,traits,alloc>;
+            template < class type, class traits = std::char_traits<type>, class alloc = allocator<type> >                                               using basic_string   = std::basic_string     <type,traits,alloc>;
             template < int len >                                                                                                                        using bitset         = std::bitset           <len>;
             template < class type, class alloc = allocator<type> >                                                                                      using deque          = std::deque            <type,alloc>;
             template < class type, class error >                                                                                                        using expected       = std::expected         <type,error>;
@@ -99,7 +93,6 @@ export namespace anonymous
         public: // Span
             template < class type, size_t extent >                                                                         using span   = std::span  <type,extent>;
             template < class type, class extents, class layout = default_layout, class accessor = default_accessor<type> > using mdspan = std::mdspan<type,extents,layout,accessor>;
-
 
         public: // Iterator
             template < class iterator >                 using const_iterator   = std::const_iterator  <iterator>;

@@ -12,5 +12,4 @@ export namespace anonymous
     template < class type > using   iterator_value_type      = std::iter_value_t          <type>;
     template < class type > using   iterator_reference       = std::iter_reference_t      <type>;
     template < class type > using   iterator_difference_type = std::iter_difference_t     <type>;
-
 }

@@ -1,5 +1,5 @@
 export module anonymous:basic.algorithm.range;
-import        anonymous.basic.concepts;
+import                 :basic.concepts;
 import        std;
 
 export namespace anonymous
