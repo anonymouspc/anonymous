@@ -3,8 +3,9 @@
 #include <pybind11/pybind11.h>
 import std;
 import pybind11;
+import ctre;
 
-int function ( )
+int main ( )
 {
     auto np = pybind11::module_::import("numpy");
 
@@ -16,5 +17,5 @@ int function ( )
 
 PYBIND11_MODULE(cpp, module_)
 {
-    module_.def("function", function);
+    module_.def("main", main);
 }
