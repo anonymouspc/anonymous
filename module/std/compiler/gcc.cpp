@@ -35,7 +35,7 @@ module;
 #undef __DEPRECATED
 #include <strstream>
 
-export module std.compiler:gcc;
+export module std:compiler.gcc;
 
 // C library exports are appended from std-clib.cc.in.
 
