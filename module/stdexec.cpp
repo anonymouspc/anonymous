@@ -14,8 +14,8 @@ export module stdexec;
 export namespace stdexec 
 { 
     using stdexec::just;
-    using stdexec::receiver;
-    using stdexec::sender;
-    using stdexec::sync_wait;
-    using stdexec::then;
+    // using stdexec::receiver;
+    // using stdexec::sender;
+    // using stdexec::sync_wait;
+    // using stdexec::then;
 }

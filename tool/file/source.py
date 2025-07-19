@@ -2,6 +2,7 @@ from common.algorithm import recursive_find
 from common.compiler  import preprocess_file, compile_source
 from common.config    import type, object_suffix
 from common.error     import BuildError
+from common.lazy      import Lazy
 from common.scheduler import scheduler
 from file.module      import Module
 from file.package     import Package
@@ -21,7 +22,7 @@ class Source:
             else:
                 self = super().__new__(self)
                 Source.pool[name] = self
-                self.new_task = asyncio.create_task(self._create_new_task(name=name))
+                self.new_task = Lazy(self._create_new_task(name=name))
             return await self.new_task
         except BuildError as e:
             raise BuildError(f"In source {self.name}:\n{e}")
@@ -30,7 +31,7 @@ class Source:
         try:
             if not self.is_compiled:
                 if self.compile_task is None:
-                    self.compile_task = asyncio.create_task(self._create_compile_task())
+                    self.compile_task = Lazy(self._create_compile_task())
                 await self.compile_task
         except BuildError as e:
             raise BuildError(f"In source {self.name}:\n{e}")

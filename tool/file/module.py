@@ -2,6 +2,7 @@ from common.algorithm import recursive_find
 from common.config    import type, module_suffix, object_suffix
 from common.compiler  import preprocess_file, compile_module
 from common.error     import BuildError
+from common.lazy      import Lazy
 from common.scheduler import scheduler
 from file.package     import Package
 import asyncio
@@ -20,16 +21,17 @@ class Module:
             else:
                 self = super().__new__(self)
                 Module.pool[name] = self
-                self.new_task = asyncio.create_task(self._create_new_task(name=name, from_modules=from_modules))
+                self.new_task = Lazy(self._create_new_task(name=name, from_modules=from_modules))
             return await self.new_task
         except BuildError as e:
             raise BuildError(f"In module {self.name}:\n{e}")
 
     async def compile(self):
+        print(f"{self.name}.compile()")
         try:
             if not self.is_compiled:
                 if self.compile_task is None:
-                    self.compile_task = asyncio.create_task(self._create_compile_task())
+                    self.compile_task = Lazy(self._create_compile_task())
                 await self.compile_task
         except BuildError as e:
             raise BuildError(f"In module {self.name}:\n{e}")
@@ -83,6 +85,7 @@ class Module:
         return self
 
     async def _create_compile_task(self):
+        print(f"{self.name}._create_compile_task()")
         # Import && Subtask
         depend_tasks = []
         for import_module in self.import_modules:

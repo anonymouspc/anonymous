@@ -1,6 +1,7 @@
 from common.compiler  import run_executable
 from common.config    import executable_suffix, type
 from common.error     import BuildError
+from common.lazy      import Lazy
 from common.scheduler import scheduler
 from file.object      import Object
 import asyncio
@@ -17,7 +18,7 @@ class Executable:
             else:
                 self = super().__new__(self)
                 Executable.pool[name] = self
-                self.new_task = asyncio.create_task(self._create_new_task(name=name))
+                self.new_task = Lazy(self._create_new_task(name=name))
             return await self.new_task
         except BuildError as e:
             raise BuildError(f"In executable {self.name}:\n{e}")
@@ -26,7 +27,7 @@ class Executable:
         try:
             if not self.is_runned:
                 if self.run_task is None:
-                    self.run_task = asyncio.create_task(self._create_run_task())
+                    self.run_task = Lazy(self._create_run_task())
                 await self.run_task
         except BuildError as e:
             raise BuildError(f"In executable {self.name}:\n{e}")
