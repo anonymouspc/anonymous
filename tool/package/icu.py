@@ -1,25 +1,26 @@
 from common.config import type
 from common.make   import configure, make
 
-configure(
-    name="icu",
-    file="./package/icu/icu4c/source/configure",
-    args=[
-        "--disable-icu-config",
-        "--enable-debug"    if type == "debug" else "",
-        "--disable-release" if type == "debug" else "",
-        "--disable-shared",
-        "--enable-static",
-        "--disable-dyload",
-        "--disable-tests",
-      # "--disable-tools",
-        "--disable-samples"
-    ]
-)
-make(
-    name="icu",
-    dir="./package/icu/icu4c/source"
-)
+async def build():
+    await configure(
+        name="icu",
+        file="./package/icu/icu4c/source/configure",
+        args=[
+            "--disable-icu-config",
+            "--enable-debug"    if type == "debug" else "",
+            "--disable-release" if type == "debug" else "",
+            "--disable-shared",
+            "--enable-static",
+            "--disable-dyload",
+            "--disable-tests",
+          # "--disable-tools",
+            "--disable-samples"
+        ]
+    )
+    await make(
+        name="icu",
+        dir="./package/icu/icu4c/source"
+    )
 
 """
 >>> ./package/icu/icu4c/source/configure -h | grep -E 'enable|disable'

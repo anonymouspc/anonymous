@@ -1,21 +1,22 @@
 from common.config import type
 from common.make   import cmake
 
-cmake(
-    name="bzip2",
-    dir="./package/bzip2",
-    args=[
-        "-DENABLE_WERROR=false",
-        f"-DENABLE_DEBUG={type=='debug'}",
-        "-DENABLE_APP=false",
-        "-DENABLE_TESTS=false",
-        "-DENABLE_DOCS=false",
-        "-DENABLE_EXAMPLES=false",
-        "-DENABLE_LIB_ONLY=true",
-        "-DENABLE_STATIC_LIB=true",
-        "-DENABLE_SHARED_LIB=false"
-    ]
-)
+async def build():
+    await cmake(
+        name="bzip2",
+        dir="./package/bzip2",
+        args=[
+            "-DENABLE_WERROR=false",
+            f"-DENABLE_DEBUG={type=='debug'}",
+            "-DENABLE_APP=false",
+            "-DENABLE_TESTS=false",
+            "-DENABLE_DOCS=false",
+            "-DENABLE_EXAMPLES=false",
+            "-DENABLE_LIB_ONLY=true",
+            "-DENABLE_STATIC_LIB=true",
+            "-DENABLE_SHARED_LIB=false"
+        ]
+    )
 
 """
 >>> cat ./package/bzip2/CMakeOptions.txt | grep option

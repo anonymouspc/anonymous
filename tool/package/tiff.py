@@ -1,20 +1,21 @@
 from common.make import cmake
 
-cmake(
-    name="tiff",
-    dir="./package/libtiff",
-    args=[
-        "-DBUILD_SHARED_LIBS=false",
-        "-Dtiff-static=true",
-        "-Dtiff-tools=false",
-        "-Dtiff-tests=false",
-        "-Dtiff-contrib=false",
-        "-Dtiff-docs=false",
-    ]
-)
+async def build():
+    await cmake(
+        name="tiff",
+        dir="./package/tiff",
+        args=[
+            "-DBUILD_SHARED_LIBS=false",
+            "-Dtiff-static=true",
+            "-Dtiff-tools=false",
+            "-Dtiff-tests=false",
+            "-Dtiff-contrib=false",
+            "-Dtiff-docs=false",
+        ]
+    )
 
 """
->>> cat ./package/libtiff/CMakeLists.txt | grep option
+>>> cat ./package/tiff/CMakeLists.txt | grep option
   option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(tiff-static "build TIFF static libraries" ${TIFF_STATIC_LIBS_DEFAULT})
 option(tiff-tools "build TIFF tools" ON)

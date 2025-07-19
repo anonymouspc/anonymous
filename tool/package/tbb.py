@@ -1,10 +1,12 @@
-from common.make import include, src
+from common.make import include
 
-include(
-    name="tbb",
-    dir="./package/oneTBB/include"
-)
-src(
-    name="tbb",
-    dir="./package/oneTBB/src"
-)
+async def build():
+    await include(
+        name="tbb",
+        dir="./package/tbb/include"
+    )
+    await include(
+        name="tbb",
+        dir="./package/tbb/src",
+        relpath="./tbb/src"
+    )

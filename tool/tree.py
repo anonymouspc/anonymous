@@ -1,21 +1,16 @@
+from file.source import Source
+import asyncio
 import matplotlib.pyplot as plt
 import networkx as nx
-from common.source import *
 
 if __name__ == "__main__":
     G = nx.DiGraph()
 
-    def _get_name(module):
-        if hasattr(module, "name"):
-            return module.name
-        elif hasattr(module, "name"):
-            return module.name
-
     def _summon_graph(module):
-        G.add_node(_get_name(module))
+        G.add_node(module.name)
         for import_module in module.import_modules:
-            G.add_node(_get_name(import_module))
-            G.add_edge(_get_name(module), _get_name(import_module))
+            G.add_node(import_module.name)
+            G.add_edge(module.name, import_module.name)
             _summon_graph(import_module)
 
     def _get_rgb(rank, total):
@@ -38,7 +33,7 @@ if __name__ == "__main__":
             b = 1
         return r, g, b
 
-    _summon_graph(Source("main"))
+    _summon_graph(asyncio.run(Source("main")))
     node_pos    = nx.spring_layout(G, k=12.5/(len(G.nodes)**0.5), iterations=100, scale=1.0)
     label_pos   = {k: (v[0], v[1] + 0.05) for k, v in node_pos.items()}
     ancest_dict = {node: len(nx.ancestors(G, node)) for node in G.nodes}

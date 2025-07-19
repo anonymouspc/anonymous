@@ -1,20 +1,21 @@
 from common.make import configure, make
 
-configure(
-    name="openssl",
-    file="./package/openssl/Configure",
-    args=[
-        "no-apps",
-        "no-docs",
-        "no-module",
-        "no-shared",
-        "zlib"
-    ]
-)
-make(
-    name="openssl",
-    dir="./package/openssl",
-)
+async def build():
+    await configure(
+        name="openssl",
+        file="./package/openssl/Configure",
+        args=[
+            "no-apps",
+            "no-docs",
+            "no-module",
+            "no-shared",
+            "zlib"
+        ]
+    )
+    await make(
+        name="openssl",
+        dir="./package/openssl",
+    )
 
 """
 >>> cd ./package/openssl && ./Configure && perl configdata.pm --dump

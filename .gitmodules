@@ -8,7 +8,7 @@
 	url = https://gitlab.com/bzip2/bzip2
 	branch = master
 [submodule "package/cccl"]
-	path = package/cccl
+	path = package/cuda
 	url = https://github.com/NVIDIA/cccl
 	branch = main
 [submodule "package/eigen"]
@@ -25,15 +25,15 @@
 	branch = main
 	shallow = true
 [submodule "package/libjpeg-turbo"]
-	path = package/libjpeg-turbo
+	path = package/jpeg
 	url = https://github.com/libjpeg-turbo/libjpeg-turbo
 	branch = main
 [submodule "package/libpng"]
-	path = package/libpng
+	path = package/png
 	url = https://github.com/pnggroup/libpng
 	branch = libpng16
 [submodule "package/libtiff"]
-	path = package/libtiff
+	path = package/tiff
 	url = https://gitlab.com/libtiff/libtiff
 	branch = master
 [submodule "package/lz4"]
@@ -41,7 +41,7 @@
 	url = https://github.com/lz4/lz4
 	branch = dev
 [submodule "package/oneTBB"]
-	path = package/oneTBB
+	path = package/tbb
 	url = https://github.com/uxlfoundation/oneTBB
 	branch = master
 [submodule "package/openssl"]
@@ -51,7 +51,7 @@
 	shallow = true
 	fetchRecurseSubmodules = false
 [submodule "package/plf_hive"]
-	path = package/plf_hive
+	path = package/plf
 	url = https://github.com/mattreecebentley/plf_hive
 	branch = main
 [submodule "package/stdexec"]
@@ -78,5 +78,17 @@
 	path = package/proxy
 	url = https://github.com/microsoft/proxy
 [submodule "package/scnlib"]
-	path = package/scnlib
+	path = package/scn
 	url = https://github.com/eliaskosunen/scnlib
+[submodule "package/pybind11"]
+	path = package/pybind11
+	url = https://github.com/pybind/pybind11
+[submodule "package/Opencl-Headers"]
+	path = package/opencl
+	url = https://github.com/KhronosGroup/Opencl-Headers
+[submodule "package/clblast"]
+	path = package/clblast
+	url = https://github.com/CNugteren/CLBlast
+[submodule "package/ctre"]
+	path = package/ctre
+	url = https://github.com/hanickadot/compile-time-regular-expressions

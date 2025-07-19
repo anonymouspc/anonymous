@@ -206,7 +206,7 @@ module;
 #include <unicode/ustream.h>
 
 export module icu;
-import std;
+import        std;
 
 export
 {

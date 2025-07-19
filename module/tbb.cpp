@@ -49,7 +49,7 @@ module;
 
 export module tbb;
 // import std; This module might be depended by stdexec by std:feature.sender by std:feature by std.
-import hwloc;
+import        hwloc;
 
 export namespace tbb
 {

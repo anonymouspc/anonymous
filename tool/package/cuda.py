@@ -1,6 +1,18 @@
 from common.make import include
 
-include(
-    name="cuda",
-    dir="./package/cccl/libcudacxx/include"
-)
+async def build():
+    await include(
+        name="cuda",
+        dir="./package/cuda/libcudacxx/include"
+    )
+    await include(
+        name="cuda",
+        dir="./package/cuda/thrust/thrust",
+        relpath="./thrust"
+    )
+    await include(
+        name="cuda",
+        dir="./package/cuda/cub/cub",
+        relpath="./cub"
+    )
+

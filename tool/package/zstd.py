@@ -1,16 +1,17 @@
 from common.make import cmake
 
-cmake(
-    name="zstd",
-    dir="./package/zstd/build/cmake",
-    args=[
-        "-DZSTD_BUILD_PROGRAMS=false",
-        "-DZSTD_BUILD_CONTRIB=false",
-        "-DZSTD_BUILD_TESTS=false",
-        "-DZSTD_BUILD_STATIC=true",
-        "-DZSTD_BUILD_SHARED=false"
-    ]
-)
+async def build():
+    await cmake(
+        name="zstd",
+        dir="./package/zstd/build/cmake",
+        args=[
+            "-DZSTD_BUILD_PROGRAMS=false",
+            "-DZSTD_BUILD_CONTRIB=false",
+            "-DZSTD_BUILD_TESTS=false",
+            "-DZSTD_BUILD_STATIC=true",
+            "-DZSTD_BUILD_SHARED=false"
+        ]
+    )
 
 """
 >>> find ./package/zstd/build/cmake -type f | xargs -I {file} sh -c "cat {file} | grep option | xargs -I {line} echo {file}: {line}"

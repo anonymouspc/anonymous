@@ -1,21 +1,22 @@
 from common.make import cmake
 
-cmake(
-    name="xz",
-    dir="./package/xz",
-    args=[
-        "-DBUILD_SHARED_LIBS=false",
-        "-DXZ_MICROLZMA_ENCODER=false",
-        "-DXZ_MICROLZMA_DECODER=false",
-        "-DXZ_TOOL_XZDEC=false",
-        "-DXZ_TOOL_LZMADEC=false",
-        "-DXZ_TOOL_LZMAINFO=false",
-        "-DXZ_TOOL_XZ=false",
-        "-DXZ_TOOL_SCRIPTS=false",
-        "-DXZ_DOXYGEN=false",
-        "-DXZ_DOC=false"
-    ]
-)
+async def build():
+    await cmake(
+        name="xz",
+        dir="./package/xz",
+        args=[
+            "-DBUILD_SHARED_LIBS=false",
+            "-DXZ_MICROLZMA_ENCODER=false",
+            "-DXZ_MICROLZMA_DECODER=false",
+            "-DXZ_TOOL_XZDEC=false",
+            "-DXZ_TOOL_LZMADEC=false",
+            "-DXZ_TOOL_LZMAINFO=false",
+            "-DXZ_TOOL_XZ=false",
+            "-DXZ_TOOL_SCRIPTS=false",
+            "-DXZ_DOXYGEN=false",
+            "-DXZ_DOC=false"
+        ]
+    )
 
 """
 >>> cat ./package/xz/CMakeLists.txt | grep option

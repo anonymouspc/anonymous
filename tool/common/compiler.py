@@ -3,9 +3,8 @@ from common.error  import BuildError
 from common.run    import run
 import os
 import re
-import subprocess
 
-def preprocess_file(code_file, name=None, module_file=None):
+async def preprocess_file(code_file, name=None, module_file=None):
     command = ""
     if compiler == "g++" or compiler == "clang++":
         command = f"{compiler} "                \
@@ -20,19 +19,18 @@ def preprocess_file(code_file, name=None, module_file=None):
                 with open(f"./bin/{type}/module/mapper.txt", 'a') as writer:
                     writer.write(f"{name} {module_file}\n")
     elif compiler == "cl":
-        command = f"{compiler} "    \
-                  f"/E {code_file}"
+        command = f"{compiler} " \
+                  f"/E -"
 
     try:
-        reader = open(code_file, 'r').read()
-        reader = re.sub(r'^\s*#\s*include\s+(?!<version>).*$', "", reader, flags=re.MULTILINE)
-        return subprocess.run(command, shell=True, check=True, capture_output=True, text=True, input=reader).stdout
+        content = open(code_file, 'r').read()
+        content = re.sub(r'^\s*#\s*include\s+(?!<version>).*$', "", content, flags=re.MULTILINE)
     except FileNotFoundError as e:
         raise BuildError(f"fatal error: file {e.filename} not found")
-    except subprocess.CalledProcessError as e:
-        raise BuildError(e.stderr)
+
+    return await run(command, input_stdin=content, print_stdout=False, return_stdout=True)
     
-def compile_module(code_file, include_dirs, module_file, object_file):
+async def compile_module(code_file, include_dirs, module_file, object_file):
     os.makedirs(os.path.dirname(module_file), exist_ok=True)
     os.makedirs(os.path.dirname(object_file), exist_ok=True)
     commands = []
@@ -64,9 +62,9 @@ def compile_module(code_file, include_dirs, module_file, object_file):
                     f"/ifcOutput        {module_file} "
                     f"/Fo               {object_file}"]
     for command in commands:
-        run(command)
-        
-def compile_source(code_file, include_dirs, object_file):
+        await run(command)
+
+async def compile_source(code_file, include_dirs, object_file):
     os.makedirs(os.path.dirname(object_file), exist_ok=True)
     command = ""
     if compiler == "g++" or compiler == "clang++":
@@ -83,24 +81,24 @@ def compile_source(code_file, include_dirs, object_file):
                   f"{' '.join(f'/D {key}="{value}"' for key, value   in define_flags.items())} " \
                   f"/c  {code_file} "                                                            \
                   f"/Fo {object_file}"
-    run(command)
+    await run(command)
         
-def link_object(object_files, library_files, executable_file):
-    os.makedirs(os.path.dirname(executable_file), exist_ok=True)
+async def link_object(object_files, library_files, output_file):
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
     command = ""
     if compiler == "g++" or compiler == "clang++":
         command = f"{compiler} "                \
                   f"{' '.join(link_flags)} "    \
                   f"{' '.join(object_files)} "  \
                   f"{' '.join(library_files)} " \
-                  f"-o {executable_file}"
+                  f"-o {output_file}"
     elif compiler == "cl":
         command = f"cl "                        \
                   f"{' '.join(link_flags)} "    \
                   f"{' '.join(object_files)} "  \
                   f"{' '.join(library_files)} " \
-                  f"/Fe {executable_file}"
-    run(command)
+                  f"/Fe {output_file}"
+    await run(command)
     
-def run_executable(executable_file):
-    run(f"./{executable_file}")
+async def run_executable(executable_file):
+    await run(f"./{executable_file}")

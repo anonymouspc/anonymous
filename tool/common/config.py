@@ -1,19 +1,26 @@
 import argparse
 import os
 import sys
+
+# Settings
+
 os.chdir(f"{os.path.dirname(__file__)}/../..")
 os.environ["LANG"] = "en_US.UTF-8"
 
 
 
 # Arguments
-
 parser = argparse.ArgumentParser(description="build.py")
-parser.add_argument("--type",    choices=["debug", "release"], default="debug")
-parser.add_argument("--verbose", action="store_true",                         )
+parser.add_argument("--type",     choices=["debug", "release"],      default="debug"       )
+parser.add_argument("--output",   choices=["executable",  "shared"], default="executable"  )
+parser.add_argument("--parallel", type=lambda n: int(n),             default=os.cpu_count())
+parser.add_argument("--verbose",  action="store_true",               default=False         )
 argv = parser.parse_args()
-type    = argv.type
-verbose = argv.verbose
+
+type     = argv.type
+output   = argv.output
+parallel = argv.parallel
+verbose  = argv.verbose
 
 
 
@@ -24,16 +31,19 @@ if sys.platform == "win32":
     compiler          = "cl"
     executable_suffix = "exe"
     shared_suffix     = "dll"
+    env_seperator     = ';'
 elif sys.platform == "linux":
     system            = "linux"
     compiler          = "g++"
     executable_suffix = ""
     shared_suffix     = "so"
+    env_seperator     = ':'
 elif sys.platform == "darwin":
     system            = "macos"
     compiler          = "clang++"
     executable_suffix = ""
     shared_suffix     = "dylib"
+    env_seperator     = ':'
 
 
 
@@ -53,9 +63,11 @@ if compiler == "g++":
     elif type == "release":
         compile_flags += [      "-O3", "-DNDEBUG"]
         compile_flags += ["-s"]
-    module_suffix  = "gcm"
-    object_suffix  = "o"
-    library_suffix = "a"
+    if output == "shared":
+        link_flags += ["-shared", "-fPIC"]
+    module_suffix = "gcm"
+    object_suffix = "o"
+    static_suffix = "a"
 elif compiler == "clang++":
     compile_flags = [
         "-std=c++26", 
@@ -69,9 +81,11 @@ elif compiler == "clang++":
     elif type == "release":
         compile_flags += [      "-O3", "-DNDEBUG"]
         link_flags    += ["-s"]
-    module_suffix  = "pcm"
-    object_suffix  = "o"
-    library_suffix = "a"
+    if output == "shared":
+        link_flags += ["-shared", '-fPIC']
+    module_suffix = "pcm"
+    object_suffix = "o"
+    static_suffix = "a"
 elif compiler == "cl":
     compile_flags = [
         "/std:c++latest",
@@ -83,9 +97,11 @@ elif compiler == "cl":
         compile_flags += ["/Z7", "/Od", "/DDEBUG" ]
     elif type == "release":
         compile_flags += [       "/O2", "/DNDEBUG"]
-    module_suffix  = "ifc"
-    object_suffix  = "obj"
-    library_suffix = "lib"
+    if output == "shared":
+        link_flags += ["/LD"]
+    module_suffix = "ifc"
+    object_suffix = "obj"
+    static_suffix = "lib"
 
 define_flags  = {
     "abstract": '0', 

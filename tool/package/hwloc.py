@@ -1,37 +1,38 @@
 from common.config import system, type
 from common.make   import cmake, autogen, configure, make
 
-if system == "windows":
-    cmake(
-        name="hwloc",
-        dir="./package/hwloc/contrib/windows-cmake",
-        args=[
-            "-DHWLOC_ENABLE_TESTING=false",
-            "-DHWLOC_SKIP_LSTOPO=true",
-            "-DHWLOC_SKIP_TOOLS=true",
-            "-DHWLOC_SKIP_INCLUDES=false",
-            "-DHWLOC_BUILD_SHARED_LIBS=false"
-        ]
-    )
-elif system == "linux" or system == "macos":
-    autogen(
-        name="hwloc",
-        file="./package/hwloc/autogen.sh"
-    )
-    configure(
-        name="hwloc",
-        file="./package/hwloc/configure",
-        args=[
-            "--enable-static",
-            "--disable-shared",
-            "--enable-debug" if type == "debug" else "",
-            "--disable-readme"
-        ]
-    )
-    make(
-        name="hwloc",
-        dir="./third_aprty/hwloc"
-    )
+async def build():
+    if system == "windows":
+        await cmake(
+            name="hwloc",
+            dir="./package/hwloc/contrib/windows-cmake",
+            args=[
+                "-DHWLOC_ENABLE_TESTING=false",
+                "-DHWLOC_SKIP_LSTOPO=true",
+                "-DHWLOC_SKIP_TOOLS=true",
+                "-DHWLOC_SKIP_INCLUDES=false",
+                "-DHWLOC_BUILD_SHARED_LIBS=false"
+            ]
+        )
+    elif system == "linux" or system == "macos":
+        await autogen(
+            name="hwloc",
+            file="./package/hwloc/autogen.sh"
+        )
+        await configure(
+            name="hwloc",
+            file="./package/hwloc/configure",
+            args=[
+                "--enable-static",
+                "--disable-shared",
+                "--enable-debug" if type == "debug" else "",
+                "--disable-readme"
+            ]
+        )
+        await make(
+            name="hwloc",
+            dir="./third_aprty/hwloc"
+        )
     
 """ 
 >>> cat ./package/hwloc/contrib/windows-cmake/CMakeLists.txt | grep option

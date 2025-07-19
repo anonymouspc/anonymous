@@ -6,9 +6,9 @@ import                 :basic.error.exception;
 
 export namespace anonymous
 {
-    struct signal_initializer_t  
+    struct signal_initializer_type  
     {
-        signal_initializer_t ( );
+        signal_initializer_type ( );
 
         static void signal_handler                          ( int, const char* );
         static void abort_signal_handler                    ( int );
@@ -21,7 +21,7 @@ export namespace anonymous
 
 
     
-    signal_initializer_t::signal_initializer_t ( )
+    signal_initializer_type::signal_initializer_type ( )
     {
         // Signal.standard
         std::signal(SIGFPE,  floating_point_exception_signal_handler);
@@ -84,37 +84,37 @@ export namespace anonymous
         #endif
     }
 
-    void signal_initializer_t::signal_handler ( int, const char* msg )
+    void signal_initializer_type::signal_handler ( int, const char* msg )
     {
         throw signal("{}", msg);
     }
 
-    void signal_initializer_t::abort_signal_handler ( int )
+    void signal_initializer_type::abort_signal_handler ( int )
     {
         throw abort_signal("SIGABRT (process abort signal)");
     }
 
-    void signal_initializer_t::floating_point_exception_signal_handler ( int )
+    void signal_initializer_type::floating_point_exception_signal_handler ( int )
     {
         throw floating_point_exception_signal("SIGFPE (erroneous arithmetic operation)");
     }
 
-    void signal_initializer_t::illegal_instruction_signal_handler ( int )
+    void signal_initializer_type::illegal_instruction_signal_handler ( int )
     {
         throw illegal_instruction_signal("SIGILL (illegal instruction)");      
     }
 
-    void signal_initializer_t::interrupt_signal_handler ( int )
+    void signal_initializer_type::interrupt_signal_handler ( int )
     {
         throw interrupt_signal("SIGINT (terminal interrupt signal)");                
     }
 
-    void signal_initializer_t::segmentation_violation_signal_handler ( int )
+    void signal_initializer_type::segmentation_violation_signal_handler ( int )
     {
         throw segmentation_violation_signal("SIGSEGV (invalid memory reference)");   
     }
 
-    void signal_initializer_t::terminate_signal_handler ( int )
+    void signal_initializer_type::terminate_signal_handler ( int )
     {
         throw terminate_signal("SIGTERM (termination signal)");
     }

@@ -136,8 +136,8 @@ module;
 #include <thrust/zip_function.h>
 
 export module thrust;
-import std;
-import cuda;
+import        std;
+import        cuda;
 
 export namespace thrust
 {

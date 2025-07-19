@@ -1,21 +1,22 @@
 from common.make import cmake, module
   
-cmake(
-    name="scn",
-    dir="./package/scnlib",
-    args=[
-        "-DSCN_TESTS=false",
-        "-DSCN_DOCS=false",
-        "-DSCN_EXAMPLES=false",
-        "-DSCN_BENCHMARKS=false",
-      # "-DSCN_DISABLE_FAST_FLOAT=true" TODO: =false
-    ]
-)
-module(
-    name="scn",
-    file="./package/scnlib/src/scn/scn.cppm",
-    replace={"module;": "module;\n#include <iterator>"}
-)
+async def build():
+    await cmake(
+        name="scn",
+        dir="./package/scn",
+        args=[
+            "-DSCN_TESTS=false",
+            "-DSCN_DOCS=false",
+            "-DSCN_EXAMPLES=false",
+            "-DSCN_BENCHMARKS=false",
+          # "-DSCN_DISABLE_FAST_FLOAT=true" TODO: =false when clang++ supports charconv.float
+        ]
+    )
+    await module(
+        name="scn",
+        file="./package/scn/src/scn/scn.cppm",
+        replace={"module;": "module;\n#include <iterator>"}
+    )
 
 """
 >>> cat ./package/scnlib/cmake/options.cmake | grep option
