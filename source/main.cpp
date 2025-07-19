@@ -7,12 +7,7 @@ import ctre;
 
 int main ( )
 {
-    auto np = pybind11::module_::import("numpy");
-
-    auto arr1 = np.attr("array")(std::vector<int>{1, 2, 3, 4, 5});
-    auto arr2 = arr1 + arr1;
-    std::println("print in C++: {}", arr2.cast<std::vector<int>>());
-    return 42;
+    std::cout << ctre::match<"[a-z]+">("hello") << std::endl;
 }
 
 PYBIND11_MODULE(cpp, module_)
