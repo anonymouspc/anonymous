@@ -1,23 +1,49 @@
-from common.error  import BuildError
-from common.config import verbose
-import subprocess
+from common.error     import BuildError
+from common.config    import verbose
+import asyncio
 import sys
 
-def run(command, quiet=False, **kwargs):
+async def run(command, input_stdin=None, print_stdout=verbose, print_stderr=True, return_stdout=False, return_stderr=False, **kwargs):
     if verbose:
         print(command)
-        p = subprocess.Popen(command, shell=True, stdout=None if verbose >= 2 else subprocess.DEVNULL, stderr=subprocess.PIPE, text=True, **kwargs)
-        e = ""
-        while p.poll() is None:
-            e += p.stderr.readline()
-        if p.poll() == 0:
-            print(e, end="", file=sys.stderr)
-        else:
-            raise BuildError(e)
+
+    proc = await asyncio.subprocess.create_subprocess_shell(
+        cmd=command,
+        stdin =asyncio.subprocess.PIPE,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+        **kwargs
+    )
+
+    if input_stdin is not None:
+        proc.stdin.write(input_stdin.encode())
+        await proc.stdin.drain()
+    proc.stdin.close()
+
+    async def read(stream, into, tee):
+        while True:
+            line = await stream.readline()
+            if not stream.at_eof():
+                line = line.decode()
+                into += [line]
+            else:
+                break
+            if tee is not None:
+                print(line, end="", file=tee)
+    stdout = []
+    stderr = []
+    await asyncio.gather(
+        read(stream=proc.stdout, into=stdout, tee=sys.stdout if print_stdout else None), 
+        read(stream=proc.stderr, into=stderr, tee=sys.stderr if print_stderr else None)
+    )
+    stdout = "".join(stdout)
+    stderr = "".join(stderr)
+
+    code = await proc.wait()
+    if code == 0:
+        return (stdout, stderr) if return_stdout and return_stderr else \
+                stdout          if return_stdout                   else \
+                        stderr  if                   return_stderr else \
+                None
     else:
-        try:
-            p = subprocess.run(command, shell=True, check=True, capture_output=True, text=True, **kwargs)
-            if not quiet:
-                print(p.stderr, end="", file=sys.stderr)
-        except subprocess.CalledProcessError as e:
-            raise BuildError(e.stderr)
+        raise BuildError(stderr)

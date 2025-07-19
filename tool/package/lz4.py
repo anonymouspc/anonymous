@@ -1,15 +1,16 @@
 from common.make import cmake
 
-cmake(
-    name="lz4",
-    dir="./package/lz4/build/cmake",
-    args=[
-        "-DLZ4_BUILD_CLI=false",
-        "-DLZ4_BUILD_LEGACY_LZ4C=false",
-        "-DBUILD_SHARED_LIBS=false",
-        "-DBUILD_STATIC_LIBS=true"
-    ]
-)
+async def build():
+    await cmake(
+        name="lz4",
+        dir="./package/lz4/build/cmake",
+        args=[
+            "-DLZ4_BUILD_CLI=false",
+            "-DLZ4_BUILD_LEGACY_LZ4C=false",
+            "-DBUILD_SHARED_LIBS=false",
+            "-DBUILD_STATIC_LIBS=true"
+        ]
+    )
 
 """
 >>> cat ./package/lz4/build/cmake/CMakeLists.txt | grep -i option

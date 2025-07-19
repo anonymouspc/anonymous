@@ -60,7 +60,7 @@ module;
 #include <cuda/work_stealing>
 
 export module cuda;
-import std;
+import        std;
 
 export namespace cuda
 {

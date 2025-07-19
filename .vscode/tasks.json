@@ -2,14 +2,6 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "config",
-            "group": "none",
-            "type": "shell",
-            "problemMatcher": [],
-            "command": "clang++ --version"
-        }
-
-        {
             "label": "debug.clean",
             "group": "none",
             "type": "shell",
@@ -17,11 +9,18 @@
             "command": "python ./tool/clean.py --type=debug"
         },
         {
-            "label": "debug.build",
+            "label": "debug.build.executable",
             "group": "none",
             "type": "shell",
             "problemMatcher": [],
-            "command": "python ./tool/build.py --type=debug"
+            "command": "python ./tool/build.py --type=debug --output=executable"
+        },
+        {
+            "label": "debug.build.shared",
+            "group": "none",
+            "type": "shell",
+            "problemMatcher": [],
+            "command": "python ./tool/build.py --type=debug --output=shared"
         },
         {
             "label": "debug.test",
@@ -43,10 +42,10 @@
             "type": "shell",
             "problemMatcher": [],
             "dependsOn": [
-                "debug.build",
+                "debug.build.executable",
                 "debug.run"
             ],
-            "dependsOrder": "sequence"
+            "dependsOrder": "sequence",
         },
         {
             "label": "release.clean",
@@ -56,11 +55,18 @@
             "command": "python ./tool/clean.py --type=release"
         },
         {
-            "label": "release.build",
+            "label": "release.build.executable",
             "group": "none",
             "type": "shell",
             "problemMatcher": [],
-            "command": "python ./tool/build.py --type=release"
+            "command": "python ./tool/build.py --type=release --output=executable"
+        },
+        {
+            "label": "release.build.shared",
+            "group": "none",
+            "type": "shell",
+            "problemMatcher": [],
+            "command": "python ./tool/build.py --type=release --output=shared"
         },
         {
             "label": "release.test",
@@ -82,10 +88,10 @@
             "type": "shell",
             "problemMatcher": [],
             "dependsOn": [
-                "release.build",
+                "release.build.executable",
                 "release.run"
             ],
             "dependsOrder": "sequence"
-        },
+        }
     ]
 }

@@ -6,8 +6,8 @@ module;
 #include <exec/when_any.hpp>
 
 export module exec;
-import std;
-import stdexec;
+import        std;
+import        stdexec;
 
 export namespace exec
 {

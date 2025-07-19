@@ -1,15 +1,16 @@
 from common.make import cmake
 
-cmake(
-    name="zlib",
-    dir="./package/zlib",
-    args=[
-        "-DZLIB_BUILD_TESTING=false",
-        "-DZLIB_BUILD_SHARED=false",
-        "-DZLIB_BUILD_STATIC=true",
-        "-DZLIB_BUILD_MINIZIP=false"
-    ]
-)
+async def build():
+    await cmake(
+        name="zlib",
+        dir="./package/zlib",
+        args=[
+            "-DZLIB_BUILD_TESTING=false",
+            "-DZLIB_BUILD_SHARED=false",
+            "-DZLIB_BUILD_STATIC=true",
+            "-DZLIB_BUILD_MINIZIP=false"
+        ]
+    )
 
 """
 >>> cat ./package/zlib/CMakeLists.txt | grep option

@@ -1,11 +1,11 @@
 
-            module;
-            #define FMT_HEADER_ONLY
-            #define FMT_IMPORT_STD
-            #ifdef __clang__
-                #pragma clang diagnostic ignored "-Winclude-angled-in-module-purview"
-            #endif
-            
+                module;
+                #define FMT_HEADER_ONLY
+                #define FMT_IMPORT_STD
+                #ifdef __clang__
+                    #pragma clang diagnostic ignored "-Winclude-angled-in-module-purview"
+                #endif
+                
 #undef in
 #undef self
 

@@ -1,19 +1,20 @@
 from common.make import cmake
 
-cmake(
-    name="png",
-    dir="./package/libpng",
-    args=[
-        "-DPNG_SHARED=false",
-        "-DPNG_STATIC=true",
-        "-DPNG_TESTS=false",
-        "-DPNG_TOOLS=false",
-      # "-DPNG_EXECUTABLES=false"
-    ]
-)
+async def build():
+    await cmake(
+        name="png",
+        dir="./package/png",
+        args=[
+            "-DPNG_SHARED=false",
+            "-DPNG_STATIC=true",
+            "-DPNG_TESTS=false",
+            "-DPNG_TOOLS=false",
+          # "-DPNG_EXECUTABLES=false"
+        ]
+    )
 
 """
->>> cat ./package/libpng/CMakeLists.txt | grep option
+>>> cat ./package/png/CMakeLists.txt | grep option
   message(SEND_ERROR "The options DFA_XTRA=\"${DFA_XTRA}\" "
 option(PNG_SHARED "Build libpng as a shared library" ON)
 option(PNG_STATIC "Build libpng as a static library" ON)

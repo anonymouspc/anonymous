@@ -1,19 +1,20 @@
 from common.make import cmake
 
-cmake(
-    name="jpeg",
-    dir="./package/libjpeg-turbo",
-    args=[
-        "-DENABLE_SHARED=false",
-        "-DENABLE_STATIC=true",
-        "-DWITH_TOOLS=false",
-        "-DWITH_TESTS=false",
-        "-DWITH_FUZZ=false",
-    ]
-)
+async def build():
+    await cmake(
+        name="jpeg",
+        dir="./package/jpeg",
+        args=[
+            "-DENABLE_SHARED=false",
+            "-DENABLE_STATIC=true",
+            "-DWITH_TOOLS=false",
+            "-DWITH_TESTS=false",
+            "-DWITH_FUZZ=false",
+        ]
+    )
 
 """
->>> cat ./package/libjpeg-turbo/CMakeLists.txt | grep option
+>>> cat ./package/jpeg/CMakeLists.txt | grep option
 # 3. optionally provide a way to skip the installation of libjpeg-turbo
 # 4. optionally provide a way to postfix target names, to avoid namespace
 option(ENABLE_SHARED "Build shared libraries" TRUE)

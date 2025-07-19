@@ -5,10 +5,13 @@ import        eigen;
 
 export namespace anonymous
 {
-    enum { eigen_map_default,
-           eigen_map_vector,
-           eigen_map_matrix,
-           eigen_map_tensor };
+    enum 
+    {
+        eigen_map_default,
+        eigen_map_vector,
+        eigen_map_matrix,
+        eigen_map_tensor 
+    };
 
     constexpr auto eigen_make_extents ( auto extents )
     {
