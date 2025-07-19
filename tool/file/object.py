@@ -2,10 +2,10 @@ from common.algorithm import recursive_find
 from common.compiler  import link_object
 from common.config    import type, output, object_suffix, executable_suffix, static_suffix, shared_suffix
 from common.error     import BuildError
+from common.lazy      import Lazy
 from common.scheduler import scheduler
 from file.package     import Package
 from file.source      import Source
-import asyncio
 import os
 
 class Object:
@@ -20,7 +20,7 @@ class Object:
             else:
                 self = super().__new__(self)
                 Object.pool[name] = self
-                self.new_task = asyncio.create_task(self._create_new_task(name=name))
+                self.new_task = Lazy(self._create_new_task(name=name))
             return await self.new_task
         except BuildError as e:
             raise BuildError(f"In object {self.name}:\n{e}")
@@ -29,7 +29,7 @@ class Object:
         try:
             if not self.is_linked:
                 if self.link_task is None:
-                    self.link_task = asyncio.create_task(self._create_link_task())
+                    self.link_task = Lazy(self._create_link_task())
                 await self.link_task
         except BuildError as e:
             raise BuildError(f"In object {self.name}:\n{e}")

@@ -1,6 +1,7 @@
 from common.algorithm import recursive_find
 from common.config    import type, static_suffix, shared_suffix
 from common.error     import BuildError
+from common.lazy      import Lazy
 from common.scheduler import scheduler
 import asyncio
 import importlib
@@ -21,7 +22,7 @@ class Package:
                 self = super().__new__(self)
                 self.by_modules = [by_module] if by_module is not None else []
                 Package.pool[name] = self
-                self.new_task = asyncio.create_task(self._create_new_task(name=name))
+                self.new_task = Lazy(self._create_new_task(name=name))
             return await self.new_task
         except BuildError as e:
             raise BuildError(f"In package {self.name}:\n{e}")
@@ -30,7 +31,7 @@ class Package:
         try:
             if not self.is_built:
                 if self.build_task is None:
-                    self.build_task = asyncio.create_task(self._create_build_task(_from_packages=_from_packages))
+                    self.build_task = Lazy(self._create_build_task(_from_packages=_from_packages))
                 await self.build_task
         except BuildError as e:
             raise BuildError(f"In package {self.name}:\n{e}")
