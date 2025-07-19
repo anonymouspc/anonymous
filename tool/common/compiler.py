@@ -13,7 +13,8 @@ async def preprocess_file(code_file, name=None, module_file=None):
                   f"-o -"
         if compiler == "g++":
             if not hasattr(preprocess_file, "initialized"):
-                open(f"./bin/{type}/module/mapper.txt", 'w')
+                os.makedirs(f"./bin/{type}/module", exist_ok=True)
+                open       (f"./bin/{type}/module/mapper.txt", 'w')
                 preprocess_file.initialized = True
             if name is not None and module_file is not None:
                 with open(f"./bin/{type}/module/mapper.txt", 'a') as writer:
