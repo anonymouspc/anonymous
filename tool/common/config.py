@@ -1,6 +1,7 @@
 import argparse
 import os
 import sys
+import warnings
 
 # Settings
 
@@ -109,3 +110,9 @@ define_flags  = {
     "in"      : ':', 
     "self"    : "(*this)"
 }
+
+
+
+# Warnings
+
+warnings.filterwarnings("ignore", "coroutine .* was never awaited")

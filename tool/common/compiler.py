@@ -1,10 +1,10 @@
 from common.config import type, compiler, compile_flags, link_flags, define_flags
-from common.error  import BuildError
+from common.error  import LogicError
 from common.run    import run
 import os
 import re
 
-async def preprocess_file(code_file, name=None, module_file=None):
+async def preprocess_file(code_file, name=None, module_file=None, **run_args):
     command = ""
     if compiler == "g++" or compiler == "clang++":
         command = f"{compiler} "                \
@@ -27,11 +27,11 @@ async def preprocess_file(code_file, name=None, module_file=None):
         content = open(code_file, 'r').read()
         content = re.sub(r'^\s*#\s*include\s+(?!<version>).*$', "", content, flags=re.MULTILINE)
     except FileNotFoundError as e:
-        raise BuildError(f"fatal error: file {e.filename} not found")
+        raise LogicError(f"file {e.filename} not found")
 
-    return await run(command, input_stdin=content, print_stdout=False, return_stdout=True)
+    return await run(command, input_stdin=content, print_stdout=False, return_stdout=True, **run_args)
     
-async def compile_module(code_file, include_dirs, module_file, object_file):
+async def compile_module(code_file, include_dirs, module_file, object_file, **run_args):
     os.makedirs(os.path.dirname(module_file), exist_ok=True)
     os.makedirs(os.path.dirname(object_file), exist_ok=True)
     commands = []
@@ -63,9 +63,9 @@ async def compile_module(code_file, include_dirs, module_file, object_file):
                     f"/ifcOutput        {module_file} "
                     f"/Fo               {object_file}"]
     for command in commands:
-        await run(command)
+        await run(command, **run_args)
 
-async def compile_source(code_file, include_dirs, object_file):
+async def compile_source(code_file, include_dirs, object_file, **run_args):
     os.makedirs(os.path.dirname(object_file), exist_ok=True)
     command = ""
     if compiler == "g++" or compiler == "clang++":
@@ -82,9 +82,9 @@ async def compile_source(code_file, include_dirs, object_file):
                   f"{' '.join(f'/D {key}="{value}"' for key, value   in define_flags.items())} " \
                   f"/c  {code_file} "                                                            \
                   f"/Fo {object_file}"
-    await run(command)
+    await run(command, **run_args)
         
-async def link_object(object_files, library_files, output_file):
+async def link_object(object_files, library_files, output_file, **run_args):
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     command = ""
     if compiler == "g++" or compiler == "clang++":
@@ -99,7 +99,7 @@ async def link_object(object_files, library_files, output_file):
                   f"{' '.join(object_files)} "  \
                   f"{' '.join(library_files)} " \
                   f"/Fe {output_file}"
-    await run(command)
+    await run(command, **run_args)
     
-async def run_executable(executable_file):
-    await run(f"./{executable_file}")
+async def run_executable(executable_file, **run_args):
+    await run(f"./{executable_file}", **run_args)
