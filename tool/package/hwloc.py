@@ -1,4 +1,4 @@
-from common.config import system, type
+from common.config import system, argv
 from common.make   import cmake, autogen, configure, make
 
 async def build():
@@ -25,7 +25,7 @@ async def build():
             args=[
                 "--enable-static",
                 "--disable-shared",
-                "--enable-debug" if type == "debug" else "",
+                "--enable-debug" if argv.type == "debug" else "",
                 "--disable-readme"
             ]
         )
@@ -54,8 +54,8 @@ option(HWLOC_BUILD_SHARED_LIBS "build shared libraries" ${BUILD_SHARED_LIBS})
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
-  --enable-silent-rules   less verbose build output (undo: "make V=1")
-  --disable-silent-rules  verbose build output (undo: "make V=0")
+  --enable-silent-rules   less argv.verbose build argv.output (undo: "make V=1")
+  --disable-silent-rules  argv.verbose build argv.output (undo: "make V=0")
   --enable-dependency-tracking
   --disable-dependency-tracking
   --enable-shared[=PKGS]  build shared libraries [default=yes]
@@ -64,7 +64,7 @@ option(HWLOC_BUILD_SHARED_LIBS "build shared libraries" ${BUILD_SHARED_LIBS})
   --enable-cxx-stdlib[=PKGS]
   --enable-fast-install[=PKGS]
   --enable-aix-soname=aix|svr4|both
-  --disable-libtool-lock  avoid locking (might break parallel builds)
+  --disable-libtool-lock  avoid locking (might break argv.parallel builds)
   --enable-embedded-mode  Using --enable-embedded-mode puts the HWLOC into
                           --disable-embedded-mode, meaning that the HWLOC is
   --enable-debug          Using --enable-debug enables various hwloc

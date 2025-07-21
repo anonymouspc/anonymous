@@ -1,6 +1,6 @@
 from common.algorithm import recursive_find
 from common.compiler  import link_object
-from common.config    import type, output, object_suffix, executable_suffix, static_suffix, shared_suffix
+from common.config    import argv, object_suffix, executable_suffix, static_suffix, shared_suffix
 from file.package     import Package
 from file.source      import Source
 import asyncio
@@ -30,9 +30,9 @@ class Object:
     async def _create_new_task(self, name):
         # Info
         self.name        = name
-        self.object_file = f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
-        self.output_file = f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}.{globals().get(f'{output}_suffix')}" if globals().get(f'{output}_suffix') != "" else \
-                           f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}"
+        self.object_file = f"./bin/{argv.type}/source/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
+        self.output_file = f"./bin/{argv.type}/source/{self.name.replace('.', '.').replace(':', '-')}.{globals().get(f'{argv.output}_suffix')}" if globals().get(f'{argv.output}_suffix') != "" else \
+                           f"./bin/{argv.type}/source/{self.name.replace('.', '.').replace(':', '-')}"
         
         # Import
         await Source(self.name)

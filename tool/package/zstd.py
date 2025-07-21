@@ -14,7 +14,7 @@ async def build():
     )
 
 """
->>> find ./package/zstd/build/cmake -type f | xargs -I {file} sh -c "cat {file} | grep option | xargs -I {line} echo {file}: {line}"
+>>> find ./package/zstd/build/cmake -argv.type f | xargs -I {file} sh -c "cat {file} | grep option | xargs -I {line} echo {file}: {line}"
 ./package/zstd/build/cmake/CMakeModules/ZstdOptions.cmake: option(ZSTD_LEGACY_SUPPORT Enable legacy format support ON)
 ./package/zstd/build/cmake/CMakeModules/ZstdOptions.cmake: # Platform-specific options
 ./package/zstd/build/cmake/CMakeModules/ZstdOptions.cmake: option(ZSTD_FRAMEWORK Build as Apple Framework OFF)

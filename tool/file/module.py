@@ -1,5 +1,5 @@
 from common.algorithm import recursive_find
-from common.config    import type, module_suffix, object_suffix
+from common.config    import module_suffix, object_suffix
 from common.compiler  import preprocess_file, compile_module
 from common.error     import LogicError
 from file.package     import Package
@@ -35,11 +35,12 @@ class Module:
         return self.name == str
 
     async def _create_new_task_stage_1(self, name):
+        from common.config import argv
         # Info
         self.name        = name
         self.code_file   =            f"./module/{self.name.replace('.', '/').replace(':', '/')}.cpp"
-        self.module_file = f"./bin/{type}/module/{self.name.replace('.', '.').replace(':', '-')}.{module_suffix}"
-        self.object_file = f"./bin/{type}/module/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
+        self.module_file = f"./bin/{argv.type}/module/{self.name.replace('.', '.').replace(':', '-')}.{module_suffix}"
+        self.object_file = f"./bin/{argv.type}/module/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
         self.content     = await preprocess_file(code_file=self.code_file, name=self.name, module_file=self.module_file)
 
         # Check
@@ -48,10 +49,7 @@ class Module:
             raise LogicError(f"file {self.code_file} should export module {self.name}")
 
         # Import
-        self.import_names = re.findall(r'^\s*(?:export\s+)?import\s+([\w\.:]+)\s*;\s*$', self.content, flags=re.MULTILINE)
-        for i in range(len(self.import_names)):
-            if self.import_names[i].startswith(':'):
-                self.import_names[i] = f"{self.name.partition(':')[0]}{self.import_names[i]}"
+        self.import_names = [import_name if not import_name.startswith(':') else f"{self.name.partition(':')[0]}{import_name}" for import_name in re.findall(r'^\s*(?:export\s+)?import\s+([\w\.:]+)\s*;\s*$', self.content, flags=re.MULTILINE)]
 
     async def _create_new_task_stage_2(self, name):
         await self.new_task_stage_1
@@ -60,13 +58,12 @@ class Module:
         await Module._check_dependency_circle(module=self, from_names=[self.name])
         self.import_modules = await asyncio.gather(*[Module(name=import_name) for import_name in self.import_names])
         if await Package.exist(self.name):
-            for import_module in self.import_modules:
-                if await Package.exist(import_module.name):
-                    (await Package(self.name)).import_packages += [await Package(import_module.name)]
+            await Package(self.name)
+            (await Package(self.name)).import_packages += [await Package(import_module.name) for import_module in self.import_modules if await Package.exist(import_module.name)]
 
         # Status
         self.is_compiled = all(module.is_compiled for module in self.import_modules)                    and \
-                           (not await Package.exist(self.name) or (await Package(self.name)).is_cached) and \
+                           (not await Package.exist(self.name) or (await Package(self.name)).is_built) and \
                            os.path.isfile(self.code_file)                                               and \
                            os.path.isfile(self.module_file)                                             and \
                            os.path.isfile(self.object_file)                                             and \
@@ -83,7 +80,7 @@ class Module:
             depend_tasks += [import_module.compile()]
         if await Package.exist(self.name) and not (await Package(self.name)).is_built:
             depend_tasks += [(await Package(self.name)).build()]
-        await asyncio.gather(*[import_module.compile() for import_module in self.import_modules])
+        await asyncio.gather(*depend_tasks)
 
         # Self
         await compile_module(code_file   =self.code_file, 

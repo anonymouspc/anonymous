@@ -1,4 +1,4 @@
-from common.config import type
+from common.config import argv
 from common.make   import include
 import os
 import re
@@ -13,11 +13,11 @@ async def build():
         dir="./package/eigen/unsupported"
     )
 
-    with open(f"./bin/{type}/package/eigen/install/include/Eigen/src/Core/util/Constants.h", 'r') as reader:
+    with open(f"./bin/{argv.type}/package/eigen/install/include/Eigen/src/Core/util/Constants.h", 'r') as reader:
         content = reader.read()
         content = re.sub(r'^const', "inline const", content, flags=re.MULTILINE)
-    with open(f"./bin/{type}/package/eigen/install/include/Eigen/src/Core/util/Constants.h", 'w') as writer:
+    with open(f"./bin/{argv.type}/package/eigen/install/include/Eigen/src/Core/util/Constants.h", 'w') as writer:
         writer.write(content)
-    os.utime (f"./bin/{type}/package/eigen/install/include/Eigen/src/Core/util/Constants.h", 
+    os.utime (f"./bin/{argv.type}/package/eigen/install/include/Eigen/src/Core/util/Constants.h", 
              (os.path.getatime           ("./package/eigen/Eigen/src/Core/util/Constants.h"),
               os.path.getmtime           ("./package/eigen/Eigen/src/Core/util/Constants.h")))

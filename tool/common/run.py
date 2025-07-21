@@ -1,23 +1,25 @@
 from common.error  import SubprocessError
-from common.config import verbose
+from common.config import argv
 from common.scheduler import scheduler
 import asyncio
 import sys
 
 async def run(cmd, 
-              cwd          ='.', 
-              input_stdin  =None, 
-              print_stdout =verbose, 
-              print_stderr =True, 
-              return_stdout=False, 
-              return_stderr=False,
-              parallel     =1,
-              on_start     =None,
-              on_finish    =None):
-    if verbose:
-        print(cmd)
-
+              cwd            ='.', 
+              input_stdin    =None, 
+              print_stdout   =argv.verbose, 
+              print_stderr   =True, 
+              return_stdout  =False, 
+              return_stderr  =False,
+              parallel       =1,
+              on_start       =None,
+              on_finish      =None):
     async with scheduler.schedule(parallel):
+        if on_start is not None:
+            await on_start
+
+        if argv.verbose:
+            print(cmd)
         proc = await asyncio.subprocess.create_subprocess_shell(
             cmd=cmd,
             cwd=cwd,
@@ -25,8 +27,6 @@ async def run(cmd,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE
         )
-        if on_start is not None:
-            await on_start
 
         if input_stdin is not None:
             proc.stdin.write(input_stdin.encode())
@@ -53,7 +53,6 @@ async def run(cmd,
         stderr = "".join(stderr)
 
         code = await proc.wait()
-
         if on_finish is not None:
             await on_finish
 
@@ -63,4 +62,4 @@ async def run(cmd,
                             stderr  if                   return_stderr else \
                     None
         else:
-            raise SubprocessError(stderr)
+            raise SubprocessError(stderr, is_stderr_printed=print_stderr)
