@@ -15,7 +15,7 @@ async def build():
     await module(
         name="scn",
         file="./package/scn/src/scn/scn.cppm",
-        replace={"module;": "module;\n#include <iterator>"}
+        replace={"module;": "module;\n#include <iterator>\nimport std;"}
     )
 
 """
@@ -44,7 +44,7 @@ option(SCN_USE_EXTERNAL_BENCHMARK "Use find_package for Benchmark, instead of Fe
 option(SCN_USE_EXTERNAL_REGEX_BACKEND "Use find_package for SCN_REGEX_BACKEND, instead of FetchContent" ON)
 option(SCN_USE_32BIT "Compile as 32-bit (gcc or clang only)" OFF)
 option(SCN_USE_EXCEPTIONS "Compile with exception support (disabling will cause test failures)" ON)
-option(SCN_USE_RTTI "Compile with RTTI (run-time type information) support" ON)
+option(SCN_USE_RTTI "Compile with RTTI (run-time argv.type information) support" ON)
 option(SCN_USE_NATIVE_ARCH "Add -march=native to build flags (gcc or clang only)" OFF)
 option(SCN_USE_HASWELL_ARCH "Add -march=haswell to build flags (gcc or clang only)" OFF)
 option(SCN_USE_ASAN "Compile with AddressSanitizer" OFF)

@@ -1,5 +1,5 @@
 from common.compiler  import run_executable
-from common.config    import executable_suffix, type
+from common.config    import argv, executable_suffix
 from common.scheduler import scheduler
 from file.object      import Object
 import asyncio
@@ -28,8 +28,8 @@ class Executable:
     async def _create_new_task(self, name):
         # Info
         self.name            = name
-        self.executable_file = f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '/')}.{executable_suffix}" if executable_suffix != "" else \
-                               f"./bin/{type}/source/{self.name.replace('.' ,'.').replace(':', '/')}"
+        self.executable_file = f"./bin/{argv.type}/source/{self.name.replace('.', '.').replace(':', '/')}.{executable_suffix}" if executable_suffix != "" else \
+                               f"./bin/{argv.type}/source/{self.name.replace('.' ,'.').replace(':', '/')}"
         
         # Import
         await Object(self.name)

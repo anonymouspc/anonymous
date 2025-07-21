@@ -1,4 +1,4 @@
-from common.config import type
+from common.config import argv
 from common.make   import configure, make
 
 async def build():
@@ -7,8 +7,8 @@ async def build():
         file="./package/icu/icu4c/source/configure",
         args=[
             "--disable-icu-config",
-            "--enable-debug"    if type == "debug" else "",
-            "--disable-release" if type == "debug" else "",
+            "--enable-debug"    if argv.type == "debug" else "",
+            "--disable-release" if argv.type == "debug" else "",
             "--disable-shared",
             "--enable-static",
             "--disable-dyload",

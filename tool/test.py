@@ -7,6 +7,9 @@ from file.source     import Source
 import asyncio
 import os
 import sys
+import time
+
+start = time.time()
 
 async def test():
     try:
@@ -19,15 +22,18 @@ async def test():
     except:
         for task in asyncio.all_tasks():
             task.cancel()
+        raise
 
 if __name__ == "__main__":
     try:
+        open(".log", 'w')
         asyncio.run(test())
     except LogicError as e:
         print(e, file=sys.stderr)
         print(e, file=open(".log", 'w'))
         exit(-1)
     except SubprocessError as e:
+        print(e, file=sys.stderr) if not e.is_stderr_printed else None
         print(e, file=open(".log", 'w'))
         exit(-1)
     except KeyboardInterrupt as e:

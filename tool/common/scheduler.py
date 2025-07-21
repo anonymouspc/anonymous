@@ -1,4 +1,4 @@
-from common.config import parallel
+from common.config import argv
 import asyncio
 
 class Scheduler():
@@ -9,12 +9,12 @@ class Scheduler():
         self._value = value
         self._max = value
 
-    def locked(self):
-        return self._value == 0 or (
+    def locked(self, compare_to):
+        return self._value < compare_to or (
             any(not w.cancelled() for w in (self._waiters.keys() if self._waiters is not None else [])))
 
     async def acquire(self, weight=1):
-        if not self.locked():
+        if not self.locked(compare_to=weight):
             self._value -= weight
             return True
 
@@ -22,6 +22,7 @@ class Scheduler():
             self._waiters = {}
         fut = asyncio.get_event_loop().create_future()
         self._waiters[fut] = weight
+
         try:
             try:
                 await fut
@@ -47,7 +48,7 @@ class Scheduler():
             return False
 
         for fut in self._waiters.keys():
-            if not fut.done():
+            if not fut.done() and self._value >= self._waiters[fut]:
                 self._value -= self._waiters[fut]
                 fut.set_result(True)
                 return True
@@ -67,4 +68,4 @@ class Scheduler():
     def schedule(self, weight=1):
         return Scheduler._Context(self, weight)
 
-scheduler = Scheduler(value=parallel)
+scheduler = Scheduler(value=argv.parallel)

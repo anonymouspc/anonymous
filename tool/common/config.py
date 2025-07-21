@@ -12,17 +12,15 @@ os.environ["LANG"] = "en_US.UTF-8"
 
 # Arguments
 parser = argparse.ArgumentParser(description="build.py")
-parser.add_argument("--type",     choices=["debug", "release"],      default="debug"       )
-parser.add_argument("--output",   choices=["executable",  "shared"], default="executable"  )
-parser.add_argument("--parallel", type=lambda n: int(n),             default=os.cpu_count())
-parser.add_argument("--verbose",  action="store_true",               default=False         )
+parser.add_argument("--type",           choices=["debug", "release"],       default="debug"       )
+parser.add_argument("--output",         choices=["executable",  "shared"],  default="executable"  )
+parser.add_argument("--parallel",       type=lambda n: int(n),              default=os.cpu_count())
+parser.add_argument("--verbose",        action="store_true",                default=False         )
+parser.add_argument("--enable-python",                                      default=True          )
+parser.add_argument("--enable-cuda",                                        default=False         )
+parser.add_argument("--enable-opencl",                                      default=True          )
+parser.add_argument("--update-package", choices=["always", "new", "never"], default="new"         )
 argv = parser.parse_args()
-
-type     = argv.type
-output   = argv.output
-parallel = argv.parallel
-verbose  = argv.verbose
-
 
 
 # System
@@ -56,15 +54,15 @@ if compiler == "g++":
         "-Wall",
         "-fdiagnostics-color=always",
         "-fmodules",
-       f"-fmodule-mapper=./bin/{type}/module/mapper.txt",
+       f"-fmodule-mapper=./bin/{argv.type}/module/mapper.txt",
     ]
     link_flags = ["-static"]
-    if type == "debug":
+    if argv.type == "debug":
         compile_flags += ["-g", "-O0", "-DDEBUG" ]
-    elif type == "release":
+    elif argv.type == "release":
         compile_flags += [      "-O3", "-DNDEBUG"]
         compile_flags += ["-s"]
-    if output == "shared":
+    if argv.output == "shared":
         link_flags += ["-shared", "-fPIC"]
     module_suffix = "gcm"
     object_suffix = "o"
@@ -74,15 +72,15 @@ elif compiler == "clang++":
         "-std=c++26", 
         "-Wall", 
         "-fdiagnostics-color=always",
-       f"-fprebuilt-module-path=./bin/{type}/module",
+       f"-fprebuilt-module-path=./bin/{argv.type}/module",
     ]
     link_flags = []
-    if type == "debug":
+    if argv.type == "debug":
         compile_flags += ["-g", "-O0", "-DDEBUG" ]
-    elif type == "release":
+    elif argv.type == "release":
         compile_flags += [      "-O3", "-DNDEBUG"]
         link_flags    += ["-s"]
-    if output == "shared":
+    if argv.output == "shared":
         link_flags += ["-shared", '-fPIC']
     module_suffix = "pcm"
     object_suffix = "o"
@@ -94,11 +92,11 @@ elif compiler == "cl":
         "/W4"
     ]
     link_flags = ["/MT"]
-    if type == "debug":
+    if argv.type == "debug":
         compile_flags += ["/Z7", "/Od", "/DDEBUG" ]
-    elif type == "release":
+    elif argv.type == "release":
         compile_flags += [       "/O2", "/DNDEBUG"]
-    if output == "shared":
+    if argv.output == "shared":
         link_flags += ["/LD"]
     module_suffix = "ifc"
     object_suffix = "obj"

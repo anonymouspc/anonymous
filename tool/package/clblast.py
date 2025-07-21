@@ -31,6 +31,6 @@ option(NETLIB_PERSISTENT_OPENCL "Makes OpenCL device and context in the CBLAS Ne
 option(AMD_SI_EMPTY_KERNEL_WORKAROUND "Enables workaround for bug in AMD Southern Island GPUs" OFF)
 option(OPENCL "Build CLBlast with an OpenCL API (default)" ON)
 option(CUDA "Build CLBlast with a CUDA API (beta)" OFF)
-option(VERBOSE "Compile in verbose mode for additional diagnostic messages" OFF)
+option(VERBOSE "Compile in argv.verbose mode for additional diagnostic messages" OFF)
 # Section for the performance tests (i.e. the client). These compare against optionally a reference
 """

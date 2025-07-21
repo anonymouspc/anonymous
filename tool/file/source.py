@@ -1,6 +1,6 @@
 from common.algorithm import recursive_find
 from common.compiler  import preprocess_file, compile_source
-from common.config    import type, object_suffix
+from common.config    import argv, object_suffix
 from file.module      import Module
 from file.package     import Package
 import asyncio
@@ -35,15 +35,13 @@ class Source:
         # Info
         self.name        = name
         self.code_file   =            f"./source/{self.name.replace('.', '/').replace(':', '/')}.cpp"
-        self.object_file = f"./bin/{type}/source/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
+        self.object_file = f"./bin/{argv.type}/source/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
         self.content     = await preprocess_file(code_file=self.code_file)
 
         # Import
         import_tasks = []
         import_names = re.findall(r'^\s*import\s+([\w\.:]+)\s*;\s*$', self.content, flags=re.MULTILINE)
-        for import_name in import_names:
-            import_tasks += [Module(import_name)]
-        self.import_modules = await asyncio.gather(*import_tasks)
+        self.import_modules = await asyncio.gather(*[Module(import_name) for import_name in import_names])
 
         # Status
         self.is_compiled = all(module.is_compiled for module in self.import_modules)              and \

@@ -1,4 +1,4 @@
-from common.config import type
+from common.config import argv
 from common.make   import cmake
 
 async def build():
@@ -7,7 +7,7 @@ async def build():
         dir="./package/bzip2",
         args=[
             "-DENABLE_WERROR=false",
-            f"-DENABLE_DEBUG={type=='debug'}",
+            f"-DENABLE_DEBUG={argv.type=='debug'}",
             "-DENABLE_APP=false",
             "-DENABLE_TESTS=false",
             "-DENABLE_DOCS=false",
@@ -21,7 +21,7 @@ async def build():
 """
 >>> cat ./package/bzip2/CMakeOptions.txt | grep option
 option(ENABLE_WERROR     "Turn on compile time warnings")
-option(ENABLE_DEBUG      "Turn on debug output")
+option(ENABLE_DEBUG      "Turn on debug argv.output")
 option(ENABLE_APP        "Build applications (bzip2, and bzip2recover)"
 option(ENABLE_TESTS      "Build/enable unit tests."
 option(ENABLE_DOCS       "Generate documentation"
