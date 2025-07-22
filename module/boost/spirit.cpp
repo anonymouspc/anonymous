@@ -14,7 +14,7 @@ module;
 #include <boost/spirit/home/x3.hpp>
 
 export module boost.spirit;
-import std;
+import        std;
 
 export namespace boost::spirit
 {

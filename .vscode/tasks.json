@@ -13,7 +13,7 @@
             "group": "none",
             "type": "shell",
             "problemMatcher": [],
-            "command": "python ./tool/build.py --type=debug --output=executable"
+            "command": "python ./tool/build.py --type=debug"
         },
         {
             "label": "debug.build.shared",
@@ -59,7 +59,7 @@
             "group": "none",
             "type": "shell",
             "problemMatcher": [],
-            "command": "python ./tool/build.py --type=release --output=executable"
+            "command": "python ./tool/build.py --type=release"
         },
         {
             "label": "release.build.shared",

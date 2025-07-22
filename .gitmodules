@@ -70,7 +70,6 @@
 	path = package/zstd
 	url = https://github.com/facebook/zstd
 	branch = dev
-
 [submodule "package/fmt"]
 	path = package/fmt
 	url = https://github.com/fmtlib/fmt
@@ -98,3 +97,4 @@
 [submodule "package/vulkan"]
 	path = package/vulkan
 	url = https://github.com/KhronosGroup/Vulkan-Hpp
+	shallow = true

@@ -3,7 +3,6 @@ from common.config    import argv
 from common.run       import run
 from file.module      import Module
 from file.package     import Package
-import asyncio
 import os
 import shutil
 
@@ -19,7 +18,6 @@ async def include(name, file=None, dir=None, relpath='.'):
     except:
         shutil.rmtree(package.install_dir, ignore_errors=True)
         raise
-
 
 async def lib(name, file):
     package = await Package(name)
@@ -51,6 +49,7 @@ async def cmake(name, dir, args=[]):
         if not os.path.isdir(package.build_dir):
             await run(f"cmake -S {dir} "
                       f"      -B {package.build_dir} "
+                      f"      -DCMAKE_CXX_COMPILER={argv.compiler} "
                       f'      -DCMAKE_PREFIX_PATH="{';'.join(await recursive_find(node=await Module(name), func=_module_to_install_dir, root=True))}" '
                       f"      -DCMAKE_INSTALL_PREFIX={package.install_dir} "
                       f"      -DCMAKE_BUILD_TYPE={argv.type} "
@@ -88,10 +87,14 @@ async def configure(name, file, args=[]):
     package = await Package(name)
     try:
         if not os.path.isdir(package.build_dir):
+            env=os.environ().copy()
+            env["CXX"] = argv.compiler
             os.makedirs(package.build_dir, exist_ok=True)
             await run(f"{os.path.abspath(file)} --prefix={os.path.abspath(package.install_dir)} {' '.join(args)}",
                       cwd     =package.build_dir,
+                      env     =env,
                       on_start=_print_progress(name))
+
     except:
         shutil.rmtree(package.build_dir, ignore_errors=True)
         raise
