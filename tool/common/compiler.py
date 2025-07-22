@@ -5,7 +5,6 @@ import os
 import re
 
 async def preprocess_file(code_file, name=None, module_file=None, **run_args):
-    command = ""
     if compiler == "g++" or compiler == "clang++":
         command = f"{compiler} "                \
                   f"{' '.join(compile_flags)} " \
@@ -34,7 +33,6 @@ async def preprocess_file(code_file, name=None, module_file=None, **run_args):
 async def compile_module(code_file, include_dirs, module_file, object_file, **run_args):
     os.makedirs(os.path.dirname(module_file), exist_ok=True)
     os.makedirs(os.path.dirname(object_file), exist_ok=True)
-    command = ""
     if compiler == "g++":
         command = f"g++ "                                                                        \
                   f"{' '.join(compile_flags)} "                                                  \
@@ -66,7 +64,6 @@ async def compile_module(code_file, include_dirs, module_file, object_file, **ru
 
 async def compile_source(code_file, include_dirs, object_file, **run_args):
     os.makedirs(os.path.dirname(object_file), exist_ok=True)
-    command = ""
     if compiler == "g++" or compiler == "clang++":
         command = f"{compiler} "                                                                 \
                   f"{' '.join(compile_flags)} "                                                  \
@@ -85,7 +82,6 @@ async def compile_source(code_file, include_dirs, object_file, **run_args):
         
 async def link_object(object_files, library_files, output_file, **run_args):
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
-    command = ""
     if compiler == "g++" or compiler == "clang++":
         command = f"{compiler} "                \
                   f"{' '.join(link_flags)} "    \
