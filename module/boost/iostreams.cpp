@@ -16,11 +16,11 @@ module;
 #include <boost/iostreams/src/zstd.cpp>
 
 export module boost.iostreams;
-import std;
-import bzip2;
-import xz;
-import zlib;
-import zstd;
+import        std;
+import        bzip2;
+import        xz;
+import        zlib;
+import        zstd;
 
 export namespace boost::iostreams
 {

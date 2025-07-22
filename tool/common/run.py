@@ -2,10 +2,12 @@ from common.error  import SubprocessError
 from common.config import argv
 from common.scheduler import scheduler
 import asyncio
+import os
 import sys
 
 async def run(cmd, 
-              cwd            ='.', 
+              cwd            ='.',
+              env            =os.environ.copy(),
               input_stdin    =None, 
               print_stdout   =argv.verbose, 
               print_stderr   =True, 
@@ -23,6 +25,7 @@ async def run(cmd,
         proc = await asyncio.subprocess.create_subprocess_shell(
             cmd=cmd,
             cwd=cwd,
+            env=env,
             stdin =asyncio.subprocess.PIPE,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE
