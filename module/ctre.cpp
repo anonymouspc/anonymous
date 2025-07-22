@@ -6,7 +6,7 @@ module;
 #pragma warning( disable : 5202 )
 #endif
 
-import std;
+import        std;
 
 export module ctre;
 

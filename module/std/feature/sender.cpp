@@ -5,7 +5,7 @@ module;
 
 export module std:feature.sender;
 import           :compiler;
-export import stdexec;
+export import        stdexec;
 
 export namespace std
 {

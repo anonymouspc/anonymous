@@ -59,8 +59,8 @@ module;
 #endif
 
 export module boost.locale;
-import std;
-import icu;
+import        std;
+import        icu;
 
 export namespace boost::locale
 {

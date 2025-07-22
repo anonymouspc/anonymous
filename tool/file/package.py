@@ -63,9 +63,6 @@ class Package:
         # Self
         if hasattr(self.tool_module, "initialize"):
             await self.tool_module.initialize()
-
-        # Check
-        assert await Package.exist(self.name)
         
     async def _create_build_task(self):
         # Import

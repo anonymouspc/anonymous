@@ -1,8 +1,9 @@
-from common.config import system, argv
+from common.config import argv
 from common.make   import cmake, autogen, configure, make
+import sys
 
 async def build():
-    if system == "windows":
+    if sys.platform == "win32":
         await cmake(
             name="hwloc",
             dir="./package/hwloc/contrib/windows-cmake",
@@ -14,7 +15,7 @@ async def build():
                 "-DHWLOC_BUILD_SHARED_LIBS=false"
             ]
         )
-    elif system == "linux" or system == "macos":
+    elif sys.platform == "linux" or sys.platform == "darwin":
         await autogen(
             name="hwloc",
             file="./package/hwloc/autogen.sh"
