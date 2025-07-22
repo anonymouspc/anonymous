@@ -6,7 +6,7 @@ module;
 #include <boost/compute.hpp>
 
 export module boost.compute;
-import std;
+import        std;
 import opencl;
 
 export namespace boost::compute

@@ -1,54 +1,74 @@
+from common.error import LogicError
 import argparse
 import os
+import subprocess
 import sys
 import warnings
 
 # Settings
-
 os.chdir(f"{os.path.dirname(__file__)}/../..")
 os.environ["LANG"] = "en_US.UTF-8"
 
 
 
-# Arguments
-parser = argparse.ArgumentParser(description="build.py")
-parser.add_argument("--type",           choices=["debug", "release"],       default="debug"       )
-parser.add_argument("--output",         choices=["executable",  "shared"],  default="executable"  )
-parser.add_argument("--parallel",       type=lambda n: int(n),              default=os.cpu_count())
-parser.add_argument("--verbose",        action="store_true",                default=False         )
-parser.add_argument("--enable-python",                                      default=True          )
-parser.add_argument("--enable-cuda",                                        default=False         )
-parser.add_argument("--enable-opencl",                                      default=True          )
-parser.add_argument("--update-package", choices=["always", "new", "never"], default="new"         )
-argv = parser.parse_args()
-
-
 # System
-
 if sys.platform == "win32":
-    system            = "windows"
-    compiler          = "cl"
+    default_compiler  = "cl"
     executable_suffix = "exe"
     shared_suffix     = "dll"
     env_seperator     = ';'
 elif sys.platform == "linux":
-    system            = "linux"
-    compiler          = "g++"
+    default_compiler  = "g++"
     executable_suffix = ""
     shared_suffix     = "so"
     env_seperator     = ':'
 elif sys.platform == "darwin":
-    system            = "macos"
-    compiler          = "clang++"
+    default_compiler  = "clang++"
     executable_suffix = ""
     shared_suffix     = "dylib"
     env_seperator     = ':'
 
 
 
-# Flags
+# Arguments
+parser = argparse.ArgumentParser()
+parser.add_argument("--type",           choices=["debug", "release"],                             default="debug"         )
+parser.add_argument("--output",         choices=["executable",  "shared"],                        default="executable"    )
+parser.add_argument("--compiler",                                                                 default=default_compiler)
+parser.add_argument("--parallel",       type=lambda n: int(n),                                    default=os.cpu_count()  )
+parser.add_argument("--verbose",        action="store_true",                                      default=False           )
+parser.add_argument("--update-package", choices=["always", "new", "never"],                       default="new"           )
+group = parser.add_mutually_exclusive_group()
+group .add_argument("--enable-python",  action="store_true",                dest="enable_python", default=True            )
+group .add_argument("--disable-python", action="store_false",               dest="enable_python", default=False           )
+group = parser.add_mutually_exclusive_group()
+group .add_argument("--enable-cuda",    action="store_true",                dest="enable_cuda",   default=False           )
+group .add_argument("--disable-cuda",   action="store_false",               dest="enable_cuda",   default=True            )
+group = parser.add_mutually_exclusive_group()
+group .add_argument("--enable-opencl",  action="store_true",                dest="enable_opencl", default=False           )
+group .add_argument("--disable-opencl", action="store_false",               dest="enable_opencl", default=True            )
+group .add_argument("--with-opencl-lib-file")
+group = parser.add_mutually_exclusive_group()
+group .add_argument("--enable-vulkan",  action="store_true",                dest="enable_vulkan", default=False           )
+group .add_argument("--disable-vulkan", action="store_false",               dest="enable_vulkan", default=True            )
+group .add_argument("--with-vulkan")
+argv = parser.parse_args()
 
-if compiler == "g++":
+
+
+# Compiler
+compiler_info = subprocess.run(f"{argv.compiler}", shell=True, capture_output=True, text=True).stderr
+if compiler_info.startswith("gcc") or compiler_info.startswith("g++"):
+    compiler_name = "g++"
+elif compiler_info.startswith("clang") or compiler_info.startswith("clang++"):
+    compiler_name = "clang++"
+elif compiler_info.startswith("Microsoft"):
+    compiler_name = "cl"
+else:
+    raise LogicError("compiler not recognized")
+
+# Flags
+if compiler_name == "g++":
     compile_flags = [
         "-std=c++26", 
         "-Wall",
@@ -67,7 +87,7 @@ if compiler == "g++":
     module_suffix = "gcm"
     object_suffix = "o"
     static_suffix = "a"
-elif compiler == "clang++":
+elif compiler_name == "clang++":
     compile_flags = [
         "-std=c++26", 
         "-Wall", 
@@ -85,7 +105,7 @@ elif compiler == "clang++":
     module_suffix = "pcm"
     object_suffix = "o"
     static_suffix = "a"
-elif compiler == "cl":
+elif compiler_name == "cl":
     compile_flags = [
         "/std:c++latest",
         "/EHsc",
@@ -112,5 +132,5 @@ define_flags  = {
 
 
 # Warnings
-
 warnings.filterwarnings("ignore", "coroutine .* was never awaited")
+

@@ -25,6 +25,7 @@ import tiff;
 #if defined(_WIN32) or defined(__linux__)
     import thrust;
 #endif
+import xlnt;
 import xz; 
 import zlib;
 import zstd;
