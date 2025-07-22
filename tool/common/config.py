@@ -92,7 +92,7 @@ elif compiler_name == "clang++":
         "-std=c++26", 
         "-Wall", 
         "-fdiagnostics-color=always",
-       f"-fprebuilt-module-path=./bin/{argv.type}/module",
+       f"-fprebuilt-module-path=./bin/{argv.type}/module"
     ]
     link_flags = []
     if argv.type == "debug":
@@ -133,4 +133,3 @@ define_flags  = {
 
 # Warnings
 warnings.filterwarnings("ignore", "coroutine .* was never awaited")
-
