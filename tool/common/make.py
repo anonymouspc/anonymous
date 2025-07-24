@@ -56,7 +56,7 @@ async def cmake(name, dir, args=[]):
                       f"{' '.join(args)}",
                       on_start=_print_progress(name))
     except:
-        shutil.rmtree(package.build_dir)
+        shutil.rmtree(package.build_dir, ignore_errors=True)
         raise
     try:
         await run(f"cmake --build   {package.build_dir} -j {argv.parallel}", 
@@ -71,7 +71,7 @@ async def cmake(name, dir, args=[]):
                   parallel    =argv.parallel, 
                   on_start    =_print_progress(name))
     except:
-        shutil.rmtree(package.install_dir)
+        shutil.rmtree(package.install_dir, ignore_errors=True)
         raise
 
 async def autogen(name, file, args=[]):

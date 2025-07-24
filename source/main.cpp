@@ -9,6 +9,8 @@ auto operator | ( std::execution::sender auto&& lhs, auto&& rhs )
 
 using namespace anonymous;
 
+import eigen;
+
 int main ( )
 {
     auto a = [] (auto&&...) { std::println("{}", "hello"); };
