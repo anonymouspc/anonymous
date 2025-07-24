@@ -17,6 +17,10 @@ async def run(cmd,
               on_start       =None,
               on_finish      =None):
     async with scheduler.schedule(parallel):
+        if argv.dry_run and not return_stdout and not return_stderr:
+            print(cmd)
+            return
+
         if on_start is not None:
             await on_start
 

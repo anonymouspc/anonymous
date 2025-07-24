@@ -14,7 +14,7 @@ export namespace anonymous
         private: // Detail
             const char* str = nullptr;
             enum class mode { implicit_mode, explicit_mode, default_mode };
-            constexpr static mode get_format_mode ( const char* );
+            static constexpr mode get_format_mode ( const char* );
     };
 
 

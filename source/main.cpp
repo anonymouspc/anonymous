@@ -1,13 +1,20 @@
 import anonymous;
-import xlnt;
+import std;
+import boost.core;
+
+auto operator | ( std::execution::sender auto&& lhs, auto&& rhs )
+{
+    return rhs(lhs);
+}
+
 using namespace anonymous;
 
 int main ( )
 {
-    auto workbook = xlnt::workbook();
-    auto worksheet = workbook.active_sheet();
-    for ( int i in range(1, 100) ) 
-        for ( int j in range(1, 100) )
-            worksheet.cell(i, j).value(i + j);
-    workbook.save("hello.xlsx");
+    auto a = [] (auto&&...) { std::println("{}", "hello"); };
+    a(1, 2, 3);
+    auto task1 = std::execution::schedule(system::execution_context.get_scheduler());
+    auto task2 = std::move(task1)
+               | std::execution::then([] (auto&&...) { std::println("{}", std::this_thread::get_id()); });
+    std::execution::sync_wait(std::move(task2));
 }

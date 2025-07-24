@@ -94,7 +94,3 @@
 [submodule "package/xlnt"]
 	path = package/xlnt
 	url = https://github.com/xlnt-community/xlnt
-[submodule "package/vulkan"]
-	path = package/vulkan
-	url = https://github.com/KhronosGroup/Vulkan-Hpp
-	shallow = true

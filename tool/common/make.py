@@ -87,7 +87,7 @@ async def configure(name, file, args=[]):
     package = await Package(name)
     try:
         if not os.path.isdir(package.build_dir):
-            env=os.environ().copy()
+            env=os.environ.copy()
             env["CXX"] = argv.compiler
             os.makedirs(package.build_dir, exist_ok=True)
             await run(f"{os.path.abspath(file)} --prefix={os.path.abspath(package.install_dir)} {' '.join(args)}",

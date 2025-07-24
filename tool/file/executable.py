@@ -1,7 +1,7 @@
-from common.compiler  import run_executable
-from common.config    import argv, executable_suffix
-from common.scheduler import scheduler
-from file.object      import Object
+from common.compiler import run_executable
+from common.config   import argv, executable_suffix
+from common.error    import LogicError
+from file.object     import Object
 import asyncio
 
 class Executable:
@@ -26,29 +26,37 @@ class Executable:
             await self.run_task
     
     async def _create_new_task(self, name):
-        # Info
-        self.name            = name
-        self.executable_file = f"./bin/{argv.type}/source/{self.name.replace('.', '.').replace(':', '/')}.{executable_suffix}" if executable_suffix != "" else \
-                               f"./bin/{argv.type}/source/{self.name.replace('.' ,'.').replace(':', '/')}"
-        
-        # Import
-        await Object(self.name)
+        try:
+            # Info
+            self.name            = name
+            self.executable_file = f"./bin/{argv.type}/source/{self.name.replace('.', '.').replace(':', '/')}.{executable_suffix}" if executable_suffix != "" else \
+                                   f"./bin/{argv.type}/source/{self.name.replace('.' ,'.').replace(':', '/')}"
+            
+            # Import
+            await Object(self.name)
 
-        # Status
-        self.is_runned = False # always assumed to be false
-        self.run_task = None
-        Executable.total += 1
+            # Status
+            self.is_runned = False # always assumed to be false
+            self.run_task = None
+            Executable.total += 1
+
+        except LogicError as e:
+            raise e.add_prefix(f"In executable {self.name}:")
 
     async def _create_run_task(self):
-        # Import
-        await (await Object(self.name)).link()
+        try:
+            # Import
+            await (await Object(self.name)).link()
 
-        # Self
-        await run_executable(executable_file=f"./{self.executable_file}",
-                             on_start       =Executable._print_progress(name=self.name))
+            # Self
+            await run_executable(executable_file=f"./{self.executable_file}",
+                                 on_start       =Executable._print_progress(name=self.name))
 
-        # Status
-        self.is_runned = True
+            # Status
+            self.is_runned = True
+
+        except LogicError as e:
+            raise e.add_prefix(f"In executable {self.name}:")
 
     async def _print_progress(name):
         Executable.current += 1
