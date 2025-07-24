@@ -7,9 +7,6 @@ from file.source     import Source
 import asyncio
 import os
 import sys
-import time
-
-start = time.time()
 
 async def test():
     try:
@@ -34,7 +31,7 @@ if __name__ == "__main__":
         exit(-1)
     except SubprocessError as e:
         print(e, file=sys.stderr) if not e.is_stderr_printed else None
-        print(e, file=open(".log", 'w'))
+        print(e, file=open(".log", 'a'))
         exit(-1)
     except KeyboardInterrupt as e:
         exit(-1)

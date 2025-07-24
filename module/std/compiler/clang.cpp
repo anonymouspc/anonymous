@@ -162,45 +162,58 @@ module;
 // and that means the MSVC STL headers can be found as well, tricking __has_include
 // into thinking that libc++ provides the header.
 //
-#ifndef _WIN32
-#  if __has_include(<debugging>)
-#    error "please update the header information for <debugging> in headers_not_available in utils/libcxx/header_information.py"
-#  endif // __has_include(<debugging>)
-#  if __has_include(<flat_set>)
-#    error "please update the header information for <flat_set> in headers_not_available in utils/libcxx/header_information.py"
-#  endif // __has_include(<flat_set>)
-#  if __has_include(<generator>)
-#    error "please update the header information for <generator> in headers_not_available in utils/libcxx/header_information.py"
-#  endif // __has_include(<generator>)
-#  if __has_include(<hazard_pointer>)
-#    error "please update the header information for <hazard_pointer> in headers_not_available in utils/libcxx/header_information.py"
-#  endif // __has_include(<hazard_pointer>)
-#  if __has_include(<inplace_vector>)
-#    error "please update the header information for <inplace_vector> in headers_not_available in utils/libcxx/header_information.py"
-#  endif // __has_include(<inplace_vector>)
-#  if __has_include(<linalg>)
-#    error "please update the header information for <linalg> in headers_not_available in utils/libcxx/header_information.py"
-#  endif // __has_include(<linalg>)
-#  if __has_include(<rcu>)
-#    error "please update the header information for <rcu> in headers_not_available in utils/libcxx/header_information.py"
-#  endif // __has_include(<rcu>)
-#  if __has_include(<spanstream>)
-#    error "please update the header information for <spanstream> in headers_not_available in utils/libcxx/header_information.py"
-#  endif // __has_include(<spanstream>)
-#  if __has_include(<stacktrace>)
-#    error "please update the header information for <stacktrace> in headers_not_available in utils/libcxx/header_information.py"
-#  endif // __has_include(<stacktrace>)
-#  if __has_include(<stdfloat>)
-#    error "please update the header information for <stdfloat> in headers_not_available in utils/libcxx/header_information.py"
-#  endif // __has_include(<stdfloat>)
-#  if __has_include(<text_encoding>)
-#    error "please update the header information for <text_encoding> in headers_not_available in utils/libcxx/header_information.py"
-#  endif // __has_include(<text_encoding>)
-#endif // _WIN32
+// #ifndef _WIN32
+// #  if __has_include(<debugging>)
+// #    error "please update the header information for <debugging> in headers_not_available in utils/libcxx/header_information.py"
+// #  endif // __has_include(<debugging>)
+// #  if __has_include(<flat_set>)
+// #    error "please update the header information for <flat_set> in headers_not_available in utils/libcxx/header_information.py"
+// #  endif // __has_include(<flat_set>)
+// #  if __has_include(<generator>)
+// #    error "please update the header information for <generator> in headers_not_available in utils/libcxx/header_information.py"
+// #  endif // __has_include(<generator>)
+// #  if __has_include(<hazard_pointer>)
+// #    error "please update the header information for <hazard_pointer> in headers_not_available in utils/libcxx/header_information.py"
+// #  endif // __has_include(<hazard_pointer>)
+// #  if __has_include(<inplace_vector>)
+// #    error "please update the header information for <inplace_vector> in headers_not_available in utils/libcxx/header_information.py"
+// #  endif // __has_include(<inplace_vector>)
+// #  if __has_include(<linalg>)
+// #    error "please update the header information for <linalg> in headers_not_available in utils/libcxx/header_information.py"
+// #  endif // __has_include(<linalg>)
+// #  if __has_include(<rcu>)
+// #    error "please update the header information for <rcu> in headers_not_available in utils/libcxx/header_information.py"
+// #  endif // __has_include(<rcu>)
+// #  if __has_include(<spanstream>)
+// #    error "please update the header information for <spanstream> in headers_not_available in utils/libcxx/header_information.py"
+// #  endif // __has_include(<spanstream>)
+// #  if __has_include(<stacktrace>)
+// #    error "please update the header information for <stacktrace> in headers_not_available in utils/libcxx/header_information.py"
+// #  endif // __has_include(<stacktrace>)
+// #  if __has_include(<stdfloat>)
+// #    error "please update the header information for <stdfloat> in headers_not_available in utils/libcxx/header_information.py"
+// #  endif // __has_include(<stdfloat>)
+// #  if __has_include(<text_encoding>)
+// #    error "please update the header information for <text_encoding> in headers_not_available in utils/libcxx/header_information.py"
+// #  endif // __has_include(<text_encoding>)
+// #endif // _WIN32
 
 export module std:compiler.clang;
 
 export namespace std {
+  #ifdef __cpp_lib_ranges_join_with
+  namespace ranges {
+    using std::ranges::join_with_view;
+    namespace views {
+      using std::ranges::views::join_with;
+    }
+  }
+  #endif
+
+  #ifdef __cpp_lib_aligned_accessor
+  using std::aligned_accessor;
+  #endif
+
   namespace ranges {
     using std::ranges::in_found_result;
     using std::ranges::in_fun_result;

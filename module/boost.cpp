@@ -3,7 +3,9 @@ export import boost.asio;
 export import boost.beast;
 export import boost.charconv;
 export import boost.core;
+#ifdef ENABLE_OPENCL
 export import boost.compute;
+#endif
 export import boost.date_time;
 export import boost.dll;
 export import boost.filesystem;
