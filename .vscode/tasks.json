@@ -9,18 +9,11 @@
             "command": "python ./tool/clean.py --type=debug"
         },
         {
-            "label": "debug.build.executable",
+            "label": "debug.build",
             "group": "none",
             "type": "shell",
             "problemMatcher": [],
             "command": "python ./tool/build.py --type=debug"
-        },
-        {
-            "label": "debug.build.shared",
-            "group": "none",
-            "type": "shell",
-            "problemMatcher": [],
-            "command": "python ./tool/build.py --type=debug --output=shared"
         },
         {
             "label": "debug.test",
@@ -42,7 +35,7 @@
             "type": "shell",
             "problemMatcher": [],
             "dependsOn": [
-                "debug.build.executable",
+                "debug.build",
                 "debug.run"
             ],
             "dependsOrder": "sequence",
@@ -55,18 +48,11 @@
             "command": "python ./tool/clean.py --type=release"
         },
         {
-            "label": "release.build.executable",
+            "label": "release.build",
             "group": "none",
             "type": "shell",
             "problemMatcher": [],
             "command": "python ./tool/build.py --type=release"
-        },
-        {
-            "label": "release.build.shared",
-            "group": "none",
-            "type": "shell",
-            "problemMatcher": [],
-            "command": "python ./tool/build.py --type=release --output=shared"
         },
         {
             "label": "release.test",
@@ -88,7 +74,7 @@
             "type": "shell",
             "problemMatcher": [],
             "dependsOn": [
-                "release.build.executable",
+                "release.build",
                 "release.run"
             ],
             "dependsOrder": "sequence"

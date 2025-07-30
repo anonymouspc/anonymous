@@ -9,6 +9,8 @@ import sysconfig
 async def initialize():
     if not argv.enable_python:
         raise LogicError("arg `--disable-python` set but package `python` imported")
+    
+    common.config.define_flags["ENABLE_PYTHON"] = "true"
     common.config.define_flags["PYTHONPATH"] = f'L\\"{env_seperator.join([pythonpath for pythonpath in site.getsitepackages()])}\\"'
 
 async def build():

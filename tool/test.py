@@ -1,4 +1,5 @@
 from common.error    import LogicError, SubprocessError
+from common.logger   import compile_output_logger
 from file.executable import Executable
 from file.module     import Module
 from file.object     import Object
@@ -23,17 +24,18 @@ async def test():
 
 if __name__ == "__main__":
     try:
-        open(".log", 'w')
         asyncio.run(test())
     except LogicError as e:
         print(e, file=sys.stderr)
-        print(e, file=open(".log", 'w'))
+        compile_output_logger.log(str(e))
         exit(-1)
     except SubprocessError as e:
         print(e, file=sys.stderr) if not e.is_stderr_printed else None
-        print(e, file=open(".log", 'a'))
+        compile_output_logger.log(str(e))
         exit(-1)
-    except KeyboardInterrupt as e:
+    except KeyboardInterrupt:
+        exit(-1)
+    except asyncio.CancelledError:
         exit(-1)
     except:
         raise

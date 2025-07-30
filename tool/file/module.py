@@ -50,7 +50,7 @@ class Module:
             # Check
             export_names = re.findall(r'^\s*export\s+module\s+([\w\.:]+)\s*;\s*$', self.content, flags=re.MULTILINE)
             if (len(export_names) != 1 or export_names[0] != self.name):
-                raise LogicError(f"file {self.code_file} export module {export_names} but expect to export module {self.name}")
+                raise LogicError(f"file {self.code_file} export module {export_names} but expect to export module {[self.name]}")
 
             # Import
             self.import_names = [import_name if not import_name.startswith(':') else f"{self.name.partition(':')[0]}{import_name}" for import_name in re.findall(r'^\s*(?:export\s+)?import\s+([\w\.:]+)\s*;\s*$', self.content, flags=re.MULTILINE)]

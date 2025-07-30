@@ -1,4 +1,9 @@
 bin
-.log
 
-__pycache__
+*.o
+*.lib
+*.a
+*.dll
+*.so
+*.dylib
+*.pyc

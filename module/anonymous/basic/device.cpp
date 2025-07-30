@@ -9,7 +9,3 @@ export import          :basic.device.cuda;
 #ifdef ENABLE_OPENCL
 export import          :basic.device.opencl;
 #endif
-#ifdef ENABLE_VULKAN
-export import          :basic.device.vulkan;
-#endif
-

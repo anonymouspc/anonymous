@@ -1,5 +1,6 @@
 from common.config import argv, compiler_name, compile_flags, link_flags, define_flags
 from common.error  import LogicError
+from common.logger import compile_commands_logger
 from common.run    import run
 import os
 import re
@@ -62,6 +63,7 @@ async def compile_module(code_file, include_dirs, module_file, object_file, **ru
                   f"/c /interface /TP {code_file} "                                              \
                   f"/ifcOutput        {module_file} "                                            \
                   f"/Fo               {object_file}"
+    compile_commands_logger.log(file=code_file, command=command.partition("&&")[0])
     await run(command, **run_args)
 
 async def compile_source(code_file, include_dirs, object_file, **run_args):
@@ -81,6 +83,7 @@ async def compile_source(code_file, include_dirs, object_file, **run_args):
                   f"{' '.join(f'/D {key}="{value}"' for key, value   in define_flags.items())} " \
                   f"/c  {code_file} "                                                            \
                   f"/Fo {object_file}"
+    compile_commands_logger.log(file=code_file, command=command.partition("&&")[0])
     await run(command, **run_args)
         
 async def link_object(object_files, library_files, output_file, **run_args):

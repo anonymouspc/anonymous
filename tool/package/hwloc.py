@@ -55,8 +55,8 @@ option(HWLOC_BUILD_SHARED_LIBS "build shared libraries" ${BUILD_SHARED_LIBS})
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
-  --enable-silent-rules   less argv.verbose build argv.output (undo: "make V=1")
-  --disable-silent-rules  argv.verbose build argv.output (undo: "make V=0")
+  --enable-silent-rules   less argv.verbose build output (undo: "make V=1")
+  --disable-silent-rules  argv.verbose build output (undo: "make V=0")
   --enable-dependency-tracking
   --disable-dependency-tracking
   --enable-shared[=PKGS]  build shared libraries [default=yes]

@@ -8,6 +8,9 @@
             "cppStandard": "c++23",
             "includePath": [
                 "${workspaceFolder}/bin/debug/package/**/install/include/**"
+            ],
+            "defines": [
+                ""
             ]
         }
     ]

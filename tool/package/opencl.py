@@ -7,13 +7,13 @@ import sys
 async def initialize():
     if not argv.enable_opencl:
         raise LogicError("arg `--disable-opencl` set but package `opencl` imported")
-    if not hasattr(argv, "with_opencl"):
-        if sys.platform == "win32":
-            raise LogicError("arg `--enable-opencl` set but arg `--with-opencl` not found and not default configurable")
-        elif sys.platform == "linux":
-            common.config.link_flags += ["-lOpenCL"]
-        elif sys.platform == "darwin":
-            common.config.link_flags += ["-framework OpenCL"]
+    
+    if sys.platform == "win32":
+        raise LogicError("not coded yet")
+    elif sys.platform == "linux":
+        common.config.link_flags += ["-lOpenCL"]
+    elif sys.platform == "darwin":
+        common.config.link_flags += ["-framework OpenCL"]
     common.config.define_flags["ENABLE_OPENCL"] = "true"
 
 async def build():
@@ -21,8 +21,3 @@ async def build():
         name="opencl",
         dir="./package/opencl/CL"
     )
-    if hasattr(argv, "with_opencl"):
-        await lib(
-            name="opencl",
-            file=argv.with_opencl
-        )
