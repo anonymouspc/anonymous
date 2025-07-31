@@ -94,9 +94,3 @@
 [submodule "package/xlnt"]
 	path = package/xlnt
 	url = https://github.com/xlnt-community/xlnt
-[submodule "package/elements"]
-	path = package/elements
-	url = https://github.com/cycfi/elements
-[submodule "package/cairo"]
-	path = package/cairo
-	url = https://gitlab.freedesktop.org/cairo/cairo
