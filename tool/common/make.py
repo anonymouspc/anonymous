@@ -149,8 +149,6 @@ async def make(name, dir, args=[]):
         shutil.rmtree(package.install_dir, ignore_errors=True)
         raise
 
-
-
 async def _module_to_install_dir(module):
     return (await Package(module.name)).install_dir if await Package.exist(module.name) else None
 

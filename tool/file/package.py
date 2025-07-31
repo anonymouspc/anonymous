@@ -38,22 +38,22 @@ class Package:
         try:
             # Info
             self.name          = name
-            self.package_file  =  f"./tool/package/{self.name.replace('.', '/').replace(':', '/')}.py"
-            self.module_file   =  f"./module/{self.name}.cpp"
-            self.build_dir     =  f"./bin/{argv.type}/package/{self.name}/build"
-            self.install_dir   =  f"./bin/{argv.type}/package/{self.name}/install"
-            self.include_dir   =  f"./bin/{argv.type}/package/{self.name}/install/include"
-            self.lib_dir       =  f"./bin/{argv.type}/package/{self.name}/install/lib"
+            self.package_file  = f"./tool/package/{self.name.replace('.', '/').replace(':', '/')}.py"
+            self.module_file   = f"./module/{self.name}.cpp"
+            self.build_dir     = f"./bin/{argv.type}/package/{self.name}/build"
+            self.install_dir   = f"./bin/{argv.type}/package/{self.name}/install"
+            self.include_dir   = f"./bin/{argv.type}/package/{self.name}/install/include"
+            self.lib_dir       = f"./bin/{argv.type}/package/{self.name}/install/lib"
             self.library_files = [                           f"./bin/{argv.type}/package/{self.name}/install/lib/{file}"                                                                                  \
                                   for file in os.listdir    (f"./bin/{argv.type}/package/{self.name}/install/lib")                                                                                        \
                                   if          os.path.isfile(f"./bin/{argv.type}/package/{self.name}/install/lib/{file}") and (file.endswith(f".{static_suffix}") or file.endswith(f".{shared_suffix}"))] \
                                   if          os.path.isdir (f"./bin/{argv.type}/package/{self.name}/install/lib") else []
             
             # Import
-            self.import_packages = [] # Managed by Module
+            self.import_packages = [] # Managed by Module, as multiple Module may share one Package and stagely add import_packages.
             
             # Status
-            self.is_built    = False                           if argv.update_package == "always" else \
+            self.is_built = False                           if argv.update_package == "always" else \
                             os.path.isdir(self.install_dir) if argv.update_package == "new"    else \
                             True                            if argv.update_package == "never"  else \
                             None

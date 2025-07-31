@@ -53,7 +53,8 @@ class Module:
                 raise LogicError(f"file {self.code_file} export module {export_names} but expect to export module {[self.name]}")
 
             # Import
-            self.import_names = [import_name if not import_name.startswith(':') else f"{self.name.partition(':')[0]}{import_name}" for import_name in re.findall(r'^\s*(?:export\s+)?import\s+([\w\.:]+)\s*;\s*$', self.content, flags=re.MULTILINE)]
+            self.import_names = [import_name if not import_name.startswith(':') else f"{self.name.partition(':')[0]}{import_name}" 
+                                 for import_name in re.findall(r'^\s*(?:export\s+)?import\s+([\w\.:]+)\s*;\s*$', self.content, flags=re.MULTILINE)]
         
         except LogicError as e:
             raise e.add_prefix(f"In module {self.name}:")
@@ -66,18 +67,18 @@ class Module:
             await asyncio.gather(*[Module._check_dependency_cycle(from_name=self.name, to_name=import_name) for import_name in self.import_names])
 
             # Import
-            self.import_modules = await asyncio.gather(*[Module(name=import_name) for import_name in self.import_names])
+            self.import_modules = await asyncio.gather(*[Module(import_name) for import_name in self.import_names])
             if await Package.exist(self.name):
                 await Package(self.name)
-                (await Package(self.name)).import_packages += [await Package(import_module.name) for import_module in self.import_modules if await Package.exist(import_module.name)]
+                (await Package(self.name)).import_packages += [await Package(import_module.name) for import_module in self.import_modules if await Package.exist(import_module.name) and await Package(self.name) is not await Package(import_module.name)]
 
             # Status
-            self.is_compiled = all(module.is_compiled for module in self.import_modules)                    and \
-                               (not await Package.exist(self.name) or (await Package(self.name)).is_built)  and \
-                               os.path.isfile(self.code_file)                                               and \
-                               os.path.isfile(self.module_file)                                             and \
-                               os.path.isfile(self.object_file)                                             and \
-                               os.path.getmtime(self.code_file) <= os.path.getmtime(self.module_file)       and \
+            self.is_compiled = all(module.is_compiled for module in self.import_modules)                   and \
+                               (not await Package.exist(self.name) or (await Package(self.name)).is_built) and \
+                               os.path.isfile(self.code_file)                                              and \
+                               os.path.isfile(self.module_file)                                            and \
+                               os.path.isfile(self.object_file)                                            and \
+                               os.path.getmtime(self.code_file) <= os.path.getmtime(self.module_file)      and \
                                os.path.getmtime(self.code_file) <= os.path.getmtime(self.object_file)
             if not self.is_compiled:
                 self.compile_task = None
