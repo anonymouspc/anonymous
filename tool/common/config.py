@@ -49,9 +49,6 @@ group .add_argument("--disable-cuda",   action="store_false",               dest
 group = parser.add_mutually_exclusive_group()
 group .add_argument("--enable-opencl",  action="store_true",                dest="enable_opencl", default=False           )
 group .add_argument("--disable-opencl", action="store_false",               dest="enable_opencl", default=True            )
-group = parser.add_mutually_exclusive_group()
-group .add_argument("--enable-ui",      action="store_true",                dest="enable_ui",     default=False           )
-group .add_argument("--disable-ui",     action="store_false",               dest="enable_ui",     default=True            )
 argv = parser.parse_args()
 
 
