@@ -70,6 +70,7 @@ class Module:
             self.import_modules = await asyncio.gather(*[Module(import_name) for import_name in self.import_names])
             if await Package.exist(self.name):
                 await Package(self.name)
+                # TODO: Package._check_and_remove_dependency_cycle
                 (await Package(self.name)).import_packages += [await Package(import_module.name) for import_module in self.import_modules if await Package.exist(import_module.name) and await Package(self.name) is not await Package(import_module.name)]
 
             # Status

@@ -1,12 +1,13 @@
 export module anonymous:basic.algorithm.loop;
+import                 :basic.algorithm.range;
 import        std;
 
 export namespace anonymous
 {
-    template < int min, int max, int stride > constexpr void for_constexpr     ( auto&& );
-    template < int min, int max, int stride > constexpr void all_of_constexpr  ( auto&& );
-    template < int min, int max, int stride > constexpr void any_of_constexpr  ( auto&& );
-    template < int min, int max, int stride > constexpr void none_of_constexpr ( auto&& );
+    template < int min, int max, int stride = 1 > constexpr void for_constexpr     ( auto&& );
+    template < int min, int max, int stride = 1 > constexpr bool all_of_constexpr  ( auto&& );
+    template < int min, int max, int stride = 1 > constexpr bool any_of_constexpr  ( auto&& );
+    template < int min, int max, int stride = 1 > constexpr bool none_of_constexpr ( auto&& );
 
 
 
@@ -14,11 +15,11 @@ export namespace anonymous
     constexpr void for_constexpr ( auto&& ops )
     {
         if constexpr ( ( stride > 0 and min <= max ) or
-                     ( stride < 0 and min >= max ) )
+                       ( stride < 0 and min >= max ) )
             ops.template operator()<min>();
 
         if constexpr ( ( stride > 0 and min <= max - stride ) or 
-                    ( stride < 0 and min >= max - stride ) )
+                       ( stride < 0 and min >= max - stride ) )
             for_constexpr<min+stride,max,stride>(std::forward<decltype(ops)>(ops));
     }
 

@@ -33,11 +33,12 @@ async def module(name, file, replace={}):
     package = await Package(name)
     try:
         await _print_progress(name=name)
-        with open(file, 'r') as reader, open(package.module_file, 'w') as writer:
+        with open(file, 'r') as reader:
             content = reader.read()
             content = content.replace("module;", "module;\n#undef in\n#undef self")
             for old, new in replace.items():
                 content = content.replace(old, new)
+        with open(package.module_file, 'w') as writer:
             writer.write(content)
     except:
         os.remove(package.module_file)
@@ -47,13 +48,15 @@ async def cmake(name, dir, args=[]):
     package = await Package(name)
     try:
         if not os.path.isdir(package.build_dir):
+            env=os.environ.copy()
+            env["CXX"] = argv.compiler
             await run(f"cmake -S {dir} "
                       f"      -B {package.build_dir} "
-                      f"      -DCMAKE_CXX_COMPILER={argv.compiler} "
                       f'      -DCMAKE_PREFIX_PATH="{';'.join(await recursive_find(node=await Module(name), func=_module_to_install_dir, root=True))}" '
                       f"      -DCMAKE_INSTALL_PREFIX={package.install_dir} "
                       f"      -DCMAKE_BUILD_TYPE={argv.type} "
                       f"      {' '.join(args)}",
+                      env     =env,
                       on_start=_print_progress(name))
     except:
         shutil.rmtree(package.build_dir, ignore_errors=True)
@@ -67,36 +70,6 @@ async def cmake(name, dir, args=[]):
         raise
     try:
         await run(f"cmake --install {package.build_dir} -j {argv.parallel}",
-                  print_stderr=False, 
-                  parallel    =argv.parallel, 
-                  on_start    =_print_progress(name))
-    except:
-        shutil.rmtree(package.install_dir, ignore_errors=True)
-        raise
-
-async def meson(name, dir, args=[]):
-    package = await Package(name)
-    try:
-        if not os.path.isdir(package.build_dir):
-            await run(f"meson {package.build_dir} {dir} "
-                      f"      --default-library=static "
-                      f'      --cmake-prefix-path="{';'.join(await recursive_find(node=await Module(name), func=_module_to_install_dir, root=True))}" '
-                      f"      --prefix={os.path.abspath(package.install_dir)} "
-                      f"      --buildtype={argv.type} "
-                      f"      {' '.join(args)}",
-                      on_start=_print_progress(name))
-    except:
-        shutil.rmtree(package.build_dir, ignore_errors=True)
-        raise
-    try:
-        await run(f"meson compile -C {package.build_dir} -j {argv.parallel}", 
-                  print_stderr=False, 
-                  parallel    =argv.parallel, 
-                  on_start    =_print_progress(name))
-    except:
-        raise
-    try:
-        await run(f"meson install -C {package.build_dir}",
                   print_stderr=False, 
                   parallel    =argv.parallel, 
                   on_start    =_print_progress(name))

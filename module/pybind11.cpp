@@ -15,6 +15,7 @@ export namespace pybind11
     using pybind11::error_already_set;
     using pybind11::make_tuple;
     using pybind11::module_;
+    using pybind11::print;
     using pybind11::scoped_interpreter;
 
     inline auto interpreter = [] -> std::optional<pybind11::scoped_interpreter>

@@ -1,4 +1,4 @@
-export module anonymous:basic.concepts.tuple;
+export module anonymous:basic.concepts.tuples;
 import        std;
 
 export namespace anonymous

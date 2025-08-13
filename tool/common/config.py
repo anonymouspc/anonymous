@@ -1,6 +1,7 @@
 from common.error import LogicError
 import argparse
 import os
+import site
 import subprocess
 import sys
 import warnings
@@ -32,11 +33,11 @@ elif sys.platform == "darwin":
 
 # Arguments
 parser = argparse.ArgumentParser()
-parser.add_argument("--type",           choices=["debug", "release"],                             default="debug"         )
-parser.add_argument("--output",         choices=["executable",  "shared"],                        default="executable"    )
+parser.add_argument("--type",           choices=["debug", "release", "size"],                     default="debug"         )
+parser.add_argument("--output",         choices=["executable", "shared"],                         default="executable"    )
 parser.add_argument("--compiler",                                                                 default=default_compiler)
 parser.add_argument("--parallel",       type=lambda n: int(n),                                    default=os.cpu_count()  )
-parser.add_argument("--update-package", choices=["always", "new", "never"],                       default="new"           )
+parser.add_argument("--update-package", action="store_true",                                      default=False           )
 group = parser.add_mutually_exclusive_group()
 group .add_argument("--verbose",        action="store_true",                                      default=False           )
 group .add_argument("--dry-run",        action="store_true",                                      default=False           )
@@ -44,46 +45,48 @@ group = parser.add_mutually_exclusive_group()
 group .add_argument("--enable-python",  action="store_true",                dest="enable_python", default=False           )
 group .add_argument("--disable-python", action="store_false",               dest="enable_python", default=True            )
 group = parser.add_mutually_exclusive_group()
-group .add_argument("--enable-cuda",    action="store_true",                dest="enable_cuda",   default=False           )
-group .add_argument("--disable-cuda",   action="store_false",               dest="enable_cuda",   default=True            )
-group = parser.add_mutually_exclusive_group()
 group .add_argument("--enable-opencl",  action="store_true",                dest="enable_opencl", default=False           )
 group .add_argument("--disable-opencl", action="store_false",               dest="enable_opencl", default=True            )
+group = parser.add_mutually_exclusive_group()
+group .add_argument("--enable-cuda",    action="store_true",                dest="enable_cuda",   default=False           )
+group .add_argument("--disable-cuda",   action="store_false",               dest="enable_cuda",   default=True            )
 argv = parser.parse_args()
 
 
 # Compiler
 compiler_info = subprocess.run(f"{argv.compiler}", shell=True, capture_output=True, text=True).stderr
 if compiler_info.startswith("gcc") or compiler_info.startswith("g++"):
-    compiler_name = "g++"
+    compiler_id = "g++"
 elif compiler_info.startswith("clang") or compiler_info.startswith("clang++"):
-    compiler_name = "clang++"
+    compiler_id = "clang++"
 elif compiler_info.startswith("Microsoft"):
-    compiler_name = "cl"
+    compiler_id = "cl"
 else:
     raise LogicError(f"compiler {argv.compiler} not recognized")
 
 # Flags
-if compiler_name == "g++":
+if compiler_id == "g++":
     compile_flags = [
         "-std=c++26", 
         "-Wall",
         "-fdiagnostics-color=always",
         "-fmodules",
-       f"-fmodule-mapper=./bin/{argv.type}/module/mapper.txt",
+       f"-fmodule-mapper=./bin/cache/module_mapper.txt",
     ]
     link_flags = ["-static"]
     if argv.type == "debug":
         compile_flags += ["-g", "-O0", "-DDEBUG", "-fno-inline"]
     elif argv.type == "release":
         compile_flags += [      "-O3", "-DNDEBUG"]
-        compile_flags += ["-s"]
+        link_flags    += ["-s"]
+    elif argv.type == "size":
+        compile_flags += [      "-Os"]
     if argv.output == "shared":
         link_flags += ["-shared", "-fPIC"]
     module_suffix = "gcm"
     object_suffix = "o"
     static_suffix = "a"
-elif compiler_name == "clang++":
+elif compiler_id == "clang++":
     compile_flags = [
         "-std=c++26", 
         "-Wall", 
@@ -96,12 +99,14 @@ elif compiler_name == "clang++":
     elif argv.type == "release":
         compile_flags += [      "-O3", "-DNDEBUG"]
         link_flags    += ["-s"]
+    elif argv.type == "size":
+        compile_flags += [      "-Os"]
     if argv.output == "shared":
         link_flags += ["-shared", '-fPIC']
     module_suffix = "pcm"
     object_suffix = "o"
     static_suffix = "a"
-elif compiler_name == "cl":
+elif compiler_id == "cl":
     compile_flags = [
         "/std:c++latest",
         "/EHsc",
@@ -112,19 +117,27 @@ elif compiler_name == "cl":
         compile_flags += ["/Z7", "/Od", "/DDEBUG" ]
     elif argv.type == "release":
         compile_flags += [       "/O2", "/DNDEBUG"]
+    elif argv.type == "size":
+        compile_flags += [       "/O1"]
     if argv.output == "shared":
         link_flags += ["/LD"]
     module_suffix = "ifc"
     object_suffix = "obj"
     static_suffix = "lib"
 
-define_flags  = {
+defines = {
     "abstract": '0', 
     "extends" : ':',
     "in"      : ':', 
     "self"    : "(*this)"
 }
-
+if argv.enable_python:
+    defines["ENABLE_PYTHON"] = "true"
+    defines["PYTHONPATH"   ] = f'L\\"{env_seperator.join([pythonpath for pythonpath in site.getsitepackages()])}\\"'
+if argv.enable_opencl:
+    defines["ENABLE_OPENCL"] = "true"
+if argv.enable_cuda:
+    defines["ENABLE_CUDA"  ] = "true"
 
 
 # Warnings

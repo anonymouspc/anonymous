@@ -36,3 +36,12 @@ class CompileOutputLogger:
         self.writer.write(message)
 
 compile_output_logger = CompileOutputLogger()
+
+class ModuleMapperLogger:
+    def __init__(self):
+        self.writer = open("./bin/cache/module_mapper.txt", 'w')
+    
+    def log(self, name, file):
+        self.writer.write(f"{name} {file}\n")
+
+module_mapper_logger = ModuleMapperLogger()

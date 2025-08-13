@@ -4,3 +4,4 @@ export import          :basic.concepts;
 export import          :basic.config;
 export import          :basic.device;
 export import          :basic.error;
+export import          :basic.utility;

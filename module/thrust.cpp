@@ -1,6 +1,6 @@
 module;
 #define THRUST_HOST_SYSTEM   THRUST_HOST_SYSTEM_CPP
-#define THRUST_DEVICE_SYSTEM THRUST_DEVICE_SYSTEM_TBB
+#define THRUST_DEVICE_SYSTEM THRUST_DEVICE_SYSTEM_CUDA
 #undef in
 #undef self
 #include <thrust/addressof.h>
