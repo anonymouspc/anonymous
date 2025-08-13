@@ -25,7 +25,6 @@ async def pybind():
 
 if __name__ == "__main__":
     try:
-        open(".log", 'w')
         asyncio.run(pybind())
     except LogicError as e:
         print(e, file=sys.stderr)

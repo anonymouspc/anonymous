@@ -53,10 +53,7 @@ class Package:
             self.import_packages = [] # Managed by Module, as multiple Module may share one Package and stagely add import_packages.
             
             # Status
-            self.is_built = False                           if argv.update_package == "always" else \
-                            os.path.isdir(self.install_dir) if argv.update_package == "new"    else \
-                            True                            if argv.update_package == "never"  else \
-                            None
+            self.is_built    = False if argv.update_package else os.path.isdir(self.install_dir)
             self.tool_module = importlib.import_module(f"package.{self.name}")
             self.build_task  = None
             if not self.is_built:

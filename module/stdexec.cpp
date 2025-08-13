@@ -25,6 +25,7 @@ export namespace stdexec
     using stdexec::just;
     using stdexec::operation_state;
     using stdexec::receiver;
+    using stdexec::receiver_of;
     using stdexec::schedule;
     using stdexec::scheduler;
     using stdexec::set_error;
@@ -34,7 +35,25 @@ export namespace stdexec
     using stdexec::set_value;
     using stdexec::set_value_t;
     using stdexec::sender;
+    using stdexec::sender_of;
+    using stdexec::sender_in;
+    using stdexec::sender_to;
     using stdexec::sender_t;
+    using stdexec::split;
     using stdexec::sync_wait;
     using stdexec::then;
+
+    using stdexec::__call_result_t;
+    using stdexec::__sender_adaptor_closure;
+    using stdexec::__sender_adaptor_closure_for;
+    using ::operator|;
+    // using stdexec::__closure::operator|;
+
+    namespace __closure
+    {
+        using stdexec::__closure::__compose;
+    }
+
+    template < class sender, class... value_types >
+    concept sender_for = requires ( sender&& snd ) { { stdexec::sync_wait(snd).value() } -> std::convertible_to<std::tuple<value_types...>>; };
 }

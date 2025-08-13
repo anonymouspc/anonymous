@@ -1,4 +1,3 @@
-from common.log  import log
 from file.source import Source
 import asyncio
 import matplotlib.pyplot as plt

@@ -1,6 +1,6 @@
 export module anonymous:basic.error.exception;
-import                 :basic.error.detail.format_string;
 import                 :basic.concepts;
+import                 :basic.utility;
 import        std;
 
 export namespace anonymous

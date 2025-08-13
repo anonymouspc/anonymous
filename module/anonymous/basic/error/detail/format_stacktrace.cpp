@@ -1,12 +1,9 @@
-export module anonymous:basic.error.detail.terminate_initializer;
+export module anonymous:basic.error.detail.format_stacktrace;
 import        std;
 
 export namespace anonymous
 {
-    struct terminate_initializer_type
-    {
-        terminate_initializer_type ( );  
-    };
+    std::string format_stacktrace ( const std::stacktrace& );
 
 
  
@@ -55,7 +52,7 @@ export namespace anonymous
         return std::regex_replace(str, std::regex(R"(@([\w\.]+|[\w\.]+:[\w\.]+))"), "");
     }
 
-    auto format_stacktrace ( const std::stacktrace& trace )
+    std::string format_stacktrace ( const std::stacktrace& trace )
     {
         return trace | std::views::reverse
                      | std::views::transform([&] (const auto& entry)
@@ -70,17 +67,7 @@ export namespace anonymous
                                                     yellow, "at", white, format_stacktrace_color(format_stacktrace_module(entry.description())),
                                                     white);
                          })
-                     | std::views::join_with('\n');
-    }
-
-    terminate_initializer_type::terminate_initializer_type ( )
-    {
-        static auto handler = std::get_terminate();
-
-        std::set_terminate([]
-            {
-                std::ranges::copy(format_stacktrace(std::stacktrace::current()), std::ostream_iterator<char>(std::cerr));
-                handler();
-            });
+                     | std::views::join_with('\n')
+                     | std::ranges::to<std::string>();
     }
 }

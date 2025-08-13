@@ -1,17 +1,12 @@
-from common.config import argv, env_seperator, shared_suffix
+from common.config import argv, shared_suffix
 from common.error  import LogicError
 from common.make   import include, lib
-import common.config
-import site
 import sys
 import sysconfig
 
 async def initialize():
     if not argv.enable_python:
-        raise LogicError("arg `--disable-python` set but package `python` imported")
-    
-    common.config.define_flags["ENABLE_PYTHON"] = "true"
-    common.config.define_flags["PYTHONPATH"] = f'L\\"{env_seperator.join([pythonpath for pythonpath in site.getsitepackages()])}\\"'
+        raise LogicError("arg '--enable-python' not set but module 'python' imported")
 
 async def build():
     await include(

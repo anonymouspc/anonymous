@@ -1,12 +1,10 @@
 from common.config import argv
 from common.error  import LogicError
 from common.make   import include
-import common.config
 
 async def initialize():
     if not argv.enable_python:
-        raise LogicError("arg `--disable-cuda` set but package `cuda` imported")
-    common.config.define_flags["ENABLE_CUDA"] = "true"
+        raise LogicError("arg 'enable-cuda' not set but module 'cuda' imported")
 
 async def build():
     await include(
