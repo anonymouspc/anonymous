@@ -1,5 +1,6 @@
 from common.make  import include
 from file.package import Package
+import os
 import re
 
 async def build():
@@ -13,8 +14,13 @@ async def build():
     )
 
     package = await Package("eigen")
-    with open(f"{package.include_dir}/Eigen/src/Core/util/Constants.h", 'r') as reader:
-        content = reader.read()
-        content = re.sub(r'^const', "inline const", content, flags=re.MULTILINE)
-    with open(f"{package.include_dir}/Eigen/src/Core/util/Constants.h", 'w') as writer:
-        writer.write(content)
+    for root, _, files in os.walk(package.include_dir):
+        for file in files:
+            try:
+                with open(f"{root}/{file}", 'r') as reader:
+                    content = reader.read()
+                    content = re.sub(r'^(const|constexpr) (?=[^\(\)]*;\s*$)', "inline constexpr ", content, flags=re.MULTILINE)
+                with open(f"{root}/{file}", 'w') as writer:
+                    writer.write(content)
+            except UnicodeDecodeError:
+                pass
