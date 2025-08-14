@@ -6,5 +6,5 @@ using namespace anonymous;
 
 int main ( )
 {
-    auto device = opencl<"Apple M2">();
+    
 }

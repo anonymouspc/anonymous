@@ -58,7 +58,7 @@ matrix<typename mysql_stream::value_type> mysql_stream::execute_client_stmt ( st
 
 matrix<typename mysql_stream::value_type> mysql_stream::execute_server_stmt ( string str, auto... args )
 {
-    // If has been proved that this statement cannot be composed on server (for example: er_unsupported_ps)
+    // If has been proved that this statement cannot be composed on server (for example: er_undefined_ps)
     if ( client_stmtpool.contains(str) )
         return execute_client_stmt(std::move(str), std::forward<decltype(args)>(args)...);
     

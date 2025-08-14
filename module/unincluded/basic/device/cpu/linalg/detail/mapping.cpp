@@ -39,7 +39,7 @@ namespace detail
     template < auto mode = eigen_map_default >
     constexpr auto eigen_map_helper ( auto mdspan )
     {
-        static_assert(same_as<mdspan_layout_type,std::layout_right> or same_as<mdspan_layout_type,std::layout_left> or same_as<mdspan_layout_type,std::layout_stride>, "unsupported layout");
+        static_assert(same_as<mdspan_layout_type,std::layout_right> or same_as<mdspan_layout_type,std::layout_left> or same_as<mdspan_layout_type,std::layout_stride>, "undefined layout");
 
         if constexpr ( ( mode == eigen_map_default and mdspan.rank() == 1 ) or mode == eigen_map_vector )
             if constexpr ( same_as<mdspan_layout_type,std::layout_right> or same_as<mdspan_layout_type,std::layout_left> )
