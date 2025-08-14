@@ -43,5 +43,6 @@ class ModuleMapperLogger:
     
     def log(self, name, file):
         self.writer.write(f"{name} {file}\n")
+        self.writer.flush()
 
 module_mapper_logger = ModuleMapperLogger()

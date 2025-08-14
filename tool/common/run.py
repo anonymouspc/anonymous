@@ -26,6 +26,7 @@ async def run(cmd,
 
         if argv.verbose:
             print(cmd)
+
         proc = await asyncio.subprocess.create_subprocess_shell(
             cmd=cmd,
             cwd=cwd,
@@ -60,6 +61,7 @@ async def run(cmd,
         stderr = "".join(stderr)
 
         code = await proc.wait()
+        
         if on_finish is not None:
             await on_finish
 
