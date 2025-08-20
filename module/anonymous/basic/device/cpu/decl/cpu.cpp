@@ -43,52 +43,49 @@ export namespace anonymous
             template < class type > class explicit_cast;
             template < class type > class implicit_cast;
 
+        public: // Hash
+            template < class type = void > using hash = std::hash<type>;
+
         public: // Allocator
             template < class type > using allocator = std::allocator<type>;
 
         public: // Layout
-                                      using default_layout   = std::layout_right;
-                                      using layout_right     = std::layout_right;
-                                      using layout_left      = std::layout_left;
-                                      using layout_stride    = std::layout_stride;
-            template < class layout > using layout_transpose = std::linalg::layout_transpose<layout>;
+            using default_layout = std::layout_right;
 
         public: // Accessor
-            template < class type >                  using default_accessor    = std::default_accessor           <type>;
-            template < class type, size_t align >    using aligned_accessor    = std::aligned_accessor           <type,align>;
-            template < class scale, class accessor > using scaled_accessor     = std::linalg::scaled_accessor    <scale,accessor>;
-            template < class accessor >              using conjugated_accessor = std::linalg::conjugated_accessor<accessor>;
-
-        public: // Hash
-            template < class type = void > using hash = std::hash<type>;
+            template < class type >               using default_accessor = std::default_accessor<type>;
+            template < class type, size_t align > using aligned_accessor = std::aligned_accessor<type,align>;
 
         public: // Structure
             template < class type1, class type2 > using pair  = std::pair <type1,type2>;
             template < class... types >           using tuple = std::tuple<types...>;
 
+        public: // Union
+                                                 using any      = std::any;
+            template < class type, class error > using expected = std::expected<type,error>;
+            template < class type >              using function = std::function<type>;
+            template < class type >              using optional = std::optional<type>;
+            template < class... types >          using variant  = std::variant <types...>;
+
         public: // Container
-                                                                                                      using any            = std::any;
-            template < class type, int len >                                                          using array          = std::array            <type,len>;
-            template < class type, class traits = std::char_traits<type> >                            using basic_string   = std::basic_string     <type,traits>;
-            template < int len >                                                                      using bitset         = std::bitset           <len>;
-            template < class type >                                                                   using deque          = std::deque            <type>;
-            template < class type, class error >                                                      using expected       = std::expected         <type,error>;
-            template < class type >                                                                   using forward_list   = std::forward_list     <type>;
-            template < class type >                                                                   using function       = std::function         <type>;
-            template < class type >                                                                   using hive           = std::hive             <type>;
-            template < class type, int len >                                                          using inplace_vector = std::inplace_vector   <type,len>;
-            template < class type >                                                                   using list           = std::list             <type>;
-            template < class type1, class type2, class compare = less<> >                             using map            = std::map              <type1,type2,compare>;
-            template < class type >                                                                   using optional       = std::optional         <type>;
-            template < class type, class compare = less<> >                                           using priority_queue = std::priority_queue   <type,std::vector<type>,compare>;
-            template < class type >                                                                   using queue          = std::queue            <type,std::vector<type>>;
-            template < class type, class compare = less<> >                                           using set            = std::set              <type,compare>;
-            template < class type >                                                                   using stack          = std::stack            <type,std::vector<type>>;
-            template < class type1, class type2, class hash = hash<type1>, class equal = equal_to<> > using unordered_map  = std::unordered_map    <type1,type2,hash,equal>;
-            template < class type, class hash = hash<type>, class equal = equal_to<> >                using unordered_set  = std::unordered_set    <type,hash,equal>;
-            template < class type >                                                                   using valarray       = std::valarray         <type>;
-            template < class... types >                                                               using variant        = std::variant          <types...>;
-            template < class type >                                                                   using vector         = std::vector           <type>;
+
+            template < class type, int len >                                                          using array          = std::array         <type,len>;
+            template < class type >                                                                   using basic_string   = std::basic_string  <type>;
+            template < int len >                                                                      using bitset         = std::bitset        <len>;
+            template < class type >                                                                   using deque          = std::deque         <type>;
+            template < class type >                                                                   using forward_list   = std::forward_list  <type>;
+            template < class type >                                                                   using hive           = std::hive          <type>;
+            template < class type, int len >                                                          using inplace_vector = std::inplace_vector<type,len>;
+            template < class type >                                                                   using list           = std::list          <type>;
+            template < class type1, class type2, class compare = less<> >                             using map            = std::map           <type1,type2,compare>;
+            template < class type, class compare = less<> >                                           using priority_queue = std::priority_queue<type,std::vector<type>,compare>;
+            template < class type >                                                                   using queue          = std::queue         <type,std::vector<type>>;
+            template < class type, class compare = less<> >                                           using set            = std::set           <type,compare>;
+            template < class type >                                                                   using stack          = std::stack         <type,std::vector<type>>;
+            template < class type1, class type2, class hash = hash<type1>, class equal = equal_to<> > using unordered_map  = std::unordered_map <type1,type2,hash,equal>;
+            template < class type, class hash = hash<type>, class equal = equal_to<> >                using unordered_set  = std::unordered_set <type,hash,equal>;
+            template < class type >                                                                   using valarray       = std::valarray      <type>;
+            template < class type >                                                                   using vector         = std::vector        <type>;
 
         public: // Span
             template < class type, size_t extent >                                                                         using span   = std::span  <type,extent>;
