@@ -1,8 +1,8 @@
-from common.config import argv, static_suffix, shared_suffix
-from common.error  import LogicError
+from common.config     import argv, static_suffix, shared_suffix
+from common.error      import LogicError
+from common.filesystem import exist_file, exist_dir, iterate_dir
 import asyncio
 import importlib
-import os
 
 class Package:
     pool       = {}
@@ -29,7 +29,7 @@ class Package:
 
     async def exist(name):
         name = name.partition('.')[0]
-        return os.path.isfile(f"./tool/package/{name}.py")
+        return await exist_file(f"./tool/package/{name}.py")
 
     def __eq__(self, str):
         return self.name == str
@@ -43,17 +43,14 @@ class Package:
             self.build_dir     = f"./bin/{argv.type}/package/{self.name}/build"
             self.install_dir   = f"./bin/{argv.type}/package/{self.name}/install"
             self.include_dir   = f"./bin/{argv.type}/package/{self.name}/install/include"
-            self.lib_dir       = f"./bin/{argv.type}/package/{self.name}/install/lib"
-            self.library_files = [                           f"./bin/{argv.type}/package/{self.name}/install/lib/{file}"                                                                                  \
-                                  for file in os.listdir    (f"./bin/{argv.type}/package/{self.name}/install/lib")                                                                                        \
-                                  if          os.path.isfile(f"./bin/{argv.type}/package/{self.name}/install/lib/{file}") and (file.endswith(f".{static_suffix}") or file.endswith(f".{shared_suffix}"))] \
-                                  if          os.path.isdir (f"./bin/{argv.type}/package/{self.name}/install/lib") else []
-            
+            self.lib_dir       = f"./bin/{argv.type}/package/{self.name}/install/libzz"
+            self.library_files = [file async for file in iterate_dir(self.lib_dir) if (file.endswith(f".{static_suffix}") or file.endswith(f".{shared_suffix}"))] if await exist_dir(self.lib_dir) else []
+
             # Import
             self.import_packages = [] # Managed by Module, as multiple Module may share one Package and stagely add import_packages.
             
             # Status
-            self.is_built    = False if argv.update_package else os.path.isdir(self.install_dir)
+            self.is_built    = False if argv.update_package else await exist_dir(self.install_dir)
             self.tool_module = importlib.import_module(f"package.{self.name}")
             self.build_task  = None
             if not self.is_built:
@@ -75,10 +72,7 @@ class Package:
             if hasattr(self.tool_module, "build"):
                 async with Package.build_lock:
                     await self.tool_module.build()
-                self.library_files = [                           f"./bin/{argv.type}/package/{self.name}/install/lib/{file}"                                                                                  \
-                                      for file in os.listdir    (f"./bin/{argv.type}/package/{self.name}/install/lib")                                                                                        \
-                                      if          os.path.isfile(f"./bin/{argv.type}/package/{self.name}/install/lib/{file}") and (file.endswith(f".{static_suffix}") or file.endswith(f".{shared_suffix}"))] \
-                                      if          os.path.isdir (f"./bin/{argv.type}/package/{self.name}/install/lib") else []
+                self.library_files = [file async for file in iterate_dir(self.lib_dir) if (file.endswith(f".{static_suffix}") or file.endswith(f".{shared_suffix}"))] if await exist_dir(self.lib_dir) else []
 
             # Status
             self.is_built = True

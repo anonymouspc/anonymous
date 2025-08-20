@@ -278,11 +278,14 @@ export namespace std
     using std::ranges::shuffle;
   }
   using std::shift_left;
-  namespace ranges
-  {}
   using std::shift_right;
+#if __cpp_lib_shift >= 202202L // >= C++23
   namespace ranges
-  {}
+  {
+    using std::ranges::shift_left;
+    using std::ranges::shift_right;
+  }
+#endif
   using std::sort;
   namespace ranges
   {
@@ -497,7 +500,9 @@ export namespace std
     using ranges::fold_left;
     using ranges::fold_left_first;
     using ranges::fold_left_first_with_iter;
+    using ranges::fold_left_first_with_iter_result;
     using ranges::fold_left_with_iter;
+    using ranges::fold_left_with_iter_result;
     using ranges::fold_right;
     using ranges::fold_right_last;
     using ranges::in_value_result;
@@ -508,11 +513,14 @@ export namespace std
     using ranges::find_last_if;
     using ranges::find_last_if_not;
 #endif
+#if __cpp_lib_ranges_starts_ends_with
+    using ranges::starts_with;
+    using ranges::ends_with;
+#endif
   }
 }
 
 // 22.7.2 <any>
-#if __cpp_lib_any
 export namespace std
 {
   using std::any;
@@ -521,7 +529,6 @@ export namespace std
   using std::make_any;
   using std::swap;
 }
-#endif
 
 // 24.3.2 <array>
 export namespace std
@@ -600,7 +607,9 @@ export namespace std
   using std::atomic_schar;
   using std::atomic_short;
   using std::atomic_signal_fence;
+#ifdef __cpp_lib_atomic_lock_free_type_aliases
   using std::atomic_signed_lock_free;
+#endif
   using std::atomic_size_t;
   using std::atomic_store;
   using std::atomic_store_explicit;
@@ -623,7 +632,9 @@ export namespace std
   using std::atomic_uintptr_t;
   using std::atomic_ullong;
   using std::atomic_ulong;
+#ifdef __cpp_lib_atomic_lock_free_type_aliases
   using std::atomic_unsigned_lock_free;
+#endif
   using std::atomic_ushort;
   using std::atomic_wait;
   using std::atomic_wait_explicit;
@@ -663,6 +674,9 @@ export namespace std
   using std::popcount;
   using std::rotl;
   using std::rotr;
+#if __cpp_lib_byteswap // >= C++23
+  using std::byteswap;
+#endif
 }
 
 // 22.9 <bitset>
@@ -695,7 +709,6 @@ export namespace std
 }
 
 // 29.2 <chrono>
-#if __cpp_lib_chrono
 export namespace std
 {
   namespace chrono
@@ -849,7 +862,6 @@ export namespace std::inline literals::inline chrono_literals
 export namespace std::chrono {
   using namespace literals::chrono_literals;
 }
-#endif // __cpp_lib_chrono
 
 // <codecvt>: deprecated C++17, removed C++26
 export namespace std
@@ -861,7 +873,6 @@ export namespace std
 }
 
 // 17.11.1 <compare>
-#if __cpp_lib_three_way_comparison
 export namespace std
 {
   using std::common_comparison_category;
@@ -886,8 +897,11 @@ export namespace std
   using std::partial_order;
   using std::strong_order;
   using std::weak_order;
+#if __glibcxx_type_order >= 202506L
+  using std::type_order;
+  using std::type_order_v;
+#endif
 }
-#endif // __cpp_lib_three_way_comparison
 
 // 28.4 <complex>
 export namespace std
@@ -941,7 +955,6 @@ export namespace std::inline literals::inline complex_literals
 }
 
 // 18 <concepts>
-#if __cpp_lib_concepts
 export namespace std
 {
   using std::assignable_from;
@@ -980,7 +993,6 @@ export namespace std
   using std::totally_ordered;
   using std::totally_ordered_with;
 }
-#endif
 
 // 33.7 <condition_variable>
 export namespace std
@@ -1051,6 +1063,9 @@ export namespace std
   using std::throw_with_nested;
   using std::uncaught_exception;
   using std::uncaught_exceptions;
+#if __cpp_lib_exception_ptr_cast >= 202506L
+  using std::exception_ptr_cast;
+#endif
 }
 
 // 34.4 <execution>
@@ -1409,6 +1424,12 @@ export namespace std
 #if __cpp_lib_move_only_function
   using std::move_only_function;
 #endif
+#if __cpp_lib_copyable_function
+  using std::copyable_function;
+#endif
+#if __cpp_lib_function_ref
+  using std::function_ref;
+#endif
   using std::multiplies;
   using std::negate;
   using std::not_equal_to;
@@ -1497,7 +1518,15 @@ export namespace std
   using std::initializer_list;
 }
 
-// <inplace_vector> FIXME
+// <inplace_vector>
+#if __cpp_lib_inplace_vector
+export namespace std
+{
+  using std::inplace_vector;
+  using std::erase;
+  using std::erase_if;
+}
+#endif
 
 // <iomanip>
 export namespace std
@@ -1723,16 +1752,10 @@ export namespace std
   using std::make_const_iterator;
   using std::make_const_sentinel;
 #endif
+#if __glibcxx_algorithm_default_value_type // >= C++26
+  using std::projected_value_t;
+#endif
 }
-// FIXME these should be friends of __normal_iterator to avoid exporting
-// __gnu_cxx.
-// export namespace __gnu_cxx
-// {
-//   using __gnu_cxx::operator==;
-//   using __gnu_cxx::operator<=>;
-//   using __gnu_cxx::operator+;
-//   using __gnu_cxx::operator-;
-// }
 
 // <latch>
 export namespace std
@@ -1830,7 +1853,22 @@ export namespace std
   }
 }
 
-// FIXME <mdspan>
+// <mdspan>
+#if __glibcxx_mdspan
+export namespace std
+{
+  using std::extents;
+  using std::dextents;
+  using std::layout_left;
+  using std::layout_right;
+  using std::layout_stride;
+  using std::default_accessor;
+  using std::mdspan;
+  // FIXME layout_left_padded, layout_right_padded, aligned_accessor,
+  // strided_slice, submdspan_mapping_result, full_extent_t, full_extent,
+  // submdspan_extents, mdsubspan
+}
+#endif
 
 // 20.2 <memory>
 export namespace std
@@ -1943,6 +1981,20 @@ export namespace std
 #if __cpp_lib_out_ptr
   using std::out_ptr;
   using std::inout_ptr;
+  using std::out_ptr_t;
+  using std::inout_ptr_t;
+#endif
+#if __cpp_lib_indirect
+  using std::indirect;
+  namespace pmr { using std::pmr::indirect; }
+#endif
+#if __cpp_lib_polymorphic
+  using std::polymorphic;
+  namespace pmr { using std::pmr::polymorphic; }
+#endif
+#if __cpp_lib_smart_ptr_owner_equality
+  using std::owner_equal;
+  using std::owner_hash;
 #endif
 }
 
@@ -2059,7 +2111,11 @@ export namespace std
   using std::lcm;
   using std::midpoint;
 #if __cpp_lib_ranges_iota
-  namespace ranges { using ranges::iota; }
+  namespace ranges
+  {
+    using ranges::iota;
+    using ranges::iota_result;
+  }
 #endif
 #if __cpp_lib_saturation_arithmetic
   using std::add_sat;
@@ -2470,6 +2526,43 @@ export namespace std
     using std::regex_constants::operator|;
     using std::regex_constants::operator|=;
     using std::regex_constants::operator~;
+    using std::regex_constants::awk;
+    using std::regex_constants::basic;
+    using std::regex_constants::collate;
+    using std::regex_constants::ECMAScript;
+    using std::regex_constants::egrep;
+    using std::regex_constants::extended;
+    using std::regex_constants::grep;
+    using std::regex_constants::icase;
+    using std::regex_constants::multiline;
+    using std::regex_constants::nosubs;
+    using std::regex_constants::optimize;
+    using std::regex_constants::format_default;
+    using std::regex_constants::format_first_only;
+    using std::regex_constants::format_no_copy;
+    using std::regex_constants::format_sed;
+    using std::regex_constants::match_any;
+    using std::regex_constants::match_continuous;
+    using std::regex_constants::match_default;
+    using std::regex_constants::match_not_bol;
+    using std::regex_constants::match_not_bow;
+    using std::regex_constants::match_not_eol;
+    using std::regex_constants::match_not_eow;
+    using std::regex_constants::match_not_null;
+    using std::regex_constants::match_prev_avail;
+    using std::regex_constants::error_backref;
+    using std::regex_constants::error_badbrace;
+    using std::regex_constants::error_badrepeat;
+    using std::regex_constants::error_brace;
+    using std::regex_constants::error_brack;
+    using std::regex_constants::error_collate;
+    using std::regex_constants::error_complexity;
+    using std::regex_constants::error_ctype;
+    using std::regex_constants::error_escape;
+    using std::regex_constants::error_paren;
+    using std::regex_constants::error_range;
+    using std::regex_constants::error_space;
+    using std::regex_constants::error_stack;
   }
   using std::basic_regex;
   using std::csub_match;
@@ -3104,11 +3197,16 @@ export namespace std
 #if __cpp_lib_is_layout_compatible
   using std::is_corresponding_member;
   using std::is_layout_compatible;
+  using std::is_layout_compatible_v;
 #endif
 #if __cpp_lib_is_pointer_interconvertible
   using std::is_pointer_interconvertible_base_of;
   using std::is_pointer_interconvertible_base_of_v;
   using std::is_pointer_interconvertible_with_class;
+#endif
+#if __cpp_lib_is_scoped_enum
+  using std::is_scoped_enum;
+  using std::is_scoped_enum_v;
 #endif
 }
 
@@ -3181,6 +3279,10 @@ export namespace std
   using std::make_integer_sequence;
   using std::move;
   using std::move_if_noexcept;
+#if __cpp_lib_function_ref
+  using std::nontype_t;
+  using std::nontype;
+#endif
   using std::pair;
   using std::swap;
   using std::operator==;

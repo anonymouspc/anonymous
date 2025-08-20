@@ -16,14 +16,14 @@ class CompileCommandsLogger:
         found = False
         for entry in self.content:
             if entry["file"] == file:
-                entry["command"] = command
+                entry["command"] = ' '.join(command)
                 found = True
 
         if not found:
             self.content.append({
                 "directory": os.path.abspath('.'),
                 "file": file,
-                "command": command
+                "command": ' '.join(command)
             })
 
 compile_commands_logger = CompileCommandsLogger()
@@ -31,9 +31,12 @@ compile_commands_logger = CompileCommandsLogger()
 class CompileOutputLogger:
     def __init__(self):
         self.writer = open("./bin/cache/compile_output.txt", 'w')
+        self.logged = False
 
     def log(self, message):
-        self.writer.write(message)
+        if not self.logged:
+            self.writer.write(message)
+            self.logged = True
 
 compile_output_logger = CompileOutputLogger()
 

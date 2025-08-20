@@ -5,10 +5,10 @@ module;
 #include <version>
 
 export module std:feature.aligned_accessor;
+import           :compiler;
 #ifndef __cpp_lib_mdspan
-    import :feature.mdspan;
+import           :feature.mdspan;
 #endif
-import :compiler;
 
 export namespace std
 {

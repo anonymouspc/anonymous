@@ -24,11 +24,9 @@ if __name__ == "__main__":
         asyncio.run(build())
     except LogicError as e:
         print(e, file=sys.stderr)
-        compile_output_logger.log(str(e))
         exit(-1)
     except SubprocessError as e:
         print(e, file=sys.stderr) if not e.is_stderr_printed else None
-        compile_output_logger.log(str(e))
         exit(-1)
     except KeyboardInterrupt:
         exit(-1)

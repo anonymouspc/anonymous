@@ -8,31 +8,30 @@ from file.package    import Package
 from file.source     import Source
 import common.config
 import asyncio
-import shutil
 import sys
 
 async def pybind():
     common.config.argv.output = "shared"
     common.config.enable_python = True
-    await Shared("main")
-    await asyncio.gather(*[package.build  () for package in Package.pool.values()])
-    await asyncio.gather(*[module .compile() for module  in Module .pool.values()])
-    await asyncio.gather(*[source .compile() for source  in Source .pool.values()])
-    await asyncio.gather(*[object .link   () for object  in Object .pool.values()])
-
-
-    shutil.copyfile(f"./bin/{argv.type}/source/main.{shared_suffix}", f".cpython-{sys.version_info.major}{sys.version_info.minor}-{sys.platform}.{shared_suffix}")
+    try:
+        await Shared("main")
+        await asyncio.gather(*[package.build  () for package in Package.pool.values()])
+        await asyncio.gather(*[module .compile() for module  in Module .pool.values()])
+        await asyncio.gather(*[source .compile() for source  in Source .pool.values()])
+        await asyncio.gather(*[object .link   () for object  in Object .pool.values()])
+    except:
+        for task in asyncio.all_tasks():
+            task.cancel()
+        raise
 
 if __name__ == "__main__":
     try:
         asyncio.run(pybind())
     except LogicError as e:
         print(e, file=sys.stderr)
-        compile_output_logger.log(str(e))
         exit(-1)
     except SubprocessError as e:
         print(e, file=sys.stderr) if not e.is_stderr_printed else None
-        compile_output_logger.log(str(e))
         exit(-1)
     except KeyboardInterrupt:
         exit(-1)

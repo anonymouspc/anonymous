@@ -9,7 +9,6 @@ async def build():
             "no-docs",
             "no-module",
             "no-shared",
-            "zlib"
         ]
     )
     await make(

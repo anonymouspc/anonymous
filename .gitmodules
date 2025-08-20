@@ -1,96 +1,80 @@
 [submodule "package/boost"]
 	path = package/boost
 	url = https://github.com/boostorg/boost
-	branch = master
+	branch = develop
 	shallow = true
 [submodule "package/bzip2"]
 	path = package/bzip2
 	url = https://gitlab.com/bzip2/bzip2
-	branch = master
 [submodule "package/cccl"]
 	path = package/cuda
 	url = https://github.com/NVIDIA/cccl
-	branch = main
-[submodule "package/eigen"]
-	path = package/eigen
-	url = https://gitlab.com/libeigen/eigen
-	branch = master
-[submodule "package/hwloc"]
-	path = package/hwloc
-	url = https://github.com/open-mpi/hwloc
-	branch = master
-[submodule "package/icu"]
-	path = package/icu
-	url = https://github.com/unicode-org/icu
-	branch = main
-	shallow = true
-[submodule "package/libjpeg-turbo"]
-	path = package/jpeg
-	url = https://github.com/libjpeg-turbo/libjpeg-turbo
-	branch = main
-[submodule "package/libpng"]
-	path = package/png
-	url = https://github.com/pnggroup/libpng
-	branch = libpng16
-[submodule "package/libtiff"]
-	path = package/tiff
-	url = https://gitlab.com/libtiff/libtiff
-	branch = master
-[submodule "package/lz4"]
-	path = package/lz4
-	url = https://github.com/lz4/lz4
-	branch = dev
-[submodule "package/oneTBB"]
-	path = package/tbb
-	url = https://github.com/uxlfoundation/oneTBB
-	branch = master
-[submodule "package/openssl"]
-	path = package/openssl
-	url = https://github.com/openssl/openssl
-	branch = master
-	shallow = true
-	fetchRecurseSubmodules = false
-[submodule "package/plf_hive"]
-	path = package/plf
-	url = https://github.com/mattreecebentley/plf_hive
-	branch = main
-[submodule "package/stdexec"]
-	path = package/stdexec
-	url = https://github.com/NVIDIA/stdexec
-	branch = main
-[submodule "package/xz"]
-	path = package/xz
-	url = https://github.com/tukaani-project/xz
-	branch = master
-[submodule "package/zlib"]
-	path = package/zlib
-	url = https://github.com/madler/zlib
-	branch = develop
-[submodule "package/zstd"]
-	path = package/zstd
-	url = https://github.com/facebook/zstd
-	branch = dev
-[submodule "package/fmt"]
-	path = package/fmt
-	url = https://github.com/fmtlib/fmt
-[submodule "package/proxy"]
-	path = package/proxy
-	url = https://github.com/microsoft/proxy
-[submodule "package/scnlib"]
-	path = package/scn
-	url = https://github.com/eliaskosunen/scnlib
-[submodule "package/pybind11"]
-	path = package/pybind11
-	url = https://github.com/pybind/pybind11
-[submodule "package/Opencl-Headers"]
-	path = package/opencl
-	url = https://github.com/KhronosGroup/Opencl-Headers
 [submodule "package/clblast"]
 	path = package/clblast
 	url = https://github.com/CNugteren/CLBlast
 [submodule "package/ctre"]
 	path = package/ctre
 	url = https://github.com/hanickadot/compile-time-regular-expressions
+[submodule "package/eigen"]
+	path = package/eigen
+	url = https://gitlab.com/libeigen/eigen
+[submodule "package/fmt"]
+	path = package/fmt
+	url = https://github.com/fmtlib/fmt
+[submodule "package/hwloc"]
+	path = package/hwloc
+	url = https://github.com/open-mpi/hwloc
+[submodule "package/icu"]
+	path = package/icu
+	url = https://github.com/unicode-org/icu
+	shallow = true
+[submodule "package/jpeg"]
+	path = package/jpeg
+	url = https://github.com/libjpeg-turbo/libjpeg-turbo
+[submodule "package/lz4"]
+	path = package/lz4
+	url = https://github.com/lz4/lz4
+[submodule "package/opencl"]
+	path = package/opencl
+	url = https://github.com/KhronosGroup/Opencl-Headers
+[submodule "package/openssl"]
+	path = package/openssl
+	url = https://github.com/openssl/openssl
+	shallow = true
+	fetchRecurseSubmodules = false
+[submodule "package/plf"]
+	path = package/plf
+	url = https://github.com/mattreecebentley/plf_hive
+[submodule "package/png"]
+	path = package/png
+	url = https://github.com/pnggroup/libpng
+[submodule "package/proxy"]
+	path = package/proxy
+	url = https://github.com/microsoft/proxy
+[submodule "package/pybind11"]
+	path = package/pybind11
+	url = https://github.com/pybind/pybind11
+[submodule "package/scnlib"]
+	path = package/scn
+	url = https://github.com/eliaskosunen/scnlib
+[submodule "package/stdexec"]
+	path = package/stdexec
+	url = https://github.com/NVIDIA/stdexec
+[submodule "package/tbb"]
+	path = package/tbb
+	url = https://github.com/uxlfoundation/oneTBB
+[submodule "package/tiff"]
+	path = package/tiff
+	url = https://gitlab.com/libtiff/libtiff
 [submodule "package/xlnt"]
 	path = package/xlnt
 	url = https://github.com/xlnt-community/xlnt
+[submodule "package/xz"]
+	path = package/xz
+	url = https://github.com/tukaani-project/xz
+[submodule "package/zlib"]
+	path = package/zlib
+	url = https://github.com/madler/zlib
+[submodule "package/zstd"]
+	path = package/zstd
+	url = https://github.com/facebook/zstd

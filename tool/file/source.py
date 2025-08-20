@@ -1,11 +1,11 @@
-from common.algorithm import recursive_find
-from common.compiler  import preprocess_file, compile_source
-from common.config    import argv, object_suffix
-from common.error     import LogicError
-from file.module      import Module
-from file.package     import Package
+from common.algorithm  import recursive_find
+from common.compiler   import preprocess_file, compile_source
+from common.config     import argv, object_suffix
+from common.error      import LogicError
+from common.filesystem import exist_file, getmtime_file
+from file.module       import Module
+from file.package      import Package
 import asyncio
-import os
 import re
   
 class Source:
@@ -45,10 +45,10 @@ class Source:
             self.import_modules = await asyncio.gather(*[Module(import_name) for import_name in import_names])
 
             # Status
-            self.is_compiled = all(module.is_compiled for module in self.import_modules)              and \
-                               os.path.isfile(self.code_file)                                         and \
-                               os.path.isfile(self.object_file)                                       and \
-                               os.path.getmtime(self.code_file) <= os.path.getmtime(self.object_file)
+            self.is_compiled = all(module.is_compiled for module in self.import_modules)                    and \
+                               await exist_file(self.code_file)                                             and \
+                               await exist_file(self.object_file)                                           and \
+                               await getmtime_file(self.code_file) <= await getmtime_file(self.object_file)
             if not self.is_compiled:
                 self.compile_task = None
                 Source.total += 1

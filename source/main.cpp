@@ -1,10 +1,6 @@
-import anonymous;
-import std;
-import stdexec;
-import boost.compute;
-using namespace anonymous;
+import boost;
 
 int main ( )
 {
-    auto device = opencl<"Apple M2">();
+
 }

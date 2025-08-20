@@ -7,7 +7,7 @@ async def build():
         dir="./package/bzip2",
         args=[
             "-DENABLE_WERROR=false",
-            f"-DENABLE_DEBUG={argv.type=='debug'}",
+           f"-DENABLE_DEBUG={argv.type=='debug'}",
             "-DENABLE_APP=false",
             "-DENABLE_TESTS=false",
             "-DENABLE_DOCS=false",

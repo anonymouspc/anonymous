@@ -5,7 +5,6 @@ module;
     #pragma GCC diagnostic ignored "-Wdeprecated-variadic-comma-omission"
 #elifdef __clang__
     #pragma clang diagnostic ignored "-Wdeprecated-missing-comma-variadic-parameter"
-    #pragma clang diagnostic ignored "-Wunused-private-field"
 #endif
 #include <boost/mysql.hpp>
 
