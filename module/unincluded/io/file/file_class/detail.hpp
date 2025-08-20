@@ -205,7 +205,7 @@ void detail::write_to_boost_gil_impl ( const matrix<color>& image, path pth, aut
 
 
 
-#undef throw_unsupported_read_depth_error
+#undef throw_undefined_read_depth_error
 #undef read_if_supported
-#undef throw_unsupported_write_depth_error
+#undef throw_undefined_write_depth_error
 #undef write_if_supported
