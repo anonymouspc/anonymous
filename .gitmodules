@@ -1,8 +1,3 @@
-[submodule "package/boost"]
-	path = package/boost
-	url = https://github.com/boostorg/boost
-	branch = develop
-	shallow = true
 [submodule "package/bzip2"]
 	path = package/bzip2
 	url = https://gitlab.com/bzip2/bzip2
@@ -78,3 +73,7 @@
 [submodule "package/zstd"]
 	path = package/zstd
 	url = https://github.com/facebook/zstd
+[submodule "package/boost"]
+	path = package/boost
+	url = https://github.com/boostorg/boost
+	branch = develop
