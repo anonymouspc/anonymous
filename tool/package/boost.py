@@ -1,29 +1,45 @@
-from common.make import include
-import os
+from common.filesystem import exist_dir, iterate_dir, base_path
+from common.make       import include, format
 
 async def build():
-    for lib in os.listdir( "./package/boost/libs"):
-        if os.path.isdir (f"./package/boost/libs/{lib}/include"):
+    async for library_dir in iterate_dir("./package/boost/libs"):
+        if await exist_dir(f"{library_dir}/include"):
             await include(
                 name="boost",
-                dir=f"./package/boost/libs/{lib}/include"
+                dir=f"{library_dir}/include"
             )
-        if os.path.isdir (f"./package/boost/libs/{lib}/src"):
+        if await exist_dir(f"{library_dir}/src"):
             await include(
                 name="boost",
-                dir=f"./package/boost/libs/{lib}/src",
-                relpath=f"./boost/{lib}/src"
+                dir=f"{library_dir}/src",
+                relpath=f"boost/{base_path(library_dir)}/src"
             )
 
-    for lib in os.listdir( "./package/boost/libs/numeric"):
-        if os.path.isdir (f"./package/boost/libs/numeric/{lib}/include"):
+    async for library_dir in iterate_dir( "./package/boost/libs/numeric"):
+        if await exist_dir(f"{library_dir}/include"):
             await include(
                 name="boost",
-                dir=f"./package/boost/libs/numeric/{lib}/include"
+                dir=f"{library_dir}/include"
             )
-        if os.path.isdir (f"./package/boost/libs/numeric/{lib}/src"):
+        if await exist_dir(f"{library_dir}/src"):
             await include(
                 name="boost",
-                dir=f"./package/boost/libs/numeric/{lib}/src",
-                relpath=f"./boost/numeric/{lib}/src"
+                dir=f"{library_dir}/src",
+                relpath=f"boost/numeric/{base_path(library_dir)}/src"
             )
+    await format(
+        name="boost",
+        relpath="boost/asio"
+    )
+    await format(
+        name="boost",
+        relpath="boost/fusion"
+    )
+    await format(
+        name="boost",
+        relpath="boost/mpl"
+    )
+    await format(
+        name="boost",
+        relpath="boost/system"
+    )

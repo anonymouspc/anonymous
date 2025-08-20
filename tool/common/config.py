@@ -73,7 +73,7 @@ if compiler_id == "g++":
         "-fmodules",
        f"-fmodule-mapper=./bin/cache/module_mapper.txt",
     ]
-    link_flags = ["-static"]
+    link_flags = ["-fuse-ld=lld"]
     if argv.type == "debug":
         compile_flags += ["-g", "-O0", "-DDEBUG", "-fno-inline"]
     elif argv.type == "release":
@@ -102,7 +102,7 @@ elif compiler_id == "clang++":
     elif argv.type == "size":
         compile_flags += [      "-Os"]
     if argv.output == "shared":
-        link_flags += ["-shared", '-fPIC']
+        link_flags += ["-shared", "-fPIC"]
     module_suffix = "pcm"
     object_suffix = "o"
     static_suffix = "a"
@@ -126,14 +126,14 @@ elif compiler_id == "cl":
     static_suffix = "lib"
 
 defines = {
-    "abstract": '0', 
-    "extends" : ':',
-    "in"      : ':', 
-    "self"    : "(*this)"
+    "abstract"   : '0', 
+    "extends"    : ':',
+    "in"         : ':',
+    "reflexpr(x)": "(^^x)",
+    "self"       : "(*this)"
 }
 if argv.enable_python:
     defines["ENABLE_PYTHON"] = "true"
-    defines["PYTHONPATH"   ] = f'L\\"{env_seperator.join([pythonpath for pythonpath in site.getsitepackages()])}\\"'
 if argv.enable_opencl:
     defines["ENABLE_OPENCL"] = "true"
 if argv.enable_cuda:

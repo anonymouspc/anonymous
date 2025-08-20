@@ -1,10 +1,10 @@
-from common.algorithm import recursive_find
-from common.config    import argv, module_suffix, object_suffix
-from common.compiler  import preprocess_file, compile_module
-from common.error     import LogicError
-from file.package     import Package
+from common.algorithm  import recursive_find
+from common.config     import argv, module_suffix, object_suffix
+from common.compiler   import preprocess_file, compile_module
+from common.error      import LogicError
+from common.filesystem import exist_file, getmtime_file
+from file.package      import Package
 import asyncio
-import os
 import re
 
 class Module:
@@ -74,13 +74,13 @@ class Module:
                 (await Package(self.name)).import_packages += [await Package(import_module.name) for import_module in self.import_modules if await Package.exist(import_module.name) and await Package(self.name) is not await Package(import_module.name)]
 
             # Status
-            self.is_compiled = all(module.is_compiled for module in self.import_modules)                   and \
-                               (not await Package.exist(self.name) or (await Package(self.name)).is_built) and \
-                               os.path.isfile(self.code_file)                                              and \
-                               os.path.isfile(self.module_file)                                            and \
-                               os.path.isfile(self.object_file)                                            and \
-                               os.path.getmtime(self.code_file) <= os.path.getmtime(self.module_file)      and \
-                               os.path.getmtime(self.code_file) <= os.path.getmtime(self.object_file)
+            self.is_compiled = all(module.is_compiled for module in self.import_modules)                    and \
+                               (not await Package.exist(self.name) or (await Package(self.name)).is_built)  and \
+                               await exist_file(self.code_file)                                             and \
+                               await exist_file(self.module_file)                                           and \
+                               await exist_file(self.object_file)                                           and \
+                               await getmtime_file(self.code_file) <= await getmtime_file(self.module_file) and \
+                               await getmtime_file(self.code_file) <= await getmtime_file(self.object_file)
             if not self.is_compiled:
                 self.compile_task = None
                 Module.total += 1

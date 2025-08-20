@@ -1,7 +1,10 @@
-from common.config import argv
-from common.logger import compile_output_logger
-import shutil
+from common.config     import argv
+from common.filesystem import remove_dir
+import asyncio
+
+async def clean():
+    await remove_dir(f"./bin/{argv.type}/module")
+    await remove_dir(f"./bin/{argv.type}/source")
 
 if __name__ == "__main__":
-    shutil.rmtree(f"./bin/{argv.type}/module", ignore_errors=True)
-    shutil.rmtree(f"./bin/{argv.type}/source", ignore_errors=True)
+    asyncio.run(clean())

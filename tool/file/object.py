@@ -1,11 +1,11 @@
-from common.algorithm import recursive_find
-from common.compiler  import link_object
-from common.config    import argv, object_suffix, executable_suffix, static_suffix, shared_suffix
-from common.error     import LogicError
-from file.package     import Package
-from file.source      import Source
+from common.algorithm  import recursive_find
+from common.compiler   import link_object
+from common.config     import argv, object_suffix, executable_suffix, static_suffix, shared_suffix
+from common.error      import LogicError
+from common.filesystem import exist_file, getmtime_file
+from file.package      import Package
+from file.source       import Source
 import asyncio
-import os
 
 class Object:
     pool    = {}
@@ -40,10 +40,10 @@ class Object:
             await Source(self.name)
 
             # Status
-            self.is_linked = (await Source(self.name)).is_compiled                                   and \
-                             os.path.isfile(self.object_file)                                        and \
-                             os.path.isfile(self.output_file)                                        and \
-                             os.path.getmtime(self.object_file) <= os.path.getmtime(self.output_file)
+            self.is_linked = (await Source(self.name)).is_compiled                                          and \
+                             await exist_file(self.object_file)                                             and \
+                             await exist_file(self.output_file)                                             and \
+                             await getmtime_file(self.object_file) <= await getmtime_file(self.output_file)
             if not self.is_linked:
                 self.link_task = None
                 Object.total += 1

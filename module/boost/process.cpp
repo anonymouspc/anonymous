@@ -1,9 +1,6 @@
 module;
 #undef in
 #undef self
-#ifdef __clang__
-    #pragma clang diagnostic ignored "-Wunused-private-field"
-#endif
 #include <boost/process.hpp>
 #include <boost/process/src/detail/environment_posix.cpp>
 #include <boost/process/src/detail/environment_win.cpp>

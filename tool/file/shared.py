@@ -1,6 +1,6 @@
-from common.config   import argv, shared_suffix
-from common.error    import LogicError
-from file.object     import Object
+from common.config import argv, shared_suffix
+from common.error  import LogicError
+from file.object   import Object
 import asyncio
 
 class Shared:

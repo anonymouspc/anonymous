@@ -14,11 +14,11 @@ async def build():
     await include(
         name="cuda",
         dir="./package/cuda/thrust/thrust",
-        relpath="./thrust"
+        relpath="thrust"
     )
     await include(
         name="cuda",
         dir="./package/cuda/cub/cub",
-        relpath="./cub"
+        relpath="cub"
     )
 

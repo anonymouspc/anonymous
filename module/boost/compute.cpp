@@ -2,7 +2,9 @@ module;
 #undef in
 #undef self
 #undef extends
-#ifdef __clang__
+#if defined(__GNUC__) and not defined(__clang__)
+    #pragma GCC diagnostic ignored "-Wdeprecated-variadic-comma-omission"
+#elifdef __clang__
     #pragma clang diagnostic ignored "-Wdeprecated-missing-comma-variadic-parameter"
 #endif
 #define BOOST_COMPUTE_USE_CPP11
