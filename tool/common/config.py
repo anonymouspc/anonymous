@@ -1,7 +1,6 @@
 from common.error import LogicError
 import argparse
 import os
-import site
 import subprocess
 import sys
 import warnings
