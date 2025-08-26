@@ -69,8 +69,11 @@ async def compile_module(code_file, include_dirs, module_file, object_file, **ru
     compile_commands_logger.log(file=code_file, command=commands[0])
     await create_dir(parent_path(module_file))
     await create_dir(parent_path(object_file))
-    for command in commands:
-        await run(command=command, **run_args)
+    for index, command in enumerate(commands):
+        args = run_args.copy()
+        args.pop("on_start" ) if index != 0                 and "on_start"  in args.keys() else None
+        args.pop("on_finish") if index != len(commands) - 1 and "on_finish" in args.keys() else None
+        await run(command=command, **args)
 
 async def compile_source(code_file, include_dirs, object_file, **run_args):
     await create_dir(parent_path(object_file))

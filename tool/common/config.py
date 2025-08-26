@@ -63,6 +63,8 @@ elif compiler_info.startswith("Microsoft"):
 else:
     raise LogicError(f"compiler {argv.compiler} not recognized")
 
+
+
 # Flags
 if compiler_id == "g++":
     compile_flags = [
@@ -74,7 +76,7 @@ if compiler_id == "g++":
         "-Wno-global-module",
         "-Wno-deprecated-variadic-comma-omission"
     ]
-    link_flags = ["-fuse-ld=lld"]
+    link_flags = []
     if argv.type == "debug":
         compile_flags += ["-g", "-O0", "-DDEBUG", "-fno-inline"]
     elif argv.type == "release":
@@ -128,6 +130,18 @@ elif compiler_id == "cl":
     object_suffix = "obj"
     static_suffix = "lib"
 
+
+
+# Specialize
+if sys.platform == "linux" and compiler_id == "g++":
+    link_flags += ["-fuse-ld=lld"]
+elif sys.platform == "darwin" and compiler_id == "clang++":
+    link_flags += ["-w"]
+
+
+
+
+# Define
 defines = {
     "abstract"   : '0', 
     "extends"    : ':',

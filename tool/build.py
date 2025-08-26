@@ -1,15 +1,16 @@
-from common.error  import LogicError, SubprocessError
-from common.logger import compile_output_logger
-from file.module   import Module
-from file.object   import Object
-from file.package  import Package
-from file.source   import Source
+from common.error    import LogicError, SubprocessError
+from common.logger   import compile_output_logger
+from file.executable import Executable
+from file.module     import Module
+from file.object     import Object
+from file.package    import Package
+from file.source     import Source
 import asyncio
 import sys
 
 async def build():
     try:
-        await Object("main")
+        await Executable("main")
         await asyncio.gather(*[package.build  () for package in Package.pool.values()])
         await asyncio.gather(*[module .compile() for module  in Module .pool.values()])
         await asyncio.gather(*[source .compile() for source  in Source .pool.values()])
