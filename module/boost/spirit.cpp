@@ -1,22 +1,6 @@
-module;
-#undef extends
-#undef in
-#undef self
-#if defined(__GNUC__) and not defined(__clang__)
-    #pragma GCC diagnostic ignored "-Wdeprecated-variadic-comma-omission"
-#elifdef __clang__
-    #pragma clang diagnostic ignored "-Wdeprecated-missing-comma-variadic-parameter"
-#endif
-#include <boost/spirit/home/classic.hpp>
-#include <boost/spirit/home/karma.hpp>
-#include <boost/spirit/home/lex.hpp>
-#include <boost/spirit/home/qi.hpp>
-#include <boost/spirit/home/x3.hpp>
-
 export module boost.spirit;
-import        std;
-
-export namespace boost::spirit
-{
-    
-}
+export import boost.spirit.classic;
+export import boost.spirit.karma;
+export import boost.spirit.lex;
+export import boost.spirit.qi;
+export import boost.spirit.x3;

@@ -71,7 +71,9 @@ if compiler_id == "g++":
         "-Wall",
         "-fdiagnostics-color=always",
         "-fmodules",
-       f"-fmodule-mapper=./bin/cache/module_mapper.txt",
+        "-fmodule-mapper=./bin/cache/module_mapper.txt",
+        "-Wno-global-module",
+        "-Wno-deprecated-variadic-comma-omission"
     ]
     link_flags = ["-fuse-ld=lld"]
     if argv.type == "debug":
@@ -91,7 +93,9 @@ elif compiler_id == "clang++":
         "-std=c++26", 
         "-Wall", 
         "-fdiagnostics-color=always",
-       f"-fprebuilt-module-path=./bin/{argv.type}/module"
+       f"-fprebuilt-module-path=./bin/{argv.type}/module",
+        "-Wno-reserved-module-identifier",
+        "-Wno-deprecated-missing-comma-variadic-parameter"
     ]
     link_flags = []
     if argv.type == "debug":

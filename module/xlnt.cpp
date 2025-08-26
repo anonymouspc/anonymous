@@ -5,7 +5,6 @@ module;
 export module xlnt;
 import        std;
 import        fmt;
-import        pybind11;
 
 export namespace xlnt
 {

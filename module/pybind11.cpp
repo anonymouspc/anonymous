@@ -7,7 +7,6 @@ module;
 
 export module pybind11;
 import        std;
-import        eigen;
 import        python;
 
 export namespace pybind11

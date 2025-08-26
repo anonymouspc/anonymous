@@ -38,6 +38,8 @@ class Module:
     def __eq__(self, str):
         return self.name == str
 
+
+
     async def _create_new_task_stage_1(self, name):
         try:
             # Info

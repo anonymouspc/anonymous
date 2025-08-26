@@ -1,6 +1,6 @@
 from common.config import argv, shared_suffix, env_seperator
 from common.error  import LogicError
-from common.make   import include, lib
+from common.make   import include, lib, format
 import common.config
 import site
 import sys
@@ -20,5 +20,8 @@ async def build():
     await lib(
         name="python",
         file=f"{sysconfig.get_config_var("LIBDIR")}/libpython{sys.version_info.major}.{sys.version_info.minor}.{shared_suffix}"
+    )
+    await format(
+        name="python"
     )
 

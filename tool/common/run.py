@@ -5,7 +5,7 @@ import asyncio
 import sys
 import time
 
-async def run(cmd, 
+async def run(command, 
               cwd            ='.',
               env            =None,
               input_stdin    =None, 
@@ -19,16 +19,16 @@ async def run(cmd,
               timeout        =None):
     async with scheduler.schedule(parallel):
         if argv.dry_run and not return_stdout and not return_stderr:
-            print(f">>> {' '.join(cmd)}")
+            print(f">>> {' '.join(command)}")
             return
 
         if on_start is not None:
             await on_start
         if argv.verbose:
-            print(f">>> {' '.join(cmd)}")
+            print(f">>> {' '.join(command)}")
 
         proc = await asyncio.subprocess.create_subprocess_exec(
-            *cmd,
+            *command,
             cwd=cwd,
             env=env,
             stdin =asyncio.subprocess.PIPE,
@@ -63,7 +63,7 @@ async def run(cmd,
                 proc.kill()
             except ProcessLookupError:
                 pass
-            raise TimeoutError(f"command {' '.join(cmd)} timeout after {timeout} seconds")
+            raise TimeoutError(f"command {' '.join(command)} timeout after {timeout} seconds")
             
         if on_finish is not None:
             await on_finish

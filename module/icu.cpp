@@ -1,5 +1,6 @@
 module;
 #undef in
+#define U_HIDE_DRAFT_API
 #include <unicode/appendable.h>
 #include <unicode/brkiter.h>
 #include <unicode/bytestream.h>

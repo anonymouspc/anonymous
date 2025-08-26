@@ -11,7 +11,6 @@ import re
 async def include(name, file=None, dir=None, relpath='.'):
     package = await Package(name)
     try:
-        await _print_progress(name=name)
         if file is not None:
             await copy_file(file, f"{package.include_dir}/{relpath}/{base_path(file)}")
         if dir is not None:
@@ -23,7 +22,6 @@ async def include(name, file=None, dir=None, relpath='.'):
 async def lib(name, file):
     package = await Package(name)
     try:
-        await _print_progress(name=name)
         await copy_file(file, f"{package.lib_dir}/{base_path(file)}")
     except:
         await remove_dir(package.install_dir)
@@ -32,7 +30,6 @@ async def lib(name, file):
 async def module(name, file, replace={}):
     package = await Package(name)
     try:
-        await _print_progress(name=name)
         with open(file, 'r') as reader:
             content = reader.read()
             content = content.replace("module;", "module;\n#undef in\n#undef self")
@@ -59,7 +56,7 @@ async def cmake(name, dir, args=[]):
             env=os.environ.copy()
             env["CXX"] = argv.compiler
             await run(
-                [
+                command=[
                     "cmake",
                     "-S", dir,
                     "-B", package.build_dir,
@@ -69,35 +66,32 @@ async def cmake(name, dir, args=[]):
                     f"-DCMAKE_BUILD_TYPE={argv.type}",
                     *args
                 ],
-                env=env,
-                on_start=_print_progress(name)
+                env=env
             )
     except:
         await remove_dir(package.build_dir)
         raise
     try:
         await run(
-            [
+            command=[
                 "cmake",
                 "--build", package.build_dir,
                 "-j",      str(argv.parallel)
             ], 
             print_stderr=False, 
-            parallel=argv.parallel, 
-            on_start=_print_progress(name)
+            parallel=argv.parallel
         )
     except:
         raise
     try:
         await run(
-            [
+            command=[
                 "cmake",
                 "--install", package.build_dir,
                 "-j",        str(argv.parallel)
             ],
             print_stderr=False, 
-            parallel=argv.parallel, 
-            on_start=_print_progress(name)
+            parallel=argv.parallel
         )
     except:
         await remove_dir(package.install_dir)
@@ -106,10 +100,13 @@ async def cmake(name, dir, args=[]):
 async def autogen(name, file, args=[]):
     package = await Package(name)
     try:
-        if not exist_dir(package.build_dir):
-            await run([absolute_path(file),
-                       *args],
-                       on_start=_print_progress(name))
+        if not await exist_dir(package.build_dir):
+            await run(
+                command=[
+                    absolute_path(file),
+                    *args
+                ]
+            )
     except:
         raise
 
@@ -121,15 +118,14 @@ async def configure(name, file, args=[]):
             env["CXX"] = argv.compiler
             await create_dir(package.build_dir)
             await run(
-                [
+                command=[
                     absolute_path(file),
                     f"--prefix={absolute_path(package.install_dir)}",
                     f"--libdir={absolute_path(package.install_dir)}/lib",
                     *args
                 ],
                 cwd=package.build_dir,
-                env=env,
-                on_start=_print_progress(name)
+                env=env
             )
 
     except:
@@ -140,29 +136,27 @@ async def make(name, dir, args=[]):
     package = await Package(name)
     try:
         await run(
-            [
+            command=[
                 "make",
                 "-j", str(argv.parallel),
                 *args
             ],
             cwd=package.build_dir,
             print_stderr=False,
-            parallel=argv.parallel,
-            on_start=_print_progress(name)
+            parallel=argv.parallel
         )
     except:
         raise
     try:
         await run(
-            [
+            command=[
                 "make",
                 "install",
                 "-j", str(argv.parallel)
             ],
             cwd=package.build_dir, 
             print_stderr=False, 
-            parallel=argv.parallel,
-            on_start=_print_progress(name)
+            parallel=argv.parallel
         )
     except:
         await remove_dir(package.install_dir)
@@ -170,20 +164,13 @@ async def make(name, dir, args=[]):
 
 
 
-_printed_progress = []
-async def _print_progress(name):
-    global _printed_progress
-    if name not in _printed_progress:
-        Package.current += 1
-        print(f"build package [{Package.current}/{Package.total}]: {name}")
-        _printed_progress += [name]
-
 async def _module_format(file):
     try:
         await run(
-            [
+            command=[
                 "clang-format", 
                 "--sort-includes=false",
+                "--style={SkipMacroDefinitionBody: true}",
                 "-i", file
             ], 
             timeout=1
@@ -191,7 +178,8 @@ async def _module_format(file):
         with open(file, 'r') as reader:
             content = reader.read()
             content = re.sub(r'^namespace\s*{',                             "inline namespace __anon__ {", content, flags=re.MULTILINE)
-            content = re.sub(r'^const\b(?=[^\(\)]*$)',                      "inline const",                content, flags=re.MULTILINE)
+            content = re.sub(r'^const\b(?=[^\(\)]*;\s*$)',                  "inline const",                content, flags=re.MULTILINE)
+            content = re.sub(r'^constexpr\b(?=[^\(\)]*;\s*$)',              "inline constexpr",            content, flags=re.MULTILINE)
             content = re.sub(r'^(?=\w)(?=.*inline|.*INLINE)(.*)\bstatic\b', "\\1",                         content, flags=re.MULTILINE)
             content = re.sub(r'^(?=\w)(?!.*inline|.*INLINE)(.*)\bstatic\b', "\\1inline",                   content, flags=re.MULTILINE)
         with open(file, 'w') as writer:

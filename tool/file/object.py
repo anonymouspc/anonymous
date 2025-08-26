@@ -28,6 +28,8 @@ class Object:
                 self.link_task = asyncio.create_task(self._create_link_task())
             await self.link_task
 
+
+
     async def _create_new_task(self, name):
         try:
             # Info

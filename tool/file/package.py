@@ -34,6 +34,8 @@ class Package:
     def __eq__(self, str):
         return self.name == str
 
+
+
     async def _create_new_task(self, name):
         try:
             # Info
@@ -43,8 +45,8 @@ class Package:
             self.build_dir     = f"./bin/{argv.type}/package/{self.name}/build"
             self.install_dir   = f"./bin/{argv.type}/package/{self.name}/install"
             self.include_dir   = f"./bin/{argv.type}/package/{self.name}/install/include"
-            self.lib_dir       = f"./bin/{argv.type}/package/{self.name}/install/libzz"
-            self.library_files = [file async for file in iterate_dir(self.lib_dir) if (file.endswith(f".{static_suffix}") or file.endswith(f".{shared_suffix}"))] if await exist_dir(self.lib_dir) else []
+            self.lib_dir       = f"./bin/{argv.type}/package/{self.name}/install/lib"
+            self.library_files = [file async for file in iterate_dir(self.lib_dir, file_only=True) if (file.endswith(f".{static_suffix}") or file.endswith(f".{shared_suffix}"))] if await exist_dir(self.lib_dir) else []
 
             # Import
             self.import_packages = [] # Managed by Module, as multiple Module may share one Package and stagely add import_packages.
@@ -71,8 +73,9 @@ class Package:
             # Self
             if hasattr(self.tool_module, "build"):
                 async with Package.build_lock:
+                    await Package._print_progress(name=self.name)
                     await self.tool_module.build()
-                self.library_files = [file async for file in iterate_dir(self.lib_dir) if (file.endswith(f".{static_suffix}") or file.endswith(f".{shared_suffix}"))] if await exist_dir(self.lib_dir) else []
+                self.library_files = [file async for file in iterate_dir(self.lib_dir, file_only=True) if (file.endswith(f".{static_suffix}") or file.endswith(f".{shared_suffix}"))] if await exist_dir(self.lib_dir) else []
 
             # Status
             self.is_built = True
@@ -82,3 +85,10 @@ class Package:
 
     async def _module_to_package(module):
         return await Package(module.name) if await Package.exist(module.name) else None
+    
+    _printed_progress = []
+    async def _print_progress(name):
+        if name not in Package._printed_progress:
+            Package.current += 1
+            print(f"build package [{Package.current}/{Package.total}]: {name}")
+            Package._printed_progress += [name]

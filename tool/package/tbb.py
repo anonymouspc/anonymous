@@ -1,4 +1,4 @@
-from common.make import include
+from common.make import include, format
 
 async def build():
     await include(
@@ -9,4 +9,7 @@ async def build():
         name="tbb",
         dir="./package/tbb/src",
         relpath="tbb/src"
+    )
+    await format(
+        name="tbb"
     )

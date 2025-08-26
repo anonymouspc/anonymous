@@ -1,11 +1,4 @@
-
-                module;
-                #define FMT_HEADER_ONLY
-                #define FMT_IMPORT_STD
-                #ifdef __clang__
-                    #pragma clang diagnostic ignored "-Winclude-angled-in-module-purview"
-                #endif
-                
+module;
 #undef in
 #undef self
 
@@ -152,10 +145,10 @@ module :private;
 extern "C++" {
 #endif
 
-#if false
+#if __has_include("format.cc")
 #  include "format.cc"
 #endif
-#if FMT_OS && false
+#if FMT_OS && __has_include("os.cc")
 #  include "os.cc"
 #endif
 

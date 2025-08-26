@@ -1,6 +1,0 @@
-import anonymous;
-
-int main ( )
-{
-    
-}

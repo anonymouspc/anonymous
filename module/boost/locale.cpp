@@ -2,6 +2,7 @@ module;
 #undef in
 #undef self
 #define BOOST_LOCALE_WITH_ICU
+#define U_HIDE_DRAFT_API
 #ifdef _WIN32
     #define BOOST_LOCALE_NO_POSIX_BACKEND
 #elif defined(__linux__) or defined(__MACH__)

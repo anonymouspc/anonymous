@@ -278,14 +278,11 @@ export namespace std
     using std::ranges::shuffle;
   }
   using std::shift_left;
-  using std::shift_right;
-#if __cpp_lib_shift >= 202202L // >= C++23
   namespace ranges
-  {
-    using std::ranges::shift_left;
-    using std::ranges::shift_right;
-  }
-#endif
+  {}
+  using std::shift_right;
+  namespace ranges
+  {}
   using std::sort;
   namespace ranges
   {
@@ -513,14 +510,11 @@ export namespace std
     using ranges::find_last_if;
     using ranges::find_last_if_not;
 #endif
-#if __cpp_lib_ranges_starts_ends_with
-    using ranges::starts_with;
-    using ranges::ends_with;
-#endif
   }
 }
 
 // 22.7.2 <any>
+#if __cpp_lib_any
 export namespace std
 {
   using std::any;
@@ -529,6 +523,7 @@ export namespace std
   using std::make_any;
   using std::swap;
 }
+#endif
 
 // 24.3.2 <array>
 export namespace std
@@ -709,6 +704,7 @@ export namespace std
 }
 
 // 29.2 <chrono>
+#if __cpp_lib_chrono
 export namespace std
 {
   namespace chrono
@@ -862,6 +858,7 @@ export namespace std::inline literals::inline chrono_literals
 export namespace std::chrono {
   using namespace literals::chrono_literals;
 }
+#endif // __cpp_lib_chrono
 
 // <codecvt>: deprecated C++17, removed C++26
 export namespace std
@@ -873,6 +870,7 @@ export namespace std
 }
 
 // 17.11.1 <compare>
+#if __cpp_lib_three_way_comparison
 export namespace std
 {
   using std::common_comparison_category;
@@ -897,11 +895,8 @@ export namespace std
   using std::partial_order;
   using std::strong_order;
   using std::weak_order;
-#if __glibcxx_type_order >= 202506L
-  using std::type_order;
-  using std::type_order_v;
-#endif
 }
+#endif // __cpp_lib_three_way_comparison
 
 // 28.4 <complex>
 export namespace std
@@ -955,6 +950,7 @@ export namespace std::inline literals::inline complex_literals
 }
 
 // 18 <concepts>
+#if __cpp_lib_concepts
 export namespace std
 {
   using std::assignable_from;
@@ -993,6 +989,7 @@ export namespace std
   using std::totally_ordered;
   using std::totally_ordered_with;
 }
+#endif
 
 // 33.7 <condition_variable>
 export namespace std
@@ -1063,9 +1060,6 @@ export namespace std
   using std::throw_with_nested;
   using std::uncaught_exception;
   using std::uncaught_exceptions;
-#if __cpp_lib_exception_ptr_cast >= 202506L
-  using std::exception_ptr_cast;
-#endif
 }
 
 // 34.4 <execution>
@@ -1424,12 +1418,6 @@ export namespace std
 #if __cpp_lib_move_only_function
   using std::move_only_function;
 #endif
-#if __cpp_lib_copyable_function
-  using std::copyable_function;
-#endif
-#if __cpp_lib_function_ref
-  using std::function_ref;
-#endif
   using std::multiplies;
   using std::negate;
   using std::not_equal_to;
@@ -1518,15 +1506,7 @@ export namespace std
   using std::initializer_list;
 }
 
-// <inplace_vector>
-#if __cpp_lib_inplace_vector
-export namespace std
-{
-  using std::inplace_vector;
-  using std::erase;
-  using std::erase_if;
-}
-#endif
+// <inplace_vector> FIXME
 
 // <iomanip>
 export namespace std
@@ -1756,6 +1736,15 @@ export namespace std
   using std::projected_value_t;
 #endif
 }
+// FIXME these should be friends of __normal_iterator to avoid exporting
+// __gnu_cxx.
+export namespace __gnu_cxx
+{
+  using __gnu_cxx::operator==;
+  using __gnu_cxx::operator<=>;
+  using __gnu_cxx::operator+;
+  using __gnu_cxx::operator-;
+}
 
 // <latch>
 export namespace std
@@ -1853,22 +1842,7 @@ export namespace std
   }
 }
 
-// <mdspan>
-#if __glibcxx_mdspan
-export namespace std
-{
-  using std::extents;
-  using std::dextents;
-  using std::layout_left;
-  using std::layout_right;
-  using std::layout_stride;
-  using std::default_accessor;
-  using std::mdspan;
-  // FIXME layout_left_padded, layout_right_padded, aligned_accessor,
-  // strided_slice, submdspan_mapping_result, full_extent_t, full_extent,
-  // submdspan_extents, mdsubspan
-}
-#endif
+// FIXME <mdspan>
 
 // 20.2 <memory>
 export namespace std
@@ -1983,18 +1957,6 @@ export namespace std
   using std::inout_ptr;
   using std::out_ptr_t;
   using std::inout_ptr_t;
-#endif
-#if __cpp_lib_indirect
-  using std::indirect;
-  namespace pmr { using std::pmr::indirect; }
-#endif
-#if __cpp_lib_polymorphic
-  using std::polymorphic;
-  namespace pmr { using std::pmr::polymorphic; }
-#endif
-#if __cpp_lib_smart_ptr_owner_equality
-  using std::owner_equal;
-  using std::owner_hash;
 #endif
 }
 
@@ -3279,10 +3241,6 @@ export namespace std
   using std::make_integer_sequence;
   using std::move;
   using std::move_if_noexcept;
-#if __cpp_lib_function_ref
-  using std::nontype_t;
-  using std::nontype;
-#endif
   using std::pair;
   using std::swap;
   using std::operator==;

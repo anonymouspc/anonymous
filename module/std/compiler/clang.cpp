@@ -13,10 +13,6 @@
 
 module;
 #undef in
-#ifdef __clang__
-    #pragma clang diagnostic ignored "-Wreserved-module-identifier"
-#endif
-
 #include <__config>
 
 // The headers of Table 24: C++ library headers [tab:headers.cpp]

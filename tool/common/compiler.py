@@ -27,7 +27,7 @@ async def preprocess_file(code_file, name=None, module_file=None, **run_args):
         raise LogicError(f"file {e.filename} not found")
     if name is not None and module_file is not None:
         module_mapper_logger.log(name=name, file=module_file)
-    return await run(command, input_stdin=content, print_stdout=False, return_stdout=True, **run_args)
+    return await run(command=command, input_stdin=content, print_stdout=False, return_stdout=True, on_start=_print_preprocess_name(name) if argv.verbose else None, **run_args)
     
 async def compile_module(code_file, include_dirs, module_file, object_file, **run_args):
     if compiler_id == "g++":
@@ -70,7 +70,7 @@ async def compile_module(code_file, include_dirs, module_file, object_file, **ru
     await create_dir(parent_path(module_file))
     await create_dir(parent_path(object_file))
     for command in commands:
-        await run(command, **run_args)
+        await run(command=command, **run_args)
 
 async def compile_source(code_file, include_dirs, object_file, **run_args):
     await create_dir(parent_path(object_file))
@@ -94,7 +94,7 @@ async def compile_source(code_file, include_dirs, object_file, **run_args):
         ]
     compile_commands_logger.log(file=code_file, command=command)
     await create_dir(parent_path(object_file))
-    await run(command, **run_args)
+    await run(command=command, **run_args)
         
 async def link_object(object_files, library_files, output_file, **run_args):
     if compiler_id == "g++" or compiler_id == "clang++":
@@ -114,7 +114,15 @@ async def link_object(object_files, library_files, output_file, **run_args):
             "/Fe", output_file
         ]
     await create_dir(parent_path(output_file))
-    await run(command, **run_args)
+    await run(command=command, **run_args)
     
 async def run_executable(executable_file, **run_args):
-    await run([f"./{executable_file}"], **run_args)
+    await run(command=[f"./{executable_file}"], **run_args)
+
+
+
+_printed_proprocess_name_count = 0
+async def _print_preprocess_name(name):
+    global _printed_proprocess_name_count
+    _printed_proprocess_name_count += 1
+    print(f"preprocess file [{_printed_proprocess_name_count}/n]: {name}")

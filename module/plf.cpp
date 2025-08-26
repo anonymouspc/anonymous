@@ -1,8 +1,5 @@
 module;
 #undef in
-#if defined(__GNUC__) and not defined(__clang__)
-    #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-#endif
 #include <plf_hive.h>
 
 export module plf;

@@ -54,9 +54,6 @@
 [submodule "package/pybind11"]
 	path = package/pybind11
 	url = https://github.com/pybind/pybind11
-[submodule "package/scnlib"]
-	path = package/scn
-	url = https://github.com/eliaskosunen/scnlib
 [submodule "package/stdexec"]
 	path = package/stdexec
 	url = https://github.com/NVIDIA/stdexec
