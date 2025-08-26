@@ -11,7 +11,6 @@ async def initialize():
         raise LogicError("arg '--enable-python' not set but module 'python' imported")
     common.config.defines["PYTHONPATH"] = f'L"{env_seperator.join([pythonpath for pythonpath in site.getsitepackages()])}"'
 
-
 async def build():
     await include(
         name="python",
