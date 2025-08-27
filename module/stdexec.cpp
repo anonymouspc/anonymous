@@ -16,44 +16,36 @@ export namespace stdexec
     using stdexec::completion_signatures;
     using stdexec::forward_progress_guarantee;
     using stdexec::get_completion_scheduler;
-    using stdexec::get_completion_scheduler_t;
-    using stdexec::get_env;
-    using stdexec::get_env_t;
-    using stdexec::get_forward_progress_guarantee_t;
-    using stdexec::get_scheduler_t;
-    using stdexec::get_stop_token;
-    using stdexec::just;
-    using stdexec::operation_state;
-    using stdexec::receiver;
-    using stdexec::receiver_of;
-    using stdexec::schedule;
-    using stdexec::scheduler;
-    using stdexec::set_error;
-    using stdexec::set_error_t;
-    using stdexec::set_stopped;
-    using stdexec::set_stopped_t;
-    using stdexec::set_value;
-    using stdexec::set_value_t;
-    using stdexec::sender;
-    using stdexec::sender_of;
-    using stdexec::sender_in;
-    using stdexec::sender_to;
-    using stdexec::sender_t;
-    using stdexec::split;
-    using stdexec::sync_wait;
-    using stdexec::then;
+    // using stdexec::get_completion_scheduler_t;
+    // using stdexec::get_env;
+    // using stdexec::get_env_t;
+    // using stdexec::get_forward_progress_guarantee_t;
+    // using stdexec::get_scheduler_t;
+    // using stdexec::get_stop_token;
+    // using stdexec::just;
+    // using stdexec::operation_state;
+    // using stdexec::receiver;
+    // using stdexec::receiver_of;
+    // using stdexec::schedule;
+    // using stdexec::scheduler;
+    // using stdexec::set_error;
+    // using stdexec::set_error_t;
+    // using stdexec::set_stopped;
+    // using stdexec::set_stopped_t;
+    // using stdexec::set_value;
+    // using stdexec::set_value_t;
+    // using stdexec::sender;
+    // using stdexec::sender_of;
+    // using stdexec::sender_in;
+    // using stdexec::sender_to;
+    // using stdexec::sender_t;
+    // using stdexec::split;
+    // using stdexec::sync_wait;
+    // using stdexec::then;
 
-    using stdexec::__call_result_t;
-    using stdexec::__sender_adaptor_closure;
-    using stdexec::__sender_adaptor_closure_for;
-    using ::operator|;
+    // using stdexec::__call_result_t;
+    // using stdexec::__sender_adaptor_closure;
+    // using stdexec::__sender_adaptor_closure_for;
+    // using ::operator|;
     // using stdexec::__closure::operator|;
-
-    namespace __closure
-    {
-        using stdexec::__closure::__compose;
-    }
-
-    template < class sender, class... value_types >
-    concept sender_for = requires ( sender&& snd ) { { stdexec::sync_wait(snd).value() } -> std::convertible_to<std::tuple<value_types...>>; };
 }

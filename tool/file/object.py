@@ -59,8 +59,8 @@ class Object:
             await (await Source(self.name)).compile()
 
             # Self
-            await link_object(object_files =await recursive_find(node=await Source(self.name), func=Object._source_or_module_to_object_file, root=True               ),
-                              library_files=await recursive_find(node=await Source(self.name), func=Object._module_to_library_files,         root=False, flatten=True),
+            await link_object(object_files =await recursive_find(node=await Source(self.name), func=Object._source_or_module_to_object_file, root=True,  flatten=False),
+                              library_files=await recursive_find(node=await Source(self.name), func=Object._module_to_library_files,         root=False, flatten=True ),
                               output_file  =self.output_file,
                               on_start     =Object._print_progress(name=self.name))
             

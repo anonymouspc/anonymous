@@ -1,4 +1,4 @@
-import eigen;
+import test;
 
 int main ( )
 {

@@ -133,9 +133,9 @@ elif compiler_id == "cl":
 
 
 # Specialize
-if sys.platform == "linux" and compiler_id == "g++":
+if sys.platform == "linux":
     link_flags += ["-fuse-ld=lld"]
-elif sys.platform == "darwin" and compiler_id == "clang++":
+elif sys.platform == "darwin":
     link_flags += ["-w"]
 
 

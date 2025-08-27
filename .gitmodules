@@ -56,7 +56,7 @@
 	url = https://github.com/pybind/pybind11
 [submodule "package/stdexec"]
 	path = package/stdexec
-	url = https://github.com/NVIDIA/stdexec
+	url = https://github.com/anonymouspc/stdexec
 [submodule "package/tbb"]
 	path = package/tbb
 	url = https://github.com/uxlfoundation/oneTBB
