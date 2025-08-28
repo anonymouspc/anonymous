@@ -1,4 +1,4 @@
-export module anonymous:basic.utility.static_string;
+export module anonymous:basic.literal.static_string;
 import        std;
 
 export namespace anonymous

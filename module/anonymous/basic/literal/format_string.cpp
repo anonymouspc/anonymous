@@ -1,4 +1,4 @@
-export module anonymous:basic.utility.format_string;
+export module anonymous:basic.literal.format_string;
 import                 :basic.concepts;
 import        std;
 

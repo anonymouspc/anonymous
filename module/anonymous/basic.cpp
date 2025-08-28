@@ -3,5 +3,6 @@ export import          :basic.algorithm;
 export import          :basic.concepts;
 export import          :basic.config;
 export import          :basic.device;
+export import          :basic.execution;
 export import          :basic.error;
-export import          :basic.utility;
+export import          :basic.literal;
