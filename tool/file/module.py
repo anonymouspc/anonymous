@@ -50,9 +50,9 @@ class Module:
             self.content     = await preprocess_file(code_file=self.code_file, name=self.name, module_file=self.module_file)
 
             # Check
-            export_names = re.findall(r'^\s*export\s+module\s+([\w\.:]+)\s*;\s*$', self.content, flags=re.MULTILINE)
+            export_names = re.findall(r'^\s*(?:export\s+)?module\s+([\w\.:]+)\s*;\s*$', self.content, flags=re.MULTILINE)
             if (len(export_names) != 1 or export_names[0] != self.name):
-                raise LogicError(f"file {self.code_file} export module {export_names} but expect to export module {[self.name]}")
+                raise LogicError(f"file {self.code_file} should declare module {self.name}, but actually declares {'nothing' if len(export_names) == 0 else export_names[0] if len(export_names) == 1 else export_names}")
 
             # Import
             self.import_names = [import_name if not import_name.startswith(':') else f"{self.name.partition(':')[0]}{import_name}" 
@@ -121,7 +121,7 @@ class Module:
     async def _check_dependency_cycle_dfs(from_name, current_name, history_names, visited_names):
         current_module = await Module(current_name, recurse_submodules=False)
         if current_name == from_name:
-            raise LogicError(f"dependency cycle {' -> '.join(history_names + [current_name])}")
+            raise LogicError(f"import cycle [{' -> '.join(history_names + [current_name])}]")
         if current_name in visited_names:
             return
         visited_names.add(current_name)

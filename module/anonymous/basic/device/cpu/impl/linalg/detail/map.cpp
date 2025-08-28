@@ -1,9 +1,9 @@
-export module anonymous:basic.device.cpu.impl.linalg.detail.map;
-import                 :basic.concepts;
-import        std;
-import        eigen;
+module anonymous:basic.device.cpu.impl.linalg.detail.map;
+import          :basic.concepts;
+import std;
+import eigen;
 
-export namespace anonymous
+namespace anonymous
 {
     enum 
     {

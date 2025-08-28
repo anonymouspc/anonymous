@@ -1,5 +1,4 @@
 export module anonymous:basic.device.cpu.decl.cpu;
-import                 :basic.device.cpu.decl.detail.static_thread_pool;
 import                 :basic.concepts;
 import        std;
 
@@ -8,8 +7,8 @@ export namespace anonymous
     class cpu
     {
         public: // Execution
-            class execution_context_type = static_thread_pool;
-            inline static execution_context_type execution_context = execution_context_type(std::thread::hardware_concurrency());
+            class execution_context_type;
+            static execution_context_type execution_context;
 
         public: // Type
             template < class type > using value_type      =       type;

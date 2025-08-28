@@ -1,7 +1,7 @@
-export module anonymous:basic.error.detail.format_stacktrace;
-import        std;
+module anonymous:basic.error.detail.format_stacktrace;
+import std;
 
-export namespace anonymous
+namespace anonymous
 {
     std::string format_stacktrace ( const std::stacktrace& );
 

@@ -4,10 +4,9 @@ export import plf;
 
 export namespace std
 {
-    using namespace ::plf;
+    using plf::hive;
     namespace pmr
     {
-        template < class type >
-        using hive = plf::hive<type,std::pmr::polymorphic_allocator<type>>;
+        template < class type > using hive = plf::hive<type,std::pmr::polymorphic_allocator<type>>;
     }
 }

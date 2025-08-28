@@ -72,3 +72,6 @@
 [submodule "package/zstd"]
 	path = package/zstd
 	url = https://github.com/facebook/zstd
+[submodule "package/stdexec"]
+	path = package/stdexec
+	url = https://github.com/anonymouspc/execution

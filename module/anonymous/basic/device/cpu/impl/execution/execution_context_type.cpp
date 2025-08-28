@@ -1,15 +1,16 @@
-export module anonymous:basic.device.cpu.decl.detail.static_thread_pool;
+export module anonymous:basic.device.cpu.impl.execution.execution_context_type;
+import                 :basic.device.cpu.decl;
 import        std;
 
 export namespace anonymous
 {
-    class static_thread_pool
+    class cpu::execution_context_type
     {
         private: // Typedef
             class scheduler;
 
         public: // Constructor
-            static_thread_pool ( int );
+            execution_context_type ( int ) { };
 
         public: // Interface
             std::execution::scheduler auto get_scheduler ( ) const noexcept;

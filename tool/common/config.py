@@ -76,7 +76,7 @@ if compiler_id == "g++":
         "-Wno-global-module",
         "-Wno-deprecated-variadic-comma-omission"
     ]
-    link_flags = []
+    link_flags = ["-lstdc++exp"]
     if argv.type == "debug":
         compile_flags += ["-g", "-O0", "-DDEBUG", "-fno-inline"]
     elif argv.type == "release":
