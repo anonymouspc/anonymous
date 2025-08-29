@@ -50,13 +50,13 @@ class Module:
             self.content     = await preprocess_file(code_file=self.code_file, name=self.name, module_file=self.module_file)
 
             # Check
-            export_names = re.findall(r'^\s*(?:export\s+)?module\s+([\w\.:]+)\s*;\s*$', self.content, flags=re.MULTILINE)
+            export_names = re.findall(r'^\s*(?:export\s+)?module\s+(\w[\w\.:]*)\s*;\s*$', self.content, flags=re.MULTILINE)
             if (len(export_names) != 1 or export_names[0] != self.name):
                 raise LogicError(f"file {self.code_file} should declare module {self.name}, but actually declares {'nothing' if len(export_names) == 0 else export_names[0] if len(export_names) == 1 else export_names}")
 
             # Import
             self.import_names = [import_name if not import_name.startswith(':') else f"{self.name.partition(':')[0]}{import_name}" 
-                                 for import_name in re.findall(r'^\s*(?:export\s+)?import\s+([\w\.:]+)\s*;\s*$', self.content, flags=re.MULTILINE)]
+                                 for import_name in re.findall(r'^\s*(?:export\s+)?import\s+(\w[\w\.:]+)\s*;\s*$', self.content, flags=re.MULTILINE)]
         
         except LogicError as e:
             raise e.add_prefix(f"In module {self.name}:")

@@ -101,18 +101,15 @@ module;
 #include <thrust/system/cpp/memory.h>
 #include <thrust/system/cpp/pointer.h>
 #include <thrust/system/cpp/vector.h>
+#include <thrust/system/cuda/config.h>
+#include <thrust/system/cuda/error.h>
+#include <thrust/system/cuda/execution_policy.h>
+#include <thrust/system/cuda/memory_resource.h>
+#include <thrust/system/cuda/memory.h>
+#include <thrust/system/cuda/pointer.h>
+#include <thrust/system/cuda/vector.h>
 #include <thrust/system/error_code.h>
-#include <thrust/system/omp/execution_policy.h>
-#include <thrust/system/omp/memory_resource.h>
-#include <thrust/system/omp/memory.h>
-#include <thrust/system/omp/pointer.h>
-#include <thrust/system/omp/vector.h>
 #include <thrust/system/system_error.h>
-#include <thrust/system/tbb/execution_policy.h>
-#include <thrust/system/tbb/memory_resource.h>
-#include <thrust/system/tbb/memory.h>
-#include <thrust/system/tbb/pointer.h>
-#include <thrust/system/tbb/vector.h>
 #include <thrust/tabulate.h>
 #include <thrust/transform_reduce.h>
 #include <thrust/transform_scan.h>
@@ -141,5 +138,6 @@ import        cuda;
 
 export namespace thrust
 {
-
+    using thrust::fill;
+    using thrust::device_vector;
 }

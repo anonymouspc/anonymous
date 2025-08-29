@@ -17,5 +17,6 @@ async def initialize():
 async def build():
     await include(
         name="opencl",
-        dir="./package/opencl/CL"
+        dir="./package/opencl/CL",
+        relpath="CL"
     )
