@@ -1,5 +1,4 @@
 from common.error    import LogicError, SubprocessError
-from common.logger   import compile_output_logger
 from file.executable import Executable
 from file.module     import Module
 from file.object     import Object

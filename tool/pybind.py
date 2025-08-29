@@ -1,6 +1,4 @@
-from common.config   import argv, shared_suffix
 from common.error    import LogicError, SubprocessError
-from common.logger   import compile_output_logger
 from file.shared     import Shared
 from file.module     import Module
 from file.object     import Object
