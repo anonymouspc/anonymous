@@ -6,9 +6,6 @@
 [submodule "package/bzip2"]
 	path = package/bzip2
 	url = https://gitlab.com/bzip2/bzip2
-[submodule "package/cccl"]
-	path = package/cuda
-	url = https://github.com/NVIDIA/cccl
 [submodule "package/clblast"]
 	path = package/clblast
 	url = https://github.com/CNugteren/CLBlast
@@ -34,9 +31,6 @@
 [submodule "package/lz4"]
 	path = package/lz4
 	url = https://github.com/lz4/lz4
-[submodule "package/opencl"]
-	path = package/opencl
-	url = https://github.com/KhronosGroup/Opencl-Headers
 [submodule "package/openssl"]
 	path = package/openssl
 	url = https://github.com/openssl/openssl
