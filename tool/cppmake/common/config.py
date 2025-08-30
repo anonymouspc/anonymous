@@ -1,4 +1,3 @@
-from common.error import LogicError
 import argparse
 import os
 import subprocess
@@ -6,7 +5,7 @@ import sys
 import warnings
 
 # Settings
-os.chdir(f"{os.path.dirname(__file__)}/../..")
+os.chdir(f"{os.path.dirname(__file__)}/../../..")
 os.environ["LANG"] = "en_US.UTF-8"
 
 
@@ -33,7 +32,6 @@ elif sys.platform == "darwin":
 # Arguments
 parser = argparse.ArgumentParser()
 parser.add_argument("--type",           choices=["debug", "release", "size"],                     default="debug"         )
-parser.add_argument("--output",         choices=["executable", "shared"],                         default="executable"    )
 parser.add_argument("--compiler",                                                                 default=default_compiler)
 parser.add_argument("--parallel",       type=lambda n: int(n),                                    default=os.cpu_count()  )
 parser.add_argument("--update-package", action="store_true",                                      default=False           )
@@ -61,7 +59,7 @@ elif compiler_info.startswith("clang") or compiler_info.startswith("clang++"):
 elif compiler_info.startswith("Microsoft"):
     compiler_id = "cl"
 else:
-    raise LogicError(f"compiler {argv.compiler} not recognized")
+    assert False, f"compiler {argv.compiler} not recognized"
 
 
 
@@ -84,8 +82,6 @@ if compiler_id == "g++":
         link_flags    += ["-s"]
     elif argv.type == "size":
         compile_flags += [      "-Os"]
-    if argv.output == "shared":
-        link_flags += ["-shared", "-fPIC"]
     module_suffix = "gcm"
     object_suffix = "o"
     static_suffix = "a"
@@ -106,8 +102,6 @@ elif compiler_id == "clang++":
         link_flags    += ["-s"]
     elif argv.type == "size":
         compile_flags += [      "-Os"]
-    if argv.output == "shared":
-        link_flags += ["-shared", "-fPIC"]
     module_suffix = "pcm"
     object_suffix = "o"
     static_suffix = "a"
@@ -124,8 +118,6 @@ elif compiler_id == "cl":
         compile_flags += [       "/O2", "/DNDEBUG"]
     elif argv.type == "size":
         compile_flags += [       "/O1"]
-    if argv.output == "shared":
-        link_flags += ["/LD"]
     module_suffix = "ifc"
     object_suffix = "obj"
     static_suffix = "lib"
@@ -134,8 +126,10 @@ elif compiler_id == "cl":
 
 # Specialize
 if sys.platform == "linux":
+    assert compiler_id == "g++" or compiler_id == "clang++"
     link_flags += ["-fuse-ld=lld"]
 elif sys.platform == "darwin":
+    assert compiler_id == "g++" or compiler_id == "clang++"
     link_flags += ["-w"]
 
 

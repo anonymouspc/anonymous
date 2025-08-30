@@ -1,16 +1,16 @@
-from common.make  import include, format
+import cppmake
 
 async def build():
-    await include(
+    await cppmake.include(
         name="eigen",
         dir="./package/eigen/Eigen",
         relpath="Eigen"
     )
-    await include(
+    await cppmake.include(
         name="eigen",
         dir="./package/eigen/unsupported/Eigen",
         relpath="unsupported/Eigen"
     )
-    await format(
+    await cppmake.format(
         name="eigen"
     )

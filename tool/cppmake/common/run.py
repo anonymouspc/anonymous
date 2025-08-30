@@ -1,6 +1,6 @@
-from common.config    import argv
-from common.error     import SubprocessError
-from common.scheduler import scheduler
+from cppmake.common.config    import argv
+from cppmake.common.error     import SubprocessError
+from cppmake.common.scheduler import scheduler
 import asyncio
 import sys
 import time

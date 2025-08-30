@@ -1,7 +1,7 @@
-from common.make import cmake
+import cppmake
 
 async def build():
-    await cmake(
+    await cppmake.cmake(
         name="lz4",
         dir="./package/lz4/build/cmake",
         args=[

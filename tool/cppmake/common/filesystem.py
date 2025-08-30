@@ -1,4 +1,4 @@
-from common.config import argv
+from cppmake.common.config import argv
 import os
 import shutil
 

@@ -1,11 +1,11 @@
-from common.make import include, module
+import cppmake
 
 async def build():
-    await include(
+    await cppmake.include(
         name="proxy",
         dir="./package/proxy/include"
     )
-    await module(
+    await cppmake.module(
         name="proxy",
         file="./package/proxy/include/proxy/v4/proxy.ixx",
         replace={"proxy.v4": "proxy"}

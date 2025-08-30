@@ -1,7 +1,7 @@
-from common.make import cmake
+import cppmake
 
 async def build():
-    await cmake(
+    await cppmake.cmake(
         name="zstd",
         dir="./package/zstd/build/cmake",
         args=[

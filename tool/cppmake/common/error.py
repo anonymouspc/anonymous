@@ -1,4 +1,4 @@
-from common.logger import compile_output_logger
+from cppmake.common.logger import compile_output_logger
 
 class LogicError(Exception):
     def __init__(self, message):

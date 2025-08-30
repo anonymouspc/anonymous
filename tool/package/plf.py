@@ -1,7 +1,7 @@
-from common.make import include
+import cppmake
 
 async def build():
-    await include(
+    await cppmake.include(
         name="plf",
         file="./package/plf/plf_hive.h"
     )

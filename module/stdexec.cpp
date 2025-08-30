@@ -4,7 +4,7 @@ module;
 #include <beman/execution/execution.hpp>
 #include <beman/execution/functional.hpp>
 #include <beman/execution/stop_token.hpp>
-#include <beman/execution/detail/just.hpp>
+#include <beman/execution/detail/
 
 export module stdexec;
 // import std; This module might be depended by std:feature.sender by std:feature by std.

@@ -1,14 +1,14 @@
-from common.config     import argv, static_suffix, shared_suffix
-from common.error      import LogicError
-from common.filesystem import exist_file, exist_dir, iterate_dir
+from cppmake.common.config     import argv, static_suffix, shared_suffix
+from cppmake.common.error      import LogicError
+from cppmake.common.filesystem import exist_file, exist_dir, iterate_dir
 import asyncio
 import importlib
 
 class Package:
-    pool       = {}
-    current    = 0
-    total      = 0
-    build_lock = asyncio.Lock()
+    pool    = {}
+    current = 0
+    total   = 0
+    lock    = asyncio.Lock()
 
     async def __new__(self, name):
         name = name.partition('.')[0]
@@ -72,7 +72,7 @@ class Package:
 
             # Self
             if hasattr(self.tool_module, "build"):
-                async with Package.build_lock:
+                async with Package.lock:
                     await Package._print_progress(name=self.name)
                     await self.tool_module.build()
                 self.library_files = [file async for file in iterate_dir(self.lib_dir, file_only=True) if (file.endswith(f".{static_suffix}") or file.endswith(f".{shared_suffix}"))] if await exist_dir(self.lib_dir) else []

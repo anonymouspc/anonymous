@@ -1,10 +1,10 @@
-from common.make import include, format
+import cppmake
 
 async def build():
-    await include(
+    await cppmake.include(
         name="stdexec",
         dir="./package/stdexec/include"
     )
-    await format(
+    await cppmake.format(
         name="stdexec"
     )

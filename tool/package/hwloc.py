@@ -1,10 +1,9 @@
-from common.config import argv
-from common.make   import cmake, autogen, configure, make
+import cppmake
 import sys
 
 async def build():
     if sys.platform == "win32":
-        await cmake(
+        await cppmake.cmake(
             name="hwloc",
             dir="./package/hwloc/contrib/windows-cmake",
             args=[
@@ -16,21 +15,21 @@ async def build():
             ]
         )
     elif sys.platform == "linux" or sys.platform == "darwin":
-        await autogen(
+        await cppmake.autogen(
             name="hwloc",
             file="./package/hwloc/autogen.sh"
         )
-        await configure(
+        await cppmake.configure(
             name="hwloc",
             file="./package/hwloc/configure",
             args=[
                 "--enable-static",
                 "--disable-shared",
-                "--enable-debug" if argv.type == "debug" else "",
+                "--enable-debug" if cppmake.argv.type == "debug" else "",
                 "--disable-readme"
             ]
         )
-        await make(
+        await cppmake.make(
             name="hwloc",
             dir="./third_aprty/hwloc"
         )

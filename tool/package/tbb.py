@@ -1,15 +1,15 @@
-from common.make import include, format
+import cppmake
 
 async def build():
-    await include(
+    await cppmake.include(
         name="tbb",
         dir="./package/tbb/include"
     )
-    await include(
+    await cppmake.include(
         name="tbb",
         dir="./package/tbb/src",
         relpath="tbb/src"
     )
-    await format(
+    await cppmake.format(
         name="tbb"
     )

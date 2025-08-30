@@ -1,7 +1,7 @@
-from common.make import configure, make
+import cppmake
 
 async def build():
-    await configure(
+    await cppmake.configure(
         name="openssl",
         file="./package/openssl/Configure",
         args=[
@@ -11,7 +11,7 @@ async def build():
             "no-shared",
         ]
     )
-    await make(
+    await cppmake.make(
         name="openssl",
         dir="./package/openssl",
     )

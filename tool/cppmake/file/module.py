@@ -1,9 +1,9 @@
-from common.algorithm  import recursive_find
-from common.config     import argv, module_suffix, object_suffix
-from common.compiler   import preprocess_file, compile_module
-from common.error      import LogicError
-from common.filesystem import exist_file, getmtime_file
-from file.package      import Package
+from cppmake.common.algorithm  import recursive_find
+from cppmake.common.config     import argv, module_suffix, object_suffix
+from cppmake.common.compiler   import preprocess_file, compile_module
+from cppmake.common.error      import LogicError
+from cppmake.common.filesystem import exist_file, getmtime_file
+from cppmake.file.package      import Package
 import asyncio
 import re
 
@@ -47,6 +47,8 @@ class Module:
             self.code_file   =                 f"./module/{self.name.replace('.', '/').replace(':', '/')}.cpp"
             self.module_file = f"./bin/{argv.type}/module/{self.name.replace('.', '.').replace(':', '-')}.{module_suffix}"
             self.object_file = f"./bin/{argv.type}/module/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
+
+            self.import_names = ModuleCacheLogger.query_import_names(name=self.name)
             self.content     = await preprocess_file(code_file=self.code_file, name=self.name, module_file=self.module_file)
 
             # Check
@@ -110,7 +112,24 @@ class Module:
         self.is_compiled = True
 
     async def _check_dependency_cycle(from_name, to_name):
+        await Module(to_name, recurse_submodules=Faodule_file =self.module_file, 
+                             object_file =self.object_file,
+                             on_start    =Module._print_progress(name=self.name))
+    
+        # Status
+        self.is_compiled = True
+
+    async def _check_dependency_cycle(from_name, to_name):
         await Module(to_name, recurse_submodules=False)
+        if Module.topo[from_name] < Module.topo[to_name]:
+            pass
+        else:
+            history_names = [from_name]
+            visited_names = set()
+            await Module._check_dependency_cycle_dfs(from_name=from_name, current_name=to_name, history_names=history_names, visited_names=visited_names)
+
+    async def _check_dependency_cycle_dfs(from_name, current_name, history_names, visited_names):
+        current_module = await Module(current_namlse)
         if Module.topo[from_name] < Module.topo[to_name]:
             pass
         else:

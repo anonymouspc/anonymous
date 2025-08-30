@@ -1,10 +1,10 @@
-from common.algorithm  import recursive_find
-from common.compiler   import preprocess_file, compile_source
-from common.config     import argv, object_suffix
-from common.error      import LogicError
-from common.filesystem import exist_file, getmtime_file
-from file.module       import Module
-from file.package      import Package
+from cppmake.common.algorithm  import recursive_find
+from cppmake.common.compiler   import preprocess_file, compile_source
+from cppmake.common.config     import argv, object_suffix
+from cppmake.common.error      import LogicError
+from cppmake.common.filesystem import exist_file, getmtime_file
+from cppmake.file.module       import Module
+from cppmake.file.package      import Package
 import asyncio
 import re
   

@@ -1,9 +1,9 @@
-from common.algorithm  import recursive_find
-from common.config     import argv
-from common.filesystem import exist_dir, create_dir, copy_file, copy_dir, remove_file, remove_dir, iterate_dir, absolute_path, base_path
-from common.run        import run
-from file.module       import Module
-from file.package      import Package
+from cppmake.common.algorithm  import recursive_find
+from cppmake.common.config     import argv
+from cppmake.common.filesystem import exist_dir, create_dir, copy_file, copy_dir, remove_file, remove_dir, iterate_dir, absolute_path, base_path
+from cppmake.common.run        import run
+from cppmake.file.module       import Module
+from cppmake.file.package      import Package
 import asyncio
 import os
 import re

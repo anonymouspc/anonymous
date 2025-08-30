@@ -1,15 +1,15 @@
-from common.make import include, module
+import cppmake
 
 async def build():
-    await include(
+    await cppmake.include(
         name="fmt",
         dir="./package/fmt/include"
     )
-    await include(
+    await cppmake.include(
         name="fmt",
         dir="./package/fmt/src"
     )
-    await module(
+    await cppmake.module(
         name="fmt",
         file="./package/fmt/src/fmt.cc",
         replace={"FMT_HAS_INCLUDE": "__has_include"}

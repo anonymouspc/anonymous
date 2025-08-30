@@ -1,15 +1,14 @@
-from common.make import cmake
+import cppmake
 
 async def build():
-    await cmake(
+    await cppmake.cmake(
         name="png",
         dir="./package/png",
         args=[
             "-DPNG_SHARED=false",
             "-DPNG_STATIC=true",
             "-DPNG_TESTS=false",
-            "-DPNG_TOOLS=false",
-          # "-DPNG_EXECUTABLES=false"
+            "-DPNG_TOOLS=false"
         ]
     )
 

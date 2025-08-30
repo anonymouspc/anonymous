@@ -1,3 +1,4 @@
+from cppmake.common.filesystem import create_dir
 import json
 import os
 
@@ -52,3 +53,7 @@ class ModuleMapperLogger:
         self.writer.flush()
 
 module_mapper_logger = ModuleMapperLogger()
+
+class PreprocessCacheLogger:
+    def __init__(self):
+        os.makedirs("./bin/cache")

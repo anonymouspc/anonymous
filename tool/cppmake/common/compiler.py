@@ -1,8 +1,8 @@
-from common.config     import argv, compiler_id, compile_flags, link_flags, defines
-from common.error      import LogicError
-from common.filesystem import create_dir, parent_path
-from common.logger     import compile_commands_logger, module_mapper_logger
-from common.run        import run
+from cppmake.common.config     import argv, compiler_id, compile_flags, link_flags, defines
+from cppmake.common.error      import LogicError
+from cppmake.common.filesystem import create_dir, parent_path
+from cppmake.common.logger     import compile_commands_logger, module_mapper_logger
+from cppmake.common.run        import run
 import re
 
 async def preprocess_file(code_file, name=None, module_file=None, **run_args):

@@ -1,7 +1,7 @@
-from common.make import cmake
+import cppmake
 
 async def build():
-    await cmake(
+    await cppmake.cmake(
         name="clblast",
         dir="./package/clblast",
         args=[

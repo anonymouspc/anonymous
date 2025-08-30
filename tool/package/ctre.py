@@ -1,11 +1,11 @@
-from common.make import include, module
+import cppmake
 
 async def build():
-    await include(
+    await cppmake.include(
         name="ctre",
         dir="./package/ctre/include"
     )
-    await module(
+    await cppmake.module(
         name="ctre",
         file="./package/ctre/ctre.cppm"
     )

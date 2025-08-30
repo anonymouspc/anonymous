@@ -1,13 +1,12 @@
-from common.config import argv
-from common.make   import cmake
+import cppmake
 
 async def build():
-    await cmake(
+    await cppmake.cmake(
         name="bzip2",
         dir="./package/bzip2",
         args=[
             "-DENABLE_WERROR=false",
-           f"-DENABLE_DEBUG={argv.type=='debug'}",
+           f"-DENABLE_DEBUG={cppmake.argv.type=='debug'}",
             "-DENABLE_APP=false",
             "-DENABLE_TESTS=false",
             "-DENABLE_DOCS=false",

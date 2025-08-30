@@ -1,23 +1,21 @@
-from common.config import argv
-from common.make   import configure, make
+import cppmake
 
 async def build():
-    await configure(
+    await cppmake.configure(
         name="icu",
         file="./package/icu/icu4c/source/configure",
         args=[
             "--disable-icu-config",
-            "--enable-debug"    if argv.type == "debug"   else "",
-            "--disable-release" if argv.type != "release" else "",
+            "--enable-debug"    if cppmake.argv.type == "debug"   else "",
+            "--disable-release" if cppmake.argv.type != "release" else "",
             "--disable-shared",
             "--enable-static",
             "--disable-dyload",
             "--disable-tests",
-          # "--disable-tools",
             "--disable-samples"
         ]
     )
-    await make(
+    await cppmake.make(
         name="icu",
         dir="./package/icu/icu4c/source"
     )

@@ -1,10 +1,10 @@
-from common.algorithm  import recursive_find
-from common.compiler   import link_object
-from common.config     import argv, object_suffix, executable_suffix, static_suffix, shared_suffix
-from common.error      import LogicError
-from common.filesystem import exist_file, getmtime_file
-from file.package      import Package
-from file.source       import Source
+from cppmake.common.algorithm  import recursive_find
+from cppmake.common.compiler   import link_object
+from cppmake.common.config     import argv, object_suffix, executable_suffix, static_suffix, shared_suffix
+from cppmake.common.error      import LogicError
+from cppmake.common.filesystem import exist_file, getmtime_file
+from cppmake.file.package      import Package
+from cppmake.file.source       import Source
 import asyncio
 
 class Object:
