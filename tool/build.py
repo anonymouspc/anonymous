@@ -1,6 +1,6 @@
 import cppmake
 
 async def build():
-    await cppmake.Source("main").compile()
-    
-cppmake.wait(build())
+    await (await cppmake.Source("main")).compile()
+
+cppmake.sync_wait(build())

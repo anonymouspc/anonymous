@@ -38,7 +38,7 @@ class Source:
         try:
             # Info
             self.name        = name
-            self.code_file   =            f"./source/{self.name.replace('.', '/').replace(':', '/')}.cpp"
+            self.code_file   =                 f"./source/{self.name.replace('.', '/').replace(':', '/')}.cpp"
             self.object_file = f"./bin/{argv.type}/source/{self.name.replace('.', '.').replace(':', '-')}.{object_suffix}"
             self.content     = await preprocess_file(code_file=self.code_file)
 
