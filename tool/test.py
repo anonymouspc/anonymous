@@ -1,10 +1,11 @@
 import cppmake
+import asyncio
 
 async def test():
-    await cppmake.when_all(*[
+    await asyncio.gather(*[
         (await cppmake.Executable(name)).run()
-        async for file in cppmake.iterate_dir("./source/test")
-        for name in [file.removeprefix("./source/test").removesuffix(".cpp")]
+        for file in cppmake.iterate_dir("./source/test", file_only=True, recursive=True)
+        for name in [file.removeprefix("./source/").removesuffix(".cpp")]
     ])
 
-cppmake.sync_wait(test())
+cppmake.main(test())
