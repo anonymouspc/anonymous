@@ -3,7 +3,7 @@ from cppmake.compiler.all       import compiler
 from cppmake.system.all         import system
 from cppmake.target.package     import Package
 from cppmake.target.module      import Module
-from cppmake.utility.algorithm  import recursive_find
+from cppmake.utility.algorithm  import recursive_search
 from cppmake.utility.filesystem import exist_dir, remove_dir
 from cppmake.utility.process    import run_process
 
@@ -18,7 +18,7 @@ async def cmake(name, dir, args=[]):
                     "cmake",
                     "-S", dir,
                     "-B", package.build_dir,
-                    f"-DCMAKE_PREFIX_PATH={';'.join(await recursive_find(await Module(name), navigates=["import_modules", "import_package"], target="install_dir"))}",
+                    f"-DCMAKE_PREFIX_PATH={';'.join(await recursive_search(await Module(name), navigate=lambda module: module.import_modules, collect=lambda module: module.import_package.install_dir))}",
                     f"-DCMAKE_INSTALL_PREFIX={package.install_dir}",
                     f"-DCMAKE_INSTALL_LIBDIR=lib",
                     f"-DCMAKE_BUILD_TYPE={config.type}",

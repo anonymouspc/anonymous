@@ -1,4 +1,4 @@
-import std;
+import testa;
 
 int main ( )
 {

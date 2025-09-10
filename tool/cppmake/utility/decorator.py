@@ -1,8 +1,11 @@
-from cppmake.basic.context     import get_context
-from cppmake.error.logic       import LogicError
-from cppmake.utility.scheduler import scheduler
+from cppmake.basic.context              import get_context
+from cppmake.error.logic                import LogicError
+from cppmake.logger.module_dependencies import module_dependencies_logger
+from cppmake.utility.algorithm          import recursive_search
+from cppmake.utility.scheduler          import scheduler
 import asyncio
 import functools
+import inspect
 
 def context(func):
     @functools.wraps(func)
@@ -23,11 +26,39 @@ def context(func):
             async def task(self, *args, **kwargs):
                 innerfunc.__globals__["scheduler"] = scheduler
                 await func(self, *args, **kwargs)
-            if not hasattr(self, "imag_runned"):
-                   setattr(self, "imag_runned", True)
-                   self.__class__.tasks += [task(self, *args, **kwargs)]
+            if (hasattr(self, "is_built"   ) and not self.is_built   ()) or \
+               (hasattr(self, "is_compiled") and not self.is_compiled()):
+                if not hasattr(self, "imag_runned"):
+                       setattr(self, "imag_runned", True)
+                       self.__class__.tasks += [task(self, *args, **kwargs)]
     wrapper.__name__ = f"{func.__name__}_context"
-    return once(wrapper)
+    return wrapper
+
+def depmod(func):
+    @functools.wraps(func)
+    async def wrapper(self, name):
+        if not hasattr(self, "depcycle_ok"):
+               setattr(self, "depcycle_ok", True)
+               async def navigate(name):
+                   return await module_dependencies_logger.get(name=name, code_file=f"./module/{name.replace('.', '/').replace(':', '/')}.cpp")
+               def on_cycle(history):
+                   raise LogicError(f"module import cycle [{' -> '.join(history)}]")
+               await recursive_search(name, navigate=navigate, on_cycle=on_cycle)
+        await func(self, name)
+    wrapper.__name__ = f"{func.__name__}_depcycle"
+    return wrapper
+
+def deppkg(func):
+    @functools.wraps(func)
+    async def wrapper(self, name):
+        await func(self, name)
+        if "self" in      inspect.stack()[2].frame.f_locals.keys():
+            from_module = inspect.stack()[2].frame.f_locals["self"]
+            self.import_packages += [package for package in await 
+                  recursive_search(from_module, navigate=lambda module:  module.import_modules,   collect =lambda module:  module.import_package) if package not in self.import_packages and package is not self and package is not None]
+            await recursive_search(self,        navigate=lambda package: package.import_packages, on_cycle=lambda history: self.import_packages.remove(history[1]))
+    wrapper.__name__ = f"{func.__name__}_deprev"
+    return wrapper
 
 def once(func):
     @functools.wraps(func)
@@ -58,7 +89,10 @@ def unique(cls):
             cls.pool[name] = self
         await self.new(name)
         return self
+    def __eq__(self1, self2):
+        return self1 is self2
     cls.__new__ = __new__
+    cls.__eq__  = __eq__
     return cls
 
 ##### private #####
@@ -77,4 +111,7 @@ class _SkipScheduler:
             return True
         
 class _Skipped(Exception):
+    pass
+
+async def _dfs():
     pass

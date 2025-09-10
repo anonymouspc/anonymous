@@ -4,7 +4,7 @@ from cppmake.logger.build_progress      import build_progress_logger
 from cppmake.logger.module_dependencies import module_dependencies_logger
 from cppmake.system.all                 import system
 from cppmake.target.module              import Module
-from cppmake.utility.algorithm          import recursive_find
+from cppmake.utility.algorithm          import recursive_search
 from cppmake.utility.decorator          import context, once, trace, unique
 from cppmake.utility.filesystem         import exist_file, modified_time_of_file
 from cppmake.utility.scheduler          import scheduler
@@ -33,9 +33,9 @@ class Source:
                     output       =output,
                     code_file    =self.code_file,
                     output_file  =output_file,
-                    include_dirs =await recursive_find(self, navigates=["import_modules", "import_package"], target="include_dir"),
-                    object_files =await recursive_find(self, navigates=["import_modules", "import_pacakge"], target="object_file"),
-                    library_files=await recursive_find(self, navigates=["import_modules", "import_package"], target="library_files", flatten=True)
+                    include_dirs =await recursive_search(self, navigate=lambda module: module.import_modules, collect=lambda module: module.import_package.include_dir,   root=False),
+                    object_files =await recursive_search(self, navigate=lambda module: module.import_modules, collect=lambda module: module.object_file,                  root=False),
+                    library_files=await recursive_search(self, navigate=lambda module: module.import_modules, collect=lambda module: module.import_package.library_files, root=False, flatten=True)
                 )
 
     def is_compiled(self, output="executable"):

@@ -12,5 +12,5 @@ async def build():
     await cppmake.module(
         name="fmt",
         file="./package/fmt/src/fmt.cc",
-        replace={"FMT_HAS_INCLUDE": "_has_include"}
+        replace={"FMT_HAS_INCLUDE": "__has_include"}
     )
