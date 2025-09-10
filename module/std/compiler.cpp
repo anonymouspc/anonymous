@@ -7,9 +7,3 @@ export import    :compiler.clang;
 #elif defined(_MSC_VER) and not defined(__clang__)
 export import    :compiler.msvc;
 #endif
-
-export namespace std
-{
-    inline namespace extension { }
-    inline namespace feature   { }
-}

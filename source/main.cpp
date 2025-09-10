@@ -1,6 +1,6 @@
-import anonymous;
+import anonymous
 
 int main ( )
 {
-    
+
 }
