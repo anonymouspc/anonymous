@@ -4,7 +4,7 @@ module;
 export module std:feature.mdspan;
 import           :compiler;
 
-export namespace std
+export namespace std::inline feature
 {
 #define libcpp_assert(expr, message) assert(expr)
 

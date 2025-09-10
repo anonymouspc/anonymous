@@ -7,6 +7,7 @@ from cppmake.target.package    import Package
 from cppmake.target.source     import Source
 import asyncio
 import sys
+import time
 
 def main(func):
     try:

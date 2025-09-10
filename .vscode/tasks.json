@@ -13,14 +13,14 @@
             "group": "none",
             "type": "shell",
             "problemMatcher": [],
-            "command": "python ./tool/build.py --type=debug --enable-python --enable-opencl"
+            "command": "python ./tool/build.py --type=debug"
         },
         {
             "label": "debug.test",
             "group": "test",
             "type": "shell",
             "problemMatcher": [],
-            "command": "python ./tool/test.py --type=debug --enable-python --enable-opencl"
+            "command": "python ./tool/test.py --type=debug"
         },
         {
             "label": "debug.run",
@@ -52,14 +52,14 @@
             "group": "none",
             "type": "shell",
             "problemMatcher": [],
-            "command": "python ./tool/build.py --type=release --enable-python --enable-opencl"
+            "command": "python ./tool/build.py --type=release"
         },
         {
             "label": "release.test",
             "group": "test",
             "type": "shell",
             "problemMatcher": [],
-            "command": "python ./tool/test.py --type=release --enable-python --enable-opencl"
+            "command": "python ./tool/test.py --type=release"
         },
         {
             "label": "release.run",

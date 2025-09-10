@@ -7,7 +7,7 @@ import           :compiler;
 import           :feature.mdspan;
 #endif
 
-export namespace std
+export namespace std::inline feature
 {
     template < class type, size_t align >
     using aligned_accessor = default_accessor<type>;

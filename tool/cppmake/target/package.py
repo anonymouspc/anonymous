@@ -34,7 +34,6 @@ class Package:
                 self.library_files = [file for file in iterate_dir(self.library_dir, file_only=True) if file.endswith(system.static_suffix) or file.endswith(system.shared_suffix)] if exist_dir(self.library_dir) else []
 
     def is_built(self):
-        # todo: optimize with cache
         return False if config.update_package else exist_dir(self.install_dir)
     
     def exist(name):
