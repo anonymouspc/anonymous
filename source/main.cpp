@@ -1,5 +1,3 @@
-import testa;
-
 int main ( )
 {
 
