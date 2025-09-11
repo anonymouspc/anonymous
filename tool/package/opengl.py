@@ -1,21 +1,20 @@
 import cppmake
 
 if cppmake.system.name == "macos":
-    cppmake.link_flags += ["-framework OpenCL"]
+    cppmake.link_flags += ["-framework OpenGL"]
 
 async def build():
     await cppmake.include(
         name="opencl",
-        dir="./package/opencl/CL",
-        relpath="CL"
+        dir="./package/opengl/api",
     )
     if cppmake.system.name == "windows":
         await cppmake.lib(
-            name="opencl",
-            file="C:/Windows/System32/OpenCL.dll"
+            name="opengl",
+            file="C:/Windows/System32/OpenGL.dll"
         )
     elif cppmake.system.name == "linux":
         await cppmake.lib(
-            name="opencl",
-            file="/usr/lib/libOpenCL.so"
+            name="opengl",
+            file="/usr/lib/libOpenGL.so"
         )

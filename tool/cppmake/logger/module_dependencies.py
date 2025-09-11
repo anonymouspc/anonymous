@@ -30,10 +30,10 @@ class ModuleDependenciesLogger:
         
     def __init__(self):
         try:
-            self.content = json.load(open("./bin/cache/module_dependencies.json", 'r'))
+            self.content = json.load(open("./binary/cache/module_dependencies.json", 'r'))
         except:
             self.content = {}
-        self.writer = open("./bin/cache/module_dependencies.json", 'w')
+        self.writer = open("./binary/cache/module_dependencies.json", 'w')
 
     def __del__(self):
         json.dump(self.content, self.writer, indent=4)

@@ -5,7 +5,7 @@ from cppmake.logger.module_dependencies import module_dependencies_logger
 from cppmake.system.all                 import system
 from cppmake.target.module              import Module
 from cppmake.utility.algorithm          import recursive_search
-from cppmake.utility.decorator          import context, once, trace, unique
+from cppmake.utility.decorator          import context, once, storetrue, trace, unique
 from cppmake.utility.filesystem         import exist_file, modified_time_of_file
 from cppmake.utility.scheduler          import scheduler
 import asyncio
@@ -16,8 +16,8 @@ class Source:
     @trace
     async def new(self, name):
         self.name           = name
-        self.code_file      =                   f"./source/{self.name.replace('.', '/')}.cpp"
-        self.output_prefix  = f"./bin/{config.type}/source/{self.name.replace('.', '.')}"
+        self.code_file      =                      f"./source/{self.name.replace('.', '/')}.cpp"
+        self.output_prefix  = f"./binary/{config.type}/source/{self.name.replace('.', '.')}"
         self.import_modules = await asyncio.gather(*[Module(name) for name in await module_dependencies_logger.get(name=self.name, code_file=self.code_file)])
 
     @context
@@ -38,6 +38,7 @@ class Source:
                     library_files=await recursive_search(self, navigate=lambda module: module.import_modules, collect=lambda module: module.import_package.library_files, root=False, flatten=True)
                 )
 
+    @storetrue
     def is_compiled(self, output="executable"):
         # todo: optimize with cache
         output_file = f"{self.output_prefix}{getattr(system, f"{output}_suffix")}"

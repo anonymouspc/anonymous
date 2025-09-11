@@ -12,7 +12,7 @@ class Executable:
     @trace
     async def new(self, name):
         self.name            = name
-        self.executable_file = f"./bin/{config.type}/source/{self.name.replace('.', '/')}{system.executable_suffix}"
+        self.executable_file = f"./binary/{config.type}/source/{self.name.replace('.', '/')}{system.executable_suffix}"
 
     @context
     @once

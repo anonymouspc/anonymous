@@ -14,7 +14,7 @@ class Clang:
             "-std=c++26", 
             "-Wall", 
             "-fdiagnostics-color=always",
-           f"-fprebuilt-module-path=./bin/{config.type}/module",
+           f"-fprebuilt-module-path=./binary/{config.type}/module",
             "-Wno-reserved-module-identifier",
             "-Wno-deprecated-missing-comma-variadic-parameter",
             *(["-O0", "-g", "-DDEBUG", "-fno-inline"] if config.type == "debug"   else

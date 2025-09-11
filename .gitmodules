@@ -31,6 +31,9 @@
 [submodule "package/lz4"]
 	path = package/lz4
 	url = https://github.com/lz4/lz4
+[submodule "package/openal"]
+	path = package/openal
+	url = https://github.com/kcat/openal-soft
 [submodule "package/opencl"]
 	path = package/opencl
 	url = https://github.com/KhronosGroup/OpenCL-Headers
@@ -80,6 +83,3 @@
 [submodule "package/zstd"]
 	path = package/zstd
 	url = https://github.com/facebook/zstd
-[submodule "package/openal"]
-	path = package/openal
-	url = https://github.com/kcat/openal-soft

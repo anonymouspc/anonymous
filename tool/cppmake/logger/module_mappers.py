@@ -6,7 +6,7 @@ class ModuleMappersLogger:
         self.writer.flush()
 
     def __init__(self):
-        create_dir("./bin/cache")
-        self.writer = open("./bin/cache/module_mappers.txt", 'w')
+        create_dir("./binary/cache")
+        self.writer = open("./binary/cache/module_mappers.txt", 'w')
 
 module_mappers_logger = ModuleMappersLogger()

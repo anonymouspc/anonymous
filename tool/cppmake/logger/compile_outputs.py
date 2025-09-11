@@ -7,8 +7,8 @@ class CompileOutputsLogger:
             self.logged = True
 
     def __init__(self):
-        create_dir("./bin/cache")
-        self.writer = open("./bin/cache/compile_outputs.txt", 'w')
+        create_dir("./binary/cache")
+        self.writer = open("./binary/cache/compile_outputs.txt", 'w')
         self.logged = False
 
 compile_outputs_logger = CompileOutputsLogger()

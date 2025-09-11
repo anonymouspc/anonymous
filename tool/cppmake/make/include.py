@@ -20,7 +20,7 @@ async def include(name, file=None, dir=None, relpath='.'):
 async def lib(name, file):
     package = await Package(name)
     try:
-        copy_file(file, f"{package.lib_dir}/{base_path(file)}")
+        copy_file(file, f"{package.library_dir}/{base_path(file)}")
     except:
         remove_dir(package.install_dir)
         raise

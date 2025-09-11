@@ -11,9 +11,7 @@ export import boost.iostreams;
 export import boost.locale;
 export import boost.mysql;
 export import boost.process;
-#ifdef ENABLE_PYTHON
 export import boost.python;
-#endif
 export import boost.spirit;
 export import boost.stacktrace;
 export import boost.system;

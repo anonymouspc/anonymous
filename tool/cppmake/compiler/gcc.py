@@ -15,7 +15,7 @@ class Gcc:
             "-Wall",
             "-fdiagnostics-color=always",
             "-fmodules",
-            "-fmodule-mapper=./bin/cache/module_mappers.txt",
+            "-fmodule-mapper=./binary/cache/module_mappers.txt",
             "-Wno-global-module",
             "-Wno-deprecated-variadic-comma-omission",
             *(["-O0", "-g", "-DDEBUG", "-fno-inline"] if config.type == "debug"   else

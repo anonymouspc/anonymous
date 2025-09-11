@@ -56,7 +56,7 @@ def deppkg(func):
             from_module = inspect.stack()[2].frame.f_locals["self"]
             self.import_packages += [package for package in await 
                   recursive_search(from_module, navigate=lambda module:  module.import_modules,   collect =lambda module:  module.import_package) if package not in self.import_packages and package is not self and package is not None]
-            await recursive_search(self,        navigate=lambda package: package.import_packages, on_cycle=lambda history: self.import_packages.remove(history[1]))
+            await recursive_search(self,        navigate=lambda package: package.import_packages, on_cycle=lambda history: self.import_packages.remove(history[1]) if history[1] in self.import_packages else None)
     wrapper.__name__ = f"{func.__name__}_deprev"
     return wrapper
 
@@ -67,6 +67,20 @@ def once(func):
                      setattr(self, f"{func.__name__}_{get_context()}_task", asyncio.create_task(func(self, *args, **kwargs)))
         return await getattr(self, f"{func.__name__}_{get_context()}_task")
     wrapper.__name__ = f"{func.__name__}_once"
+    return wrapper
+
+def storetrue(func):
+    def wrapper(self, *args, **kwargs):
+        if not hasattr(self, f"{func.__name__}_cache"):
+               setattr(self, f"{func.__name__}_cache", False)
+        if     getattr(self, f"{func.__name__}_cache") == True:
+            return True
+        else:
+            result = func(self, *args, **kwargs)
+            if result == True:
+               setattr(self, f"{func.__name__}_cache", True)
+            return result
+    wrapper.__name__ = f"{func.__name__}_storetrue"
     return wrapper
 
 def trace(func):

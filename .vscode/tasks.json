@@ -27,7 +27,7 @@
             "group": "test",
             "type": "shell",
             "problemMatcher": [],
-            "command": "./bin/debug/source/main"
+            "command": "./binary/debug/source/main"
         },
         {
             "label": "debug",
@@ -66,7 +66,7 @@
             "group": "test",
             "type": "shell",
             "problemMatcher": [],
-            "command": "./bin/release/source/main"
+            "command": "./binary/release/source/main"
         },
         {
             "label": "release",

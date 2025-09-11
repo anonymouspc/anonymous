@@ -16,12 +16,12 @@ class CompileCommandsLogger:
             })
 
     def __init__(self):
-        create_dir("./bin/cache")
+        create_dir("./binary/cache")
         try:
-            self.content = json.load(open("./bin/cache/compile_commands.json", 'r'))
+            self.content = json.load(open("./binary/cache/compile_commands.json", 'r'))
         except:
             self.content = []
-        self.writer = open("./bin/cache/compile_commands.json", 'w')
+        self.writer = open("./binary/cache/compile_commands.json", 'w')
 
     def __del__(self):
         json.dump(self.content, self.writer, indent=4)

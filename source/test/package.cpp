@@ -1,9 +1,7 @@
 import boost;
 import bzip2;
-#ifdef ENABLE_OPENCL
 import clblast;
-#endif
-#ifdef ENABLE_CUDA
+#ifdef __CUDACC__
 import cuda;
 #endif
 import eigen;
@@ -12,14 +10,12 @@ import hwloc;
 import icu;
 import jpeg;
 import lz4;
-#ifdef ENABLE_OPENCL
+import openal;
 import opencl;
-#endif
+import opengl;
 import openssl;
-#ifdef ENABLE_PYTHON
 import pybind11;
 import python;
-#endif
 import plf;
 import png;
 import proxy;
@@ -27,9 +23,6 @@ import std;
 import stdexec;
 import tbb;
 import tiff;
-#ifdef ENABLE_CUDA
-import thrust;
-#endif
 import xlnt;
 import xz; 
 import zlib;
