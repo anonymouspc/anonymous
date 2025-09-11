@@ -4,28 +4,27 @@ from cppmake.system.all         import system
 from cppmake.target.package     import Package
 from cppmake.target.module      import Module
 from cppmake.utility.algorithm  import recursive_search
-from cppmake.utility.filesystem import exist_dir, remove_dir
+from cppmake.utility.filesystem import remove_dir
 from cppmake.utility.process    import run_process
 
 async def cmake(name, dir, args=[]):
     package = await Package(name)
     try:
-        if not exist_dir(package.build_dir):
-            env=system.env.copy()
-            env["CXX"] = compiler.name
-            await run_process(
-                command=[
-                    "cmake",
-                    "-S", dir,
-                    "-B", package.build_dir,
-                    f"-DCMAKE_PREFIX_PATH={';'.join(await recursive_search(await Module(name), navigate=lambda module: module.import_modules, collect=lambda module: module.import_package.install_dir))}",
-                    f"-DCMAKE_INSTALL_PREFIX={package.install_dir}",
-                    f"-DCMAKE_INSTALL_LIBDIR=lib",
-                    f"-DCMAKE_BUILD_TYPE={config.type}",
-                    *args
-                ],
-                env=env
-            )
+        env=system.env.copy()
+        env["CXX"] = compiler.name
+        await run_process(
+            command=[
+                "cmake",
+                "-S", dir,
+                "-B", package.build_dir,
+                f"-DCMAKE_PREFIX_PATH={';'.join(await recursive_search(await Module(name), navigate=lambda module: module.import_modules, collect=lambda module: module.import_package.install_dir))}",
+                f"-DCMAKE_INSTALL_PREFIX={package.install_dir}",
+                f"-DCMAKE_INSTALL_LIBDIR=lib",
+                f"-DCMAKE_BUILD_TYPE={config.type}",
+                *args
+            ],
+            env=env
+        )
     except:
         remove_dir(package.build_dir)
         raise

@@ -11,13 +11,13 @@ class ModuleDependenciesLogger:
             return self.content[name]["dependencies"]
         else:
             try:
-                code = open(code_file, 'r', encoding="ascii").read()
+                code = open(code_file, 'r').read()
                 code = re.sub(r'^\s*#\s*include\s+(?!<version>).*$', "", code, flags=re.MULTILINE)
                 code = await compiler.preprocess_code(code)
             except FileNotFoundError:
                 raise LogicError(f"file {code_file} not found")
             except UnicodeDecodeError:
-                raise LogicError(f"file {code_file} bad encoding")
+                raise LogicError(f"file {code_file} `bad encoding`")
             import_names = [
                 import_name if not import_name.startswith(':') else f"{name.partition(':')[0]}{import_name}" 
                 for import_name in re.findall(r'^\s*(?:export\s+)?import\s+([\w\.:]+)\s*;\s*$', code, flags=re.MULTILINE)

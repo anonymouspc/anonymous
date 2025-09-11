@@ -1,31 +1,14 @@
 import cppmake
 
 async def build():
-    for library_dir in cppmake.iterate_dir("./package/boost/libs"):
-        if cppmake.exist_dir(f"{library_dir}/include"):
-            await cppmake.include(
-                name="boost",
-                dir=f"{library_dir}/include"
-            )
-        if cppmake.exist_dir(f"{library_dir}/src"):
-            await cppmake.include(
-                name="boost",
-                dir=f"{library_dir}/src",
-                relpath=f"boost/{cppmake.base_path(library_dir)}/src"
-            )
-
-    for library_dir in cppmake.iterate_dir("./package/boost/libs/numeric"):
-        if cppmake.exist_dir(f"{library_dir}/include"):
-            await cppmake.include(
-                name="boost",
-                dir=f"{library_dir}/include"
-            )
-        if cppmake.exist_dir(f"{library_dir}/src"):
-            await cppmake.include(
-                name="boost",
-                dir=f"{library_dir}/src",
-                relpath=f"boost/numeric/{cppmake.base_path(library_dir)}/src"
-            )
+    await cppmake.cmake(
+        name="boost",
+        dir="./package/boost",
+        args=[
+            "-DBUILD_SHARED_LIBS=false",
+           f"-DBOOST_INCLUDE_LIBRARIES={';'.join([file.removeprefix("./module/boost/").removesuffix(".cpp") for file in cppmake.iterate_dir("./module/boost", file_only=True)])}"
+        ]
+    )
     await cppmake.format(
         name="boost",
         relpath="boost/asio"

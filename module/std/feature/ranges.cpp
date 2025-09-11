@@ -17,6 +17,6 @@ export import    :feature.ranges.starts_ends_with;
 #ifndef __cpp_lib_ranges_stride
 export import    :feature.ranges.stride;
 #endif
-#ifndef __cpp_lib_ranges_zip
-export import    :feature.ranges.zip;
-#endif
+// #ifndef __cpp_lib_ranges_zip
+// export import    :feature.ranges.zip;
+// #endif

@@ -1,5 +1,6 @@
 from cppmake.basic.config    import config
-from cppmake.utility.process import run_process, run_process_sync
+from cppmake.error.process   import ProcessError
+from cppmake.utility.process import run_process_sync
 
 class Msvc:
     name          = "msvc"
@@ -31,4 +32,7 @@ class Msvc:
         pass
 
     def check(path):
-        return run_process_sync(command=[path], return_stdout=True).startswith("Microsoft")
+        try:
+            return "msvc" in run_process_sync(command=[path], return_stdout=True).lower()
+        except ProcessError:
+            return False

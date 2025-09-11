@@ -11,6 +11,10 @@ async def build():
             "-DALSOFT_UTILS=false"
         ]
     )
+    await cppmake.module(
+        name="openal",
+        dir="./package/openal/modules/al.cppm"
+    )
 
 """
 >>> cat package/openal/CMakeLists.txt | grep option

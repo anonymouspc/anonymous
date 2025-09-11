@@ -1,5 +1,6 @@
 from cppmake.basic.config       import config
 from cppmake.basic.define       import define
+from cppmake.error.process      import ProcessError
 from cppmake.utility.process    import run_process, run_process_sync
 from cppmake.utility.filesystem import parent_path, create_dir
 
@@ -78,4 +79,7 @@ class Gcc:
         )
 
     def check(path):
-        return run_process_sync(command=[path, "--version"], return_stdout=True).startswith("g++")
+        try:
+            return "gcc" in run_process_sync(command=[path, "--version"], return_stdout=True).lower()
+        except ProcessError:
+            return False

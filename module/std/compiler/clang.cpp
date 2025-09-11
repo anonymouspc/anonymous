@@ -13,6 +13,7 @@
 
 module;
 #undef in
+
 #include <__config>
 
 // The headers of Table 24: C++ library headers [tab:headers.cpp]
@@ -35,13 +36,9 @@ module;
 #include <chrono>
 #include <cinttypes>
 #include <climits>
-#if _LIBCPP_HAS_LOCALIZATION
-#  include <clocale>
-#endif
+#include <clocale>
 #include <cmath>
-#if _LIBCPP_HAS_LOCALIZATION
-#  include <codecvt>
-#endif
+#include <codecvt>
 #include <compare>
 #include <complex>
 #include <concepts>
@@ -65,34 +62,23 @@ module;
 #include <expected>
 #include <filesystem>
 #include <flat_map>
+#include <flat_set>
 #include <format>
 #include <forward_list>
-#if _LIBCPP_HAS_LOCALIZATION
-#  include <fstream>
-#endif
+#include <fstream>
 #include <functional>
 #include <future>
 #include <initializer_list>
-#if _LIBCPP_HAS_LOCALIZATION
-#  include <iomanip>
-#endif
-#if _LIBCPP_HAS_LOCALIZATION
-#  include <ios>
-#endif
+#include <iomanip>
+#include <ios>
 #include <iosfwd>
-#if _LIBCPP_HAS_LOCALIZATION
-#  include <iostream>
-#endif
-#if _LIBCPP_HAS_LOCALIZATION
-#  include <istream>
-#endif
+#include <iostream>
+#include <istream>
 #include <iterator>
 #include <latch>
 #include <limits>
 #include <list>
-#if _LIBCPP_HAS_LOCALIZATION
-#  include <locale>
-#endif
+#include <locale>
 #include <map>
 #include <mdspan>
 #include <memory>
@@ -102,40 +88,28 @@ module;
 #include <numbers>
 #include <numeric>
 #include <optional>
-#if _LIBCPP_HAS_LOCALIZATION
-#  include <ostream>
-#endif
+#include <ostream>
 #include <print>
 #include <queue>
 #include <random>
 #include <ranges>
 #include <ratio>
-#if _LIBCPP_HAS_LOCALIZATION
-#  include <regex>
-#endif
+#include <regex>
 #include <scoped_allocator>
 #include <semaphore>
 #include <set>
 #include <shared_mutex>
 #include <source_location>
 #include <span>
-#if _LIBCPP_HAS_LOCALIZATION
-#  include <sstream>
-#endif
+#include <sstream>
 #include <stack>
 #include <stdexcept>
 #include <stop_token>
-#if _LIBCPP_HAS_LOCALIZATION
-#  include <streambuf>
-#endif
+#include <streambuf>
 #include <string>
 #include <string_view>
-#if _LIBCPP_HAS_LOCALIZATION
-#  include <strstream>
-#endif
-#if _LIBCPP_HAS_LOCALIZATION
-#  include <syncstream>
-#endif
+#include <strstream>
+#include <syncstream>
 #include <system_error>
 #include <thread>
 #include <tuple>
@@ -158,227 +132,332 @@ module;
 // and that means the MSVC STL headers can be found as well, tricking __has_include
 // into thinking that libc++ provides the header.
 //
-// #ifndef _WIN32
-// #  if __has_include(<debugging>)
-// #    error "please update the header information for <debugging> in headers_not_available in utils/libcxx/header_information.py"
-// #  endif // __has_include(<debugging>)
-// #  if __has_include(<flat_set>)
-// #    error "please update the header information for <flat_set> in headers_not_available in utils/libcxx/header_information.py"
-// #  endif // __has_include(<flat_set>)
-// #  if __has_include(<generator>)
-// #    error "please update the header information for <generator> in headers_not_available in utils/libcxx/header_information.py"
-// #  endif // __has_include(<generator>)
-// #  if __has_include(<hazard_pointer>)
-// #    error "please update the header information for <hazard_pointer> in headers_not_available in utils/libcxx/header_information.py"
-// #  endif // __has_include(<hazard_pointer>)
-// #  if __has_include(<inplace_vector>)
-// #    error "please update the header information for <inplace_vector> in headers_not_available in utils/libcxx/header_information.py"
-// #  endif // __has_include(<inplace_vector>)
-// #  if __has_include(<linalg>)
-// #    error "please update the header information for <linalg> in headers_not_available in utils/libcxx/header_information.py"
-// #  endif // __has_include(<linalg>)
-// #  if __has_include(<rcu>)
-// #    error "please update the header information for <rcu> in headers_not_available in utils/libcxx/header_information.py"
-// #  endif // __has_include(<rcu>)
-// #  if __has_include(<spanstream>)
-// #    error "please update the header information for <spanstream> in headers_not_available in utils/libcxx/header_information.py"
-// #  endif // __has_include(<spanstream>)
-// #  if __has_include(<stacktrace>)
-// #    error "please update the header information for <stacktrace> in headers_not_available in utils/libcxx/header_information.py"
-// #  endif // __has_include(<stacktrace>)
-// #  if __has_include(<stdfloat>)
-// #    error "please update the header information for <stdfloat> in headers_not_available in utils/libcxx/header_information.py"
-// #  endif // __has_include(<stdfloat>)
-// #  if __has_include(<text_encoding>)
-// #    error "please update the header information for <text_encoding> in headers_not_available in utils/libcxx/header_information.py"
-// #  endif // __has_include(<text_encoding>)
-// #endif // _WIN32
+#ifndef _WIN32
+#  if __has_include(<debugging>)
+#    error "please update the header information for <debugging> in headers_not_available in utils/libcxx/header_information.py"
+#  endif // __has_include(<debugging>)
+#  if __has_include(<generator>)
+#    error "please update the header information for <generator> in headers_not_available in utils/libcxx/header_information.py"
+#  endif // __has_include(<generator>)
+#  if __has_include(<hazard_pointer>)
+#    error "please update the header information for <hazard_pointer> in headers_not_available in utils/libcxx/header_information.py"
+#  endif // __has_include(<hazard_pointer>)
+#  if __has_include(<inplace_vector>)
+#    error "please update the header information for <inplace_vector> in headers_not_available in utils/libcxx/header_information.py"
+#  endif // __has_include(<inplace_vector>)
+#  if __has_include(<linalg>)
+#    error "please update the header information for <linalg> in headers_not_available in utils/libcxx/header_information.py"
+#  endif // __has_include(<linalg>)
+#  if __has_include(<rcu>)
+#    error "please update the header information for <rcu> in headers_not_available in utils/libcxx/header_information.py"
+#  endif // __has_include(<rcu>)
+#  if __has_include(<spanstream>)
+#    error "please update the header information for <spanstream> in headers_not_available in utils/libcxx/header_information.py"
+#  endif // __has_include(<spanstream>)
+#  if __has_include(<stacktrace>)
+#    error "please update the header information for <stacktrace> in headers_not_available in utils/libcxx/header_information.py"
+#  endif // __has_include(<stacktrace>)
+#  if __has_include(<stdfloat>)
+#    error "please update the header information for <stdfloat> in headers_not_available in utils/libcxx/header_information.py"
+#  endif // __has_include(<stdfloat>)
+#  if __has_include(<text_encoding>)
+#    error "please update the header information for <text_encoding> in headers_not_available in utils/libcxx/header_information.py"
+#  endif // __has_include(<text_encoding>)
+#endif // _WIN32
 
 export module std:compiler.clang;
 
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  #ifdef __cpp_lib_ranges_join_with
   namespace ranges {
-    using std::ranges::join_with_view;
-    namespace views {
-      using std::ranges::views::join_with;
-    }
-  }
-  #endif
-
-  #ifdef __cpp_lib_aligned_accessor
-  using std::aligned_accessor;
-  #endif
-
-  namespace ranges {
+    // [algorithms.results], algorithm result types
     using std::ranges::in_found_result;
     using std::ranges::in_fun_result;
     using std::ranges::in_in_out_result;
     using std::ranges::in_in_result;
     using std::ranges::in_out_out_result;
     using std::ranges::in_out_result;
+#if _LIBCPP_STD_VER >= 23
     using std::ranges::in_value_result;
+#endif
     using std::ranges::min_max_result;
-  }
+#if _LIBCPP_STD_VER >= 23
+    using std::ranges::out_value_result;
+#endif
+  } // namespace ranges
+
+  // [alg.nonmodifying], non-modifying sequence operations
+  // [alg.all.of], all of
   using std::all_of;
   namespace ranges {
     using std::ranges::all_of;
   }
+
+  // [alg.any.of], any of
   using std::any_of;
   namespace ranges {
     using std::ranges::any_of;
   }
+
+  // [alg.none.of], none of
   using std::none_of;
   namespace ranges {
     using std::ranges::none_of;
   }
+
+#if _LIBCPP_STD_VER >= 23
+  // [alg.contains], contains
   namespace ranges {
     using std::ranges::contains;
     using std::ranges::contains_subrange;
-  }
+  } // namespace ranges
+#endif // _LIBCPP_STD_VER >= 23
+
+  // [alg.foreach], for each
   using std::for_each;
+
   namespace ranges {
     using std::ranges::for_each;
     using std::ranges::for_each_result;
-  }
+  } // namespace ranges
+
   using std::for_each_n;
+
   namespace ranges {
     using std::ranges::for_each_n_result;
+
     using std::ranges::for_each_n;
-  }
+  } // namespace ranges
+
+  // [alg.find], find
   using std::find;
   using std::find_if;
   using std::find_if_not;
+
   namespace ranges {
     using std::ranges::find;
     using std::ranges::find_if;
     using std::ranges::find_if_not;
-  }
+  } // namespace ranges
+
+#if _LIBCPP_STD_VER >= 23
+  // [alg.find.last], find last
   namespace ranges {
     using std::ranges::find_last;
     using std::ranges::find_last_if;
     using std::ranges::find_last_if_not;
-  }
+  } // namespace ranges
+#endif
+
+  // [alg.find.end], find end
   using std::find_end;
+
   namespace ranges {
     using std::ranges::find_end;
   }
+
+  // [alg.find.first.of], find first
   using std::find_first_of;
+
   namespace ranges {
     using std::ranges::find_first_of;
   }
+
+  // [alg.adjacent.find], adjacent find
   using std::adjacent_find;
+
   namespace ranges {
     using std::ranges::adjacent_find;
   }
+
+  // [alg.count], count
   using std::count;
   using std::count_if;
+
   namespace ranges {
     using std::ranges::count;
     using std::ranges::count_if;
-  }
+  } // namespace ranges
+
+  // [mismatch], mismatch
   using std::mismatch;
+
   namespace ranges {
     using std::ranges::mismatch_result;
+
     using std::ranges::mismatch;
-  }
+  } // namespace ranges
+
+  // [alg.equal], equal
   using std::equal;
+
   namespace ranges {
     using std::ranges::equal;
   }
+
+  // [alg.is.permutation], is permutation
   using std::is_permutation;
+
   namespace ranges {
     using std::ranges::is_permutation;
   }
+
+  // [alg.search], search
   using std::search;
+
   namespace ranges {
     using std::ranges::search;
   }
+
   using std::search_n;
+
   namespace ranges {
     using std::ranges::search_n;
   }
+
   namespace ranges {
+#if _LIBCPP_STD_VER >= 23
+    // [alg.starts.with], starts with
     using std::ranges::starts_with;
+
+    // [alg.ends.with], ends with
     using std::ranges::ends_with;
+
+    // [alg.fold], fold
     using std::ranges::fold_left;
     using std::ranges::fold_left_with_iter;
     using std::ranges::fold_left_with_iter_result;
-  }
+#  if 0
+    using std::ranges::fold_left_first;
+    using std::ranges::fold_right;
+    using std::ranges::fold_right_last;
+    using std::ranges::fold_left_with_iter;
+    using std::ranges::fold_left_first_with_iter;
+    using std::ranges::fold_left_first_with_iter;
+#  endif
+#endif // _LIBCPP_STD_VER >= 23
+  }    // namespace ranges
+
+  // [alg.modifying.operations], mutating sequence operations
+  // [alg.copy], copy
   using std::copy;
+
   namespace ranges {
     using std::ranges::copy;
     using std::ranges::copy_result;
-  }
+  } // namespace ranges
+
   using std::copy_n;
+
   namespace ranges {
     using std::ranges::copy_n;
     using std::ranges::copy_n_result;
-  }
+  } // namespace ranges
+
   using std::copy_if;
+
   namespace ranges {
     using std::ranges::copy_if;
     using std::ranges::copy_if_result;
-  }
+  } // namespace ranges
+
   using std::copy_backward;
+
   namespace ranges {
     using std::ranges::copy_backward;
     using std::ranges::copy_backward_result;
-  }
+  } // namespace ranges
+
+  // [alg.move], move
   using std::move;
+
   namespace ranges {
     using std::ranges::move;
     using std::ranges::move_result;
-  }
+  } // namespace ranges
+
   using std::move_backward;
+
   namespace ranges {
     using std::ranges::move_backward;
     using std::ranges::move_backward_result;
-  }
+  } // namespace ranges
+
+  // [alg.swap], swap
   using std::swap_ranges;
+
   namespace ranges {
     using std::ranges::swap_ranges;
     using std::ranges::swap_ranges_result;
-  }
+  } // namespace ranges
+
   using std::iter_swap;
+
+  // [alg.transform], transform
   using std::transform;
+
   namespace ranges {
     using std::ranges::binary_transform_result;
     using std::ranges::unary_transform_result;
+
     using std::ranges::transform;
-  }
+
+  } // namespace ranges
+
   using std::replace;
   using std::replace_if;
+
   namespace ranges {
     using std::ranges::replace;
     using std::ranges::replace_if;
-  }
+  } // namespace ranges
+
   using std::replace_copy;
   using std::replace_copy_if;
+
   namespace ranges {
     using std::ranges::replace_copy;
     using std::ranges::replace_copy_if;
     using std::ranges::replace_copy_if_result;
     using std::ranges::replace_copy_result;
-  }
+  } // namespace ranges
+
+  // [alg.fill], fill
   using std::fill;
   using std::fill_n;
+
   namespace ranges {
     using std::ranges::fill;
     using std::ranges::fill_n;
-  }
+  } // namespace ranges
+
+  // [alg.generate], generate
   using std::generate;
   using std::generate_n;
+
   namespace ranges {
     using std::ranges::generate;
     using std::ranges::generate_n;
-  }
+  } // namespace ranges
+
+  // [alg.remove], remove
   using std::remove;
   using std::remove_if;
+
   namespace ranges {
     using std::ranges::remove;
     using std::ranges::remove_if;
-  }
+  } // namespace ranges
+
   using std::remove_copy;
   using std::remove_copy_if;
   namespace ranges {
@@ -386,398 +465,720 @@ export namespace std {
     using std::ranges::remove_copy_if;
     using std::ranges::remove_copy_if_result;
     using std::ranges::remove_copy_result;
-  }
+  } // namespace ranges
+
+  // [alg.unique], unique
   using std::unique;
+
   namespace ranges {
     using std::ranges::unique;
   }
+
   using std::unique_copy;
+
   namespace ranges {
     using std::ranges::unique_copy;
     using std::ranges::unique_copy_result;
-  }
+  } // namespace ranges
+
+  // [alg.reverse], reverse
   using std::reverse;
+
   namespace ranges {
     using std::ranges::reverse;
   }
+
   using std::reverse_copy;
+
   namespace ranges {
     using std::ranges::reverse_copy;
     using std::ranges::reverse_copy_result;
-  }
+  } // namespace ranges
+
+  // [alg.rotate], rotate
   using std::rotate;
+
   namespace ranges {
     using std::ranges::rotate;
   }
+
   using std::rotate_copy;
+
   namespace ranges {
     using std::ranges::rotate_copy;
     using std::ranges::rotate_copy_result;
-  }
+  } // namespace ranges
+
+  // [alg.random.sample], sample
   using std::sample;
+
   namespace ranges {
     using std::ranges::sample;
   }
+
+  // [alg.random.shuffle], shuffle
   using std::shuffle;
+
   namespace ranges {
     using std::ranges::shuffle;
   }
+
+  // [alg.shift], shift
   using std::shift_left;
+
   namespace ranges {
+    // using std::ranges::shift_left;
   }
+
   using std::shift_right;
+
   namespace ranges {
+    // using std::ranges::shift_right;
   }
+
+  // [alg.sorting], sorting and related operations
+  // [alg.sort], sorting
   using std::sort;
+
   namespace ranges {
     using std::ranges::sort;
   }
+
   using std::stable_sort;
+
   namespace ranges {
     using std::ranges::stable_sort;
   }
+
   using std::partial_sort;
+
   namespace ranges {
     using std::ranges::partial_sort;
   }
   using std::partial_sort_copy;
+
   namespace ranges {
     using std::ranges::partial_sort_copy;
     using std::ranges::partial_sort_copy_result;
-  }
+  } // namespace ranges
+
   using std::is_sorted;
   using std::is_sorted_until;
+
   namespace ranges {
     using std::ranges::is_sorted;
     using std::ranges::is_sorted_until;
-  }
+  } // namespace ranges
+
+  // [alg.nth.element], Nth element
   using std::nth_element;
+
   namespace ranges {
     using std::ranges::nth_element;
   }
+
+  // [alg.binary.search], binary search
   using std::lower_bound;
+
   namespace ranges {
     using std::ranges::lower_bound;
   }
+
   using std::upper_bound;
+
   namespace ranges {
     using std::ranges::upper_bound;
   }
+
   using std::equal_range;
+
   namespace ranges {
     using std::ranges::equal_range;
   }
+
   using std::binary_search;
+
   namespace ranges {
     using std::ranges::binary_search;
   }
+
+  // [alg.partitions], partitions
   using std::is_partitioned;
+
   namespace ranges {
     using std::ranges::is_partitioned;
   }
+
   using std::partition;
+
   namespace ranges {
     using std::ranges::partition;
   }
+
   using std::stable_partition;
+
   namespace ranges {
     using std::ranges::stable_partition;
   }
+
   using std::partition_copy;
+
   namespace ranges {
     using std::ranges::partition_copy;
     using std::ranges::partition_copy_result;
-  }
+  } // namespace ranges
+
   using std::partition_point;
+
   namespace ranges {
     using std::ranges::partition_point;
   }
+  // [alg.merge], merge
   using std::merge;
   namespace ranges {
     using std::ranges::merge;
     using std::ranges::merge_result;
-  }
+  } // namespace ranges
+
   using std::inplace_merge;
+
   namespace ranges {
     using std::ranges::inplace_merge;
   }
+
+  // [alg.set.operations], set operations
   using std::includes;
   namespace ranges {
     using std::ranges::includes;
   }
+
   using std::set_union;
+
   namespace ranges {
     using std::ranges::set_union;
     using std::ranges::set_union_result;
-  }
+  } // namespace ranges
+
   using std::set_intersection;
   namespace ranges {
     using std::ranges::set_intersection;
     using std::ranges::set_intersection_result;
-  }
+  } // namespace ranges
+
   using std::set_difference;
+
   namespace ranges {
     using std::ranges::set_difference;
     using std::ranges::set_difference_result;
-  }
+  } // namespace ranges
+
   using std::set_symmetric_difference;
+
   namespace ranges {
     using std::ranges::set_symmetric_difference_result;
+
     using std::ranges::set_symmetric_difference;
-  }
+  } // namespace ranges
+
+  // [alg.heap.operations], heap operations
   using std::push_heap;
+
   namespace ranges {
     using std::ranges::push_heap;
   }
+
   using std::pop_heap;
+
   namespace ranges {
     using std::ranges::pop_heap;
   }
+
   using std::make_heap;
+
   namespace ranges {
     using std::ranges::make_heap;
   }
+
   using std::sort_heap;
+
   namespace ranges {
     using std::ranges::sort_heap;
   }
+
   using std::is_heap;
+
   namespace ranges {
     using std::ranges::is_heap;
   }
+
   using std::is_heap_until;
+
   namespace ranges {
     using std::ranges::is_heap_until;
   }
+
+  // [alg.min.max], minimum and maximum
   using std::min;
+
   namespace ranges {
     using std::ranges::min;
   }
+
   using std::max;
+
   namespace ranges {
     using std::ranges::max;
   }
+
   using std::minmax;
+
   namespace ranges {
     using std::ranges::minmax_result;
+
     using std::ranges::minmax;
-  }
+  } // namespace ranges
+
   using std::min_element;
+
   namespace ranges {
     using std::ranges::min_element;
   }
+
   using std::max_element;
+
   namespace ranges {
     using std::ranges::max_element;
   }
+
   using std::minmax_element;
+
   namespace ranges {
     using std::ranges::minmax_element_result;
+
     using std::ranges::minmax_element;
-  }
+  } // namespace ranges
+    // [alg.clamp], bounded value
   using std::clamp;
+
   namespace ranges {
     using std::ranges::clamp;
   }
+
+  // [alg.lex.comparison], lexicographical comparison
   using std::lexicographical_compare;
+
   namespace ranges {
     using std::ranges::lexicographical_compare;
   }
+
+  // [alg.three.way], three-way comparison algorithms
   using std::lexicographical_compare_three_way;
+
+  // [alg.permutation.generators], permutations
   using std::next_permutation;
+
   namespace ranges {
     using std::ranges::next_permutation_result;
+
     using std::ranges::next_permutation;
-  }
+  } // namespace ranges
+
   using std::prev_permutation;
+
   namespace ranges {
     using std::ranges::prev_permutation_result;
+
     using std::ranges::prev_permutation;
-  }
-}
+  } // namespace ranges
+
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+
+  // [any.bad.any.cast], class bad_any_cast
   using std::bad_any_cast;
+
+  // [any.class], class any
   using std::any;
+
+  // [any.nonmembers], non-member functions
   using std::any_cast;
   using std::make_any;
   using std::swap;
-}
+
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+
+  // [array], class template array
   using std::array;
+
   using std::operator==;
   using std::operator<=>;
+
+  // [array.special], specialized algorithms
   using std::swap;
+
+  // [array.creation], array creation functions
   using std::to_array;
+
+  // [array.tuple], tuple interface
   using std::get;
   using std::tuple_element;
   using std::tuple_size;
-}
+
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::memory_order __attribute__((__using_if_exists__));
-  using std::memory_order_acq_rel __attribute__((__using_if_exists__));
-  using std::memory_order_acquire __attribute__((__using_if_exists__));
-  using std::memory_order_consume __attribute__((__using_if_exists__));
-  using std::memory_order_relaxed __attribute__((__using_if_exists__));
-  using std::memory_order_release __attribute__((__using_if_exists__));
-  using std::memory_order_seq_cst __attribute__((__using_if_exists__));
-  using std::kill_dependency __attribute__((__using_if_exists__));
-  using std::atomic_ref __attribute__((__using_if_exists__));
-  using std::atomic __attribute__((__using_if_exists__));
-  using std::atomic_compare_exchange_strong __attribute__((__using_if_exists__));
-  using std::atomic_compare_exchange_strong_explicit __attribute__((__using_if_exists__));
-  using std::atomic_compare_exchange_weak __attribute__((__using_if_exists__));
-  using std::atomic_compare_exchange_weak_explicit __attribute__((__using_if_exists__));
-  using std::atomic_exchange __attribute__((__using_if_exists__));
-  using std::atomic_exchange_explicit __attribute__((__using_if_exists__));
-  using std::atomic_is_lock_free __attribute__((__using_if_exists__));
-  using std::atomic_load __attribute__((__using_if_exists__));
-  using std::atomic_load_explicit __attribute__((__using_if_exists__));
-  using std::atomic_store __attribute__((__using_if_exists__));
-  using std::atomic_store_explicit __attribute__((__using_if_exists__));
-  using std::atomic_fetch_add __attribute__((__using_if_exists__));
-  using std::atomic_fetch_add_explicit __attribute__((__using_if_exists__));
-  using std::atomic_fetch_and __attribute__((__using_if_exists__));
-  using std::atomic_fetch_and_explicit __attribute__((__using_if_exists__));
-  using std::atomic_fetch_or __attribute__((__using_if_exists__));
-  using std::atomic_fetch_or_explicit __attribute__((__using_if_exists__));
-  using std::atomic_fetch_sub __attribute__((__using_if_exists__));
-  using std::atomic_fetch_sub_explicit __attribute__((__using_if_exists__));
-  using std::atomic_fetch_xor __attribute__((__using_if_exists__));
-  using std::atomic_fetch_xor_explicit __attribute__((__using_if_exists__));
-  using std::atomic_notify_all __attribute__((__using_if_exists__));
-  using std::atomic_notify_one __attribute__((__using_if_exists__));
-  using std::atomic_wait __attribute__((__using_if_exists__));
-  using std::atomic_wait_explicit __attribute__((__using_if_exists__));
-  using std::atomic_bool __attribute__((__using_if_exists__));
-  using std::atomic_char __attribute__((__using_if_exists__));
-  using std::atomic_char16_t __attribute__((__using_if_exists__));
-  using std::atomic_char32_t __attribute__((__using_if_exists__));
-  using std::atomic_char8_t __attribute__((__using_if_exists__));
-  using std::atomic_int __attribute__((__using_if_exists__));
-  using std::atomic_llong __attribute__((__using_if_exists__));
-  using std::atomic_long __attribute__((__using_if_exists__));
-  using std::atomic_schar __attribute__((__using_if_exists__));
-  using std::atomic_short __attribute__((__using_if_exists__));
-  using std::atomic_uchar __attribute__((__using_if_exists__));
-  using std::atomic_uint __attribute__((__using_if_exists__));
-  using std::atomic_ullong __attribute__((__using_if_exists__));
-  using std::atomic_ulong __attribute__((__using_if_exists__));
-  using std::atomic_ushort __attribute__((__using_if_exists__));
-  using std::atomic_wchar_t __attribute__((__using_if_exists__));
-  using std::atomic_int16_t __attribute__((__using_if_exists__));
-  using std::atomic_int32_t __attribute__((__using_if_exists__));
-  using std::atomic_int64_t __attribute__((__using_if_exists__));
-  using std::atomic_int8_t __attribute__((__using_if_exists__));
-  using std::atomic_uint16_t __attribute__((__using_if_exists__));
-  using std::atomic_uint32_t __attribute__((__using_if_exists__));
-  using std::atomic_uint64_t __attribute__((__using_if_exists__));
-  using std::atomic_uint8_t __attribute__((__using_if_exists__));
-  using std::atomic_int_least16_t __attribute__((__using_if_exists__));
-  using std::atomic_int_least32_t __attribute__((__using_if_exists__));
-  using std::atomic_int_least64_t __attribute__((__using_if_exists__));
-  using std::atomic_int_least8_t __attribute__((__using_if_exists__));
-  using std::atomic_uint_least16_t __attribute__((__using_if_exists__));
-  using std::atomic_uint_least32_t __attribute__((__using_if_exists__));
-  using std::atomic_uint_least64_t __attribute__((__using_if_exists__));
-  using std::atomic_uint_least8_t __attribute__((__using_if_exists__));
-  using std::atomic_int_fast16_t __attribute__((__using_if_exists__));
-  using std::atomic_int_fast32_t __attribute__((__using_if_exists__));
-  using std::atomic_int_fast64_t __attribute__((__using_if_exists__));
-  using std::atomic_int_fast8_t __attribute__((__using_if_exists__));
-  using std::atomic_uint_fast16_t __attribute__((__using_if_exists__));
-  using std::atomic_uint_fast32_t __attribute__((__using_if_exists__));
-  using std::atomic_uint_fast64_t __attribute__((__using_if_exists__));
-  using std::atomic_uint_fast8_t __attribute__((__using_if_exists__));
-  using std::atomic_intmax_t __attribute__((__using_if_exists__));
-  using std::atomic_intptr_t __attribute__((__using_if_exists__));
-  using std::atomic_ptrdiff_t __attribute__((__using_if_exists__));
-  using std::atomic_size_t __attribute__((__using_if_exists__));
-  using std::atomic_uintmax_t __attribute__((__using_if_exists__));
-  using std::atomic_uintptr_t __attribute__((__using_if_exists__));
-  using std::atomic_signed_lock_free __attribute__((__using_if_exists__));
-  using std::atomic_unsigned_lock_free __attribute__((__using_if_exists__));
-  using std::atomic_flag __attribute__((__using_if_exists__));
-  using std::atomic_flag_clear __attribute__((__using_if_exists__));
-  using std::atomic_flag_clear_explicit __attribute__((__using_if_exists__));
-  using std::atomic_flag_test __attribute__((__using_if_exists__));
-  using std::atomic_flag_test_and_set __attribute__((__using_if_exists__));
-  using std::atomic_flag_test_and_set_explicit __attribute__((__using_if_exists__));
-  using std::atomic_flag_test_explicit __attribute__((__using_if_exists__));
-  using std::atomic_flag_notify_all __attribute__((__using_if_exists__));
-  using std::atomic_flag_notify_one __attribute__((__using_if_exists__));
-  using std::atomic_flag_wait __attribute__((__using_if_exists__));
-  using std::atomic_flag_wait_explicit __attribute__((__using_if_exists__));
-  using std::atomic_signal_fence __attribute__((__using_if_exists__));
-  using std::atomic_thread_fence __attribute__((__using_if_exists__));
-  using std::atomic_init __attribute__((__using_if_exists__));
-}
+
+  // [atomics.order], order and consistency
+  using std::memory_order _LIBCPP_USING_IF_EXISTS;
+  using std::memory_order_acq_rel _LIBCPP_USING_IF_EXISTS;
+  using std::memory_order_acquire _LIBCPP_USING_IF_EXISTS;
+  using std::memory_order_consume _LIBCPP_USING_IF_EXISTS;
+  using std::memory_order_relaxed _LIBCPP_USING_IF_EXISTS;
+  using std::memory_order_release _LIBCPP_USING_IF_EXISTS;
+  using std::memory_order_seq_cst _LIBCPP_USING_IF_EXISTS;
+
+  using std::kill_dependency _LIBCPP_USING_IF_EXISTS;
+
+  // [atomics.ref.generic], class template atomic_ref
+  // [atomics.ref.pointer], partial specialization for pointers
+  using std::atomic_ref _LIBCPP_USING_IF_EXISTS;
+
+  // [atomics.types.generic], class template atomic
+  using std::atomic _LIBCPP_USING_IF_EXISTS;
+
+  // [atomics.nonmembers], non-member functions
+  using std::atomic_compare_exchange_strong _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_compare_exchange_strong_explicit _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_compare_exchange_weak _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_compare_exchange_weak_explicit _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_exchange _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_exchange_explicit _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_is_lock_free _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_load _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_load_explicit _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_store _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_store_explicit _LIBCPP_USING_IF_EXISTS;
+
+  using std::atomic_fetch_add _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_fetch_add_explicit _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_fetch_and _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_fetch_and_explicit _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_fetch_or _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_fetch_or_explicit _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_fetch_sub _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_fetch_sub_explicit _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_fetch_xor _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_fetch_xor_explicit _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_notify_all _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_notify_one _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_wait _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_wait_explicit _LIBCPP_USING_IF_EXISTS;
+
+  // [atomics.alias], type aliases
+  using std::atomic_bool _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_char _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_char16_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_char32_t _LIBCPP_USING_IF_EXISTS;
+#if _LIBCPP_HAS_CHAR8_T
+  using std::atomic_char8_t _LIBCPP_USING_IF_EXISTS;
+#endif
+  using std::atomic_int _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_llong _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_long _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_schar _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_short _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_uchar _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_uint _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_ullong _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_ulong _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_ushort _LIBCPP_USING_IF_EXISTS;
+#if _LIBCPP_HAS_WIDE_CHARACTERS
+  using std::atomic_wchar_t _LIBCPP_USING_IF_EXISTS;
+#endif
+
+  using std::atomic_int16_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_int32_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_int64_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_int8_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_uint16_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_uint32_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_uint64_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_uint8_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::atomic_int_least16_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_int_least32_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_int_least64_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_int_least8_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_uint_least16_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_uint_least32_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_uint_least64_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_uint_least8_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::atomic_int_fast16_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_int_fast32_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_int_fast64_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_int_fast8_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_uint_fast16_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_uint_fast32_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_uint_fast64_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_uint_fast8_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::atomic_intmax_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_intptr_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_ptrdiff_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_size_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_uintmax_t _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_uintptr_t _LIBCPP_USING_IF_EXISTS;
+
+#ifndef _LIBCPP_NO_LOCK_FREE_TYPES
+  using std::atomic_signed_lock_free _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_unsigned_lock_free _LIBCPP_USING_IF_EXISTS;
+#endif
+
+  // [atomics.flag], flag type and operations
+  using std::atomic_flag _LIBCPP_USING_IF_EXISTS;
+
+  using std::atomic_flag_clear _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_flag_clear_explicit _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_flag_test _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_flag_test_and_set _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_flag_test_and_set_explicit _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_flag_test_explicit _LIBCPP_USING_IF_EXISTS;
+
+  using std::atomic_flag_notify_all _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_flag_notify_one _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_flag_wait _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_flag_wait_explicit _LIBCPP_USING_IF_EXISTS;
+
+  // [atomics.fences], fences
+  using std::atomic_signal_fence _LIBCPP_USING_IF_EXISTS;
+  using std::atomic_thread_fence _LIBCPP_USING_IF_EXISTS;
+
+  // [depr.atomics.nonmembers]
+  using std::atomic_init _LIBCPP_USING_IF_EXISTS;
+
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_THREADS
   using std::barrier;
-}
+#endif
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [bit.cast], bit_cast
   using std::bit_cast;
+
+#if _LIBCPP_STD_VER >= 23
+  // [bit.byteswap], byteswap
   using std::byteswap;
+#endif
+
+  // [bit.pow.two], integral powers of 2
   using std::bit_ceil;
   using std::bit_floor;
   using std::bit_width;
   using std::has_single_bit;
+
+  // [bit.rotate], rotating
   using std::rotl;
   using std::rotr;
+
+  // [bit.count], counting
   using std::countl_one;
   using std::countl_zero;
   using std::countr_one;
   using std::countr_zero;
   using std::popcount;
+
+  // [bit.endian], endian
   using std::endian;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
   using std::bitset;
+
+  // [bitset.operators], bitset operators
   using std::operator&;
   using std::operator|;
   using std::operator^;
   using std::operator>>;
   using std::operator<<;
+
+  // [bitset.hash], hash support
   using std::hash;
-}
+
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-}
+  // This module exports nothing.
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::isalnum __attribute__((__using_if_exists__));
-  using std::isalpha __attribute__((__using_if_exists__));
-  using std::isblank __attribute__((__using_if_exists__));
-  using std::iscntrl __attribute__((__using_if_exists__));
-  using std::isdigit __attribute__((__using_if_exists__));
-  using std::isgraph __attribute__((__using_if_exists__));
-  using std::islower __attribute__((__using_if_exists__));
-  using std::isprint __attribute__((__using_if_exists__));
-  using std::ispunct __attribute__((__using_if_exists__));
-  using std::isspace __attribute__((__using_if_exists__));
-  using std::isupper __attribute__((__using_if_exists__));
-  using std::isxdigit __attribute__((__using_if_exists__));
-  using std::tolower __attribute__((__using_if_exists__));
-  using std::toupper __attribute__((__using_if_exists__));
-}
+  using std::isalnum _LIBCPP_USING_IF_EXISTS;
+  using std::isalpha _LIBCPP_USING_IF_EXISTS;
+  using std::isblank _LIBCPP_USING_IF_EXISTS;
+  using std::iscntrl _LIBCPP_USING_IF_EXISTS;
+  using std::isdigit _LIBCPP_USING_IF_EXISTS;
+  using std::isgraph _LIBCPP_USING_IF_EXISTS;
+  using std::islower _LIBCPP_USING_IF_EXISTS;
+  using std::isprint _LIBCPP_USING_IF_EXISTS;
+  using std::ispunct _LIBCPP_USING_IF_EXISTS;
+  using std::isspace _LIBCPP_USING_IF_EXISTS;
+  using std::isupper _LIBCPP_USING_IF_EXISTS;
+  using std::isxdigit _LIBCPP_USING_IF_EXISTS;
+  using std::tolower _LIBCPP_USING_IF_EXISTS;
+  using std::toupper _LIBCPP_USING_IF_EXISTS;
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-}
+  // This module exports nothing.
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::fenv_t __attribute__((__using_if_exists__));
-  using std::fexcept_t __attribute__((__using_if_exists__));
-  using std::feclearexcept __attribute__((__using_if_exists__));
-  using std::fegetexceptflag __attribute__((__using_if_exists__));
-  using std::feraiseexcept __attribute__((__using_if_exists__));
-  using std::fesetexceptflag __attribute__((__using_if_exists__));
-  using std::fetestexcept __attribute__((__using_if_exists__));
-  using std::fegetround __attribute__((__using_if_exists__));
-  using std::fesetround __attribute__((__using_if_exists__));
-  using std::fegetenv __attribute__((__using_if_exists__));
-  using std::feholdexcept __attribute__((__using_if_exists__));
-  using std::fesetenv __attribute__((__using_if_exists__));
-  using std::feupdateenv __attribute__((__using_if_exists__));
-}
+  // types
+  using std::fenv_t _LIBCPP_USING_IF_EXISTS;
+  using std::fexcept_t _LIBCPP_USING_IF_EXISTS;
+
+  // functions
+  using std::feclearexcept _LIBCPP_USING_IF_EXISTS;
+  using std::fegetexceptflag _LIBCPP_USING_IF_EXISTS;
+  using std::feraiseexcept _LIBCPP_USING_IF_EXISTS;
+  using std::fesetexceptflag _LIBCPP_USING_IF_EXISTS;
+  using std::fetestexcept _LIBCPP_USING_IF_EXISTS;
+
+  using std::fegetround _LIBCPP_USING_IF_EXISTS;
+  using std::fesetround _LIBCPP_USING_IF_EXISTS;
+
+  using std::fegetenv _LIBCPP_USING_IF_EXISTS;
+  using std::feholdexcept _LIBCPP_USING_IF_EXISTS;
+  using std::fesetenv _LIBCPP_USING_IF_EXISTS;
+  using std::feupdateenv _LIBCPP_USING_IF_EXISTS;
+
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-}
+  // This module exports nothing.
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+
+  // floating-point format for primitive numerical conversion
   using std::chars_format;
+
+  // chars_format is a bitmask type.
+  // [bitmask.types] specified operators
   using std::operator&;
   using std::operator&=;
   using std::operator^;
@@ -785,37 +1186,76 @@ export namespace std {
   using std::operator|;
   using std::operator|=;
   using std::operator~;
+
+  // [charconv.to.chars], primitive numerical output conversion
   using std::to_chars_result;
+
   using std::to_chars;
+
+  // [charconv.from.chars], primitive numerical input conversion
   using std::from_chars_result;
+
   using std::from_chars;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+
   namespace chrono {
     using std::chrono::duration;
     using std::chrono::time_point;
-  }
+
+  } // namespace chrono
+
   using std::common_type;
+
   namespace chrono {
+
+    // [time.traits], customization traits
     using std::chrono::treat_as_floating_point;
     using std::chrono::treat_as_floating_point_v;
+
     using std::chrono::duration_values;
+
+    // using std::chrono::is_clock;
+    // using std::chrono::is_clock_v;
+
+    // [time.duration.nonmember], duration arithmetic
     using std::chrono::operator+;
     using std::chrono::operator-;
     using std::chrono::operator*;
     using std::chrono::operator/;
     using std::chrono::operator%;
+
+    // [time.duration.comparisons], duration comparisons
     using std::chrono::operator==;
     using std::chrono::operator<;
     using std::chrono::operator>;
     using std::chrono::operator<=;
     using std::chrono::operator>=;
     using std::chrono::operator<=>;
+
+    // [time.duration.cast], conversions
     using std::chrono::ceil;
     using std::chrono::duration_cast;
     using std::chrono::floor;
     using std::chrono::round;
+
+    // [time.duration.io], duration I/O
+#if _LIBCPP_HAS_LOCALIZATION
     using std::chrono::operator<<;
+#endif
+    // using std::chrono::from_stream;
+
+    // convenience typedefs
     using std::chrono::days;
     using std::chrono::hours;
     using std::chrono::microseconds;
@@ -826,45 +1266,201 @@ export namespace std {
     using std::chrono::seconds;
     using std::chrono::weeks;
     using std::chrono::years;
+
+    // [time.point.nonmember], time_point arithmetic
+
+    // [time.point.comparisons], time_point comparisons
+
+    // [time.point.cast], conversions
     using std::chrono::time_point_cast;
+
+    // [time.duration.alg], specialized algorithms
     using std::chrono::abs;
+
+    // [time.clock.system], class system_clock
     using std::chrono::system_clock;
+
     using std::chrono::sys_days;
     using std::chrono::sys_seconds;
     using std::chrono::sys_time;
+
+#if _LIBCPP_HAS_TIME_ZONE_DATABASE && _LIBCPP_HAS_FILESYSTEM && _LIBCPP_HAS_LOCALIZATION
+#  ifdef _LIBCPP_ENABLE_EXPERIMENTAL
+
+    // [time.clock.utc], class utc_clock
+    using std::chrono::utc_clock;
+
+    using std::chrono::utc_seconds;
+    using std::chrono::utc_time;
+
+    using std::chrono::leap_second_info;
+
+    using std::chrono::get_leap_second_info;
+
+    // [time.clock.tai], class tai_clock
+    using std::chrono::tai_clock;
+
+    using std::chrono::tai_seconds;
+    using std::chrono::tai_time;
+
+    // [time.clock.gps], class gps_clock
+    using std::chrono::gps_clock;
+
+    using std::chrono::gps_seconds;
+    using std::chrono::gps_time;
+#  endif // _LIBCPP_ENABLE_EXPERIMENTAL
+#endif   //  _LIBCPP_HAS_TIME_ZONE_DATABASE && _LIBCPP_HAS_FILESYSTEM && _LIBCPP_HAS_LOCALIZATION
+
+    // [time.clock.file], type file_clock
     using std::chrono::file_clock;
+
     using std::chrono::file_time;
+
+#if _LIBCPP_HAS_MONOTONIC_CLOCK
+    // [time.clock.steady], class steady_clock
     using std::chrono::steady_clock;
+#endif
+
+    // [time.clock.hires], class high_resolution_clock
     using std::chrono::high_resolution_clock;
+
+    // [time.clock.local], local time
     using std::chrono::local_days;
     using std::chrono::local_seconds;
     using std::chrono::local_t;
     using std::chrono::local_time;
+
+    // [time.clock.cast], time_point conversions
+    // using std::chrono::clock_time_conversion;
+
+    // using std::chrono::clock_cast;
+
+    // [time.cal.last], class last_spec
     using std::chrono::last_spec;
+
+    // [time.cal.day], class day
     using std::chrono::day;
+
+    // [time.cal.month], class month
     using std::chrono::month;
+
+    // [time.cal.year], class year
     using std::chrono::year;
+
+    // [time.cal.wd], class weekday
     using std::chrono::weekday;
+
+    // [time.cal.wdidx], class weekday_indexed
     using std::chrono::weekday_indexed;
+
+    // [time.cal.wdlast], class weekday_last
     using std::chrono::weekday_last;
+
+    // [time.cal.md], class month_day
     using std::chrono::month_day;
+
+    // [time.cal.mdlast], class month_day_last
     using std::chrono::month_day_last;
+
+    // [time.cal.mwd], class month_weekday
     using std::chrono::month_weekday;
+
+    // [time.cal.mwdlast], class month_weekday_last
     using std::chrono::month_weekday_last;
+
+    // [time.cal.ym], class year_month
     using std::chrono::year_month;
+
+    // [time.cal.ymd], class year_month_day
     using std::chrono::year_month_day;
+
+    // [time.cal.ymdlast], class year_month_day_last
     using std::chrono::year_month_day_last;
+
+    // [time.cal.ymwd], class year_month_weekday
     using std::chrono::year_month_weekday;
+
+    // [time.cal.ymwdlast], class year_month_weekday_last
     using std::chrono::year_month_weekday_last;
+
+    // [time.cal.operators], civil calendar conventional syntax operators
+
+    // [time.hms], class template hh_mm_ss
     using std::chrono::hh_mm_ss;
+
+    // [time.12], 12/24 hour functions
     using std::chrono::is_am;
     using std::chrono::is_pm;
     using std::chrono::make12;
     using std::chrono::make24;
-  }
+
+#ifdef _LIBCPP_ENABLE_EXPERIMENTAL
+
+#  if _LIBCPP_HAS_TIME_ZONE_DATABASE && _LIBCPP_HAS_FILESYSTEM && _LIBCPP_HAS_LOCALIZATION
+
+    // [time.zone.db], time zone database
+    using std::chrono::tzdb;
+    using std::chrono::tzdb_list;
+
+    // [time.zone.db.access], time zone database access
+    using std::chrono::current_zone;
+    using std::chrono::get_tzdb;
+    using std::chrono::get_tzdb_list;
+    using std::chrono::locate_zone;
+
+    // [time.zone.db.remote], remote time zone database support
+    using std::chrono::reload_tzdb;
+    using std::chrono::remote_version;
+
+#  endif //  _LIBCPP_HAS_TIME_ZONE_DATABASE && _LIBCPP_HAS_FILESYSTEM && _LIBCPP_HAS_LOCALIZATION
+
+    // [time.zone.exception], exception classes
+    using std::chrono::ambiguous_local_time;
+    using std::chrono::nonexistent_local_time;
+
+    // [time.zone.info], information classes
+    using std::chrono::local_info;
+    using std::chrono::sys_info;
+
+#  if _LIBCPP_HAS_TIME_ZONE_DATABASE && _LIBCPP_HAS_FILESYSTEM && _LIBCPP_HAS_LOCALIZATION
+
+    // [time.zone.timezone], class time_zone
+    using std::chrono::choose;
+    using std::chrono::time_zone;
+
+    // [time.zone.zonedtraits], class template zoned_traits
+    using std::chrono::zoned_traits;
+
+    // [time.zone.zonedtime], class template zoned_time
+    using std::chrono::zoned_time;
+
+    using std::chrono::zoned_seconds;
+
+    // [time.zone.leap], leap second support
+    using std::chrono::leap_second;
+
+    // [time.zone.link], class time_zone_link
+    using std::chrono::time_zone_link;
+
+#    if 0
+    // [time.format], formatting
+    using std::chrono::local_time_format;
+#    endif
+#  endif //  _LIBCPP_HAS_TIME_ZONE_DATABASE && _LIBCPP_HAS_FILESYSTEM && _LIBCPP_HAS_LOCALIZATION
+#endif   // _LIBCPP_ENABLE_EXPERIMENTAL
+
+  } // namespace chrono
+
+#if _LIBCPP_HAS_LOCALIZATION
   using std::formatter;
+#endif
+
   namespace chrono {
+    // using std::chrono::parse;
+
+    // calendrical constants
     using std::chrono::last;
+
     using std::chrono::Friday;
     using std::chrono::Monday;
     using std::chrono::Saturday;
@@ -872,6 +1468,7 @@ export namespace std {
     using std::chrono::Thursday;
     using std::chrono::Tuesday;
     using std::chrono::Wednesday;
+
     using std::chrono::April;
     using std::chrono::August;
     using std::chrono::December;
@@ -884,245 +1481,522 @@ export namespace std {
     using std::chrono::November;
     using std::chrono::October;
     using std::chrono::September;
-  }
-}
+
+  } // namespace chrono
+
+} // namespace std
 export namespace std::inline literals::inline chrono_literals {
+  // [time.duration.literals], suffixes for duration literals
   using std::literals::chrono_literals::operator""h;
   using std::literals::chrono_literals::operator""min;
   using std::literals::chrono_literals::operator""s;
   using std::literals::chrono_literals::operator""ms;
   using std::literals::chrono_literals::operator""us;
   using std::literals::chrono_literals::operator""ns;
+
+  // [using std::literals::chrono_literals::.cal.day.nonmembers], non-member functions
   using std::literals::chrono_literals::operator""d;
+
+  // [using std::literals::chrono_literals::.cal.year.nonmembers], non-member functions
   using std::literals::chrono_literals::operator""y;
-}
+} // namespace std::inline literals::inline chrono_literals
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::imaxdiv_t __attribute__((__using_if_exists__));
-  using std::imaxabs __attribute__((__using_if_exists__));
-  using std::imaxdiv __attribute__((__using_if_exists__));
-  using std::strtoimax __attribute__((__using_if_exists__));
-  using std::strtoumax __attribute__((__using_if_exists__));
-  using std::wcstoimax __attribute__((__using_if_exists__));
-  using std::wcstoumax __attribute__((__using_if_exists__));
-}
+  using std::imaxdiv_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::imaxabs _LIBCPP_USING_IF_EXISTS;
+  using std::imaxdiv _LIBCPP_USING_IF_EXISTS;
+  using std::strtoimax _LIBCPP_USING_IF_EXISTS;
+  using std::strtoumax _LIBCPP_USING_IF_EXISTS;
+  using std::wcstoimax _LIBCPP_USING_IF_EXISTS;
+  using std::wcstoumax _LIBCPP_USING_IF_EXISTS;
+
+  // abs is conditionally here, but always present in cmath.cppm. To avoid
+  // conflicing declarations omit the using here.
+
+  // div is conditionally here, but always present in cstdlib.cppm. To avoid
+  // conflicing declarations omit the using here.
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-}
+  // This module exports nothing.
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::lconv __attribute__((__using_if_exists__));
-  using std::localeconv __attribute__((__using_if_exists__));
-  using std::setlocale __attribute__((__using_if_exists__));
-}
+#if _LIBCPP_HAS_LOCALIZATION
+  using std::lconv _LIBCPP_USING_IF_EXISTS;
+
+  using std::localeconv _LIBCPP_USING_IF_EXISTS;
+  using std::setlocale _LIBCPP_USING_IF_EXISTS;
+#endif // _LIBCPP_HAS_LOCALIZATION
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::double_t __attribute__((__using_if_exists__));
-  using std::float_t __attribute__((__using_if_exists__));
-  using std::acos __attribute__((__using_if_exists__));
-  using std::acosf __attribute__((__using_if_exists__));
-  using std::acosl __attribute__((__using_if_exists__));
-  using std::asin __attribute__((__using_if_exists__));
-  using std::asinf __attribute__((__using_if_exists__));
-  using std::asinl __attribute__((__using_if_exists__));
-  using std::atan __attribute__((__using_if_exists__));
-  using std::atanf __attribute__((__using_if_exists__));
-  using std::atanl __attribute__((__using_if_exists__));
-  using std::atan2 __attribute__((__using_if_exists__));
-  using std::atan2f __attribute__((__using_if_exists__));
-  using std::atan2l __attribute__((__using_if_exists__));
-  using std::cos __attribute__((__using_if_exists__));
-  using std::cosf __attribute__((__using_if_exists__));
-  using std::cosl __attribute__((__using_if_exists__));
-  using std::sin __attribute__((__using_if_exists__));
-  using std::sinf __attribute__((__using_if_exists__));
-  using std::sinl __attribute__((__using_if_exists__));
-  using std::tan __attribute__((__using_if_exists__));
-  using std::tanf __attribute__((__using_if_exists__));
-  using std::tanl __attribute__((__using_if_exists__));
-  using std::acosh __attribute__((__using_if_exists__));
-  using std::acoshf __attribute__((__using_if_exists__));
-  using std::acoshl __attribute__((__using_if_exists__));
-  using std::asinh __attribute__((__using_if_exists__));
-  using std::asinhf __attribute__((__using_if_exists__));
-  using std::asinhl __attribute__((__using_if_exists__));
-  using std::atanh __attribute__((__using_if_exists__));
-  using std::atanhf __attribute__((__using_if_exists__));
-  using std::atanhl __attribute__((__using_if_exists__));
-  using std::cosh __attribute__((__using_if_exists__));
-  using std::coshf __attribute__((__using_if_exists__));
-  using std::coshl __attribute__((__using_if_exists__));
-  using std::sinh __attribute__((__using_if_exists__));
-  using std::sinhf __attribute__((__using_if_exists__));
-  using std::sinhl __attribute__((__using_if_exists__));
-  using std::tanh __attribute__((__using_if_exists__));
-  using std::tanhf __attribute__((__using_if_exists__));
-  using std::tanhl __attribute__((__using_if_exists__));
-  using std::exp __attribute__((__using_if_exists__));
-  using std::expf __attribute__((__using_if_exists__));
-  using std::expl __attribute__((__using_if_exists__));
-  using std::exp2 __attribute__((__using_if_exists__));
-  using std::exp2f __attribute__((__using_if_exists__));
-  using std::exp2l __attribute__((__using_if_exists__));
-  using std::expm1 __attribute__((__using_if_exists__));
-  using std::expm1f __attribute__((__using_if_exists__));
-  using std::expm1l __attribute__((__using_if_exists__));
-  using std::frexp __attribute__((__using_if_exists__));
-  using std::frexpf __attribute__((__using_if_exists__));
-  using std::frexpl __attribute__((__using_if_exists__));
-  using std::ilogb __attribute__((__using_if_exists__));
-  using std::ilogbf __attribute__((__using_if_exists__));
-  using std::ilogbl __attribute__((__using_if_exists__));
-  using std::ldexp __attribute__((__using_if_exists__));
-  using std::ldexpf __attribute__((__using_if_exists__));
-  using std::ldexpl __attribute__((__using_if_exists__));
-  using std::log __attribute__((__using_if_exists__));
-  using std::logf __attribute__((__using_if_exists__));
-  using std::logl __attribute__((__using_if_exists__));
-  using std::log10 __attribute__((__using_if_exists__));
-  using std::log10f __attribute__((__using_if_exists__));
-  using std::log10l __attribute__((__using_if_exists__));
-  using std::log1p __attribute__((__using_if_exists__));
-  using std::log1pf __attribute__((__using_if_exists__));
-  using std::log1pl __attribute__((__using_if_exists__));
-  using std::log2 __attribute__((__using_if_exists__));
-  using std::log2f __attribute__((__using_if_exists__));
-  using std::log2l __attribute__((__using_if_exists__));
-  using std::logb __attribute__((__using_if_exists__));
-  using std::logbf __attribute__((__using_if_exists__));
-  using std::logbl __attribute__((__using_if_exists__));
-  using std::modf __attribute__((__using_if_exists__));
-  using std::modff __attribute__((__using_if_exists__));
-  using std::modfl __attribute__((__using_if_exists__));
-  using std::scalbn __attribute__((__using_if_exists__));
-  using std::scalbnf __attribute__((__using_if_exists__));
-  using std::scalbnl __attribute__((__using_if_exists__));
-  using std::scalbln __attribute__((__using_if_exists__));
-  using std::scalblnf __attribute__((__using_if_exists__));
-  using std::scalblnl __attribute__((__using_if_exists__));
-  using std::cbrt __attribute__((__using_if_exists__));
-  using std::cbrtf __attribute__((__using_if_exists__));
-  using std::cbrtl __attribute__((__using_if_exists__));
-  using std::abs __attribute__((__using_if_exists__));
-  using std::fabs __attribute__((__using_if_exists__));
-  using std::fabsf __attribute__((__using_if_exists__));
-  using std::fabsl __attribute__((__using_if_exists__));
-  using std::hypot __attribute__((__using_if_exists__));
-  using std::hypotf __attribute__((__using_if_exists__));
-  using std::hypotl __attribute__((__using_if_exists__));
-  using std::pow __attribute__((__using_if_exists__));
-  using std::powf __attribute__((__using_if_exists__));
-  using std::powl __attribute__((__using_if_exists__));
-  using std::sqrt __attribute__((__using_if_exists__));
-  using std::sqrtf __attribute__((__using_if_exists__));
-  using std::sqrtl __attribute__((__using_if_exists__));
-  using std::erf __attribute__((__using_if_exists__));
-  using std::erff __attribute__((__using_if_exists__));
-  using std::erfl __attribute__((__using_if_exists__));
-  using std::erfc __attribute__((__using_if_exists__));
-  using std::erfcf __attribute__((__using_if_exists__));
-  using std::erfcl __attribute__((__using_if_exists__));
-  using std::lgamma __attribute__((__using_if_exists__));
-  using std::lgammaf __attribute__((__using_if_exists__));
-  using std::lgammal __attribute__((__using_if_exists__));
-  using std::tgamma __attribute__((__using_if_exists__));
-  using std::tgammaf __attribute__((__using_if_exists__));
-  using std::tgammal __attribute__((__using_if_exists__));
-  using std::ceil __attribute__((__using_if_exists__));
-  using std::ceilf __attribute__((__using_if_exists__));
-  using std::ceill __attribute__((__using_if_exists__));
-  using std::floor __attribute__((__using_if_exists__));
-  using std::floorf __attribute__((__using_if_exists__));
-  using std::floorl __attribute__((__using_if_exists__));
-  using std::nearbyint __attribute__((__using_if_exists__));
-  using std::nearbyintf __attribute__((__using_if_exists__));
-  using std::nearbyintl __attribute__((__using_if_exists__));
-  using std::rint __attribute__((__using_if_exists__));
-  using std::rintf __attribute__((__using_if_exists__));
-  using std::rintl __attribute__((__using_if_exists__));
-  using std::lrint __attribute__((__using_if_exists__));
-  using std::lrintf __attribute__((__using_if_exists__));
-  using std::lrintl __attribute__((__using_if_exists__));
-  using std::llrint __attribute__((__using_if_exists__));
-  using std::llrintf __attribute__((__using_if_exists__));
-  using std::llrintl __attribute__((__using_if_exists__));
-  using std::round __attribute__((__using_if_exists__));
-  using std::roundf __attribute__((__using_if_exists__));
-  using std::roundl __attribute__((__using_if_exists__));
-  using std::lround __attribute__((__using_if_exists__));
-  using std::lroundf __attribute__((__using_if_exists__));
-  using std::lroundl __attribute__((__using_if_exists__));
-  using std::llround __attribute__((__using_if_exists__));
-  using std::llroundf __attribute__((__using_if_exists__));
-  using std::llroundl __attribute__((__using_if_exists__));
-  using std::trunc __attribute__((__using_if_exists__));
-  using std::truncf __attribute__((__using_if_exists__));
-  using std::truncl __attribute__((__using_if_exists__));
-  using std::fmod __attribute__((__using_if_exists__));
-  using std::fmodf __attribute__((__using_if_exists__));
-  using std::fmodl __attribute__((__using_if_exists__));
-  using std::remainder __attribute__((__using_if_exists__));
-  using std::remainderf __attribute__((__using_if_exists__));
-  using std::remainderl __attribute__((__using_if_exists__));
-  using std::remquo __attribute__((__using_if_exists__));
-  using std::remquof __attribute__((__using_if_exists__));
-  using std::remquol __attribute__((__using_if_exists__));
-  using std::copysign __attribute__((__using_if_exists__));
-  using std::copysignf __attribute__((__using_if_exists__));
-  using std::copysignl __attribute__((__using_if_exists__));
-  using std::nan __attribute__((__using_if_exists__));
-  using std::nanf __attribute__((__using_if_exists__));
-  using std::nanl __attribute__((__using_if_exists__));
-  using std::nextafter __attribute__((__using_if_exists__));
-  using std::nextafterf __attribute__((__using_if_exists__));
-  using std::nextafterl __attribute__((__using_if_exists__));
-  using std::nexttoward __attribute__((__using_if_exists__));
-  using std::nexttowardf __attribute__((__using_if_exists__));
-  using std::nexttowardl __attribute__((__using_if_exists__));
-  using std::fdim __attribute__((__using_if_exists__));
-  using std::fdimf __attribute__((__using_if_exists__));
-  using std::fdiml __attribute__((__using_if_exists__));
-  using std::fmax __attribute__((__using_if_exists__));
-  using std::fmaxf __attribute__((__using_if_exists__));
-  using std::fmaxl __attribute__((__using_if_exists__));
-  using std::fmin __attribute__((__using_if_exists__));
-  using std::fminf __attribute__((__using_if_exists__));
-  using std::fminl __attribute__((__using_if_exists__));
-  using std::fma __attribute__((__using_if_exists__));
-  using std::fmaf __attribute__((__using_if_exists__));
-  using std::fmal __attribute__((__using_if_exists__));
-  using std::lerp __attribute__((__using_if_exists__));
-  using std::fpclassify __attribute__((__using_if_exists__));
-  using std::isfinite __attribute__((__using_if_exists__));
-  using std::isgreater __attribute__((__using_if_exists__));
-  using std::isgreaterequal __attribute__((__using_if_exists__));
-  using std::isinf __attribute__((__using_if_exists__));
-  using std::isless __attribute__((__using_if_exists__));
-  using std::islessequal __attribute__((__using_if_exists__));
-  using std::islessgreater __attribute__((__using_if_exists__));
-  using std::isnan __attribute__((__using_if_exists__));
-  using std::isnormal __attribute__((__using_if_exists__));
-  using std::isunordered __attribute__((__using_if_exists__));
-  using std::signbit __attribute__((__using_if_exists__));
+
+  using std::double_t _LIBCPP_USING_IF_EXISTS;
+  using std::float_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::acos _LIBCPP_USING_IF_EXISTS;
+  using std::acosf _LIBCPP_USING_IF_EXISTS;
+  using std::acosl _LIBCPP_USING_IF_EXISTS;
+
+  using std::asin _LIBCPP_USING_IF_EXISTS;
+  using std::asinf _LIBCPP_USING_IF_EXISTS;
+  using std::asinl _LIBCPP_USING_IF_EXISTS;
+
+  using std::atan _LIBCPP_USING_IF_EXISTS;
+  using std::atanf _LIBCPP_USING_IF_EXISTS;
+  using std::atanl _LIBCPP_USING_IF_EXISTS;
+
+  using std::atan2 _LIBCPP_USING_IF_EXISTS;
+  using std::atan2f _LIBCPP_USING_IF_EXISTS;
+  using std::atan2l _LIBCPP_USING_IF_EXISTS;
+
+  using std::cos _LIBCPP_USING_IF_EXISTS;
+  using std::cosf _LIBCPP_USING_IF_EXISTS;
+  using std::cosl _LIBCPP_USING_IF_EXISTS;
+
+  using std::sin _LIBCPP_USING_IF_EXISTS;
+  using std::sinf _LIBCPP_USING_IF_EXISTS;
+  using std::sinl _LIBCPP_USING_IF_EXISTS;
+
+  using std::tan _LIBCPP_USING_IF_EXISTS;
+  using std::tanf _LIBCPP_USING_IF_EXISTS;
+  using std::tanl _LIBCPP_USING_IF_EXISTS;
+
+  using std::acosh _LIBCPP_USING_IF_EXISTS;
+  using std::acoshf _LIBCPP_USING_IF_EXISTS;
+  using std::acoshl _LIBCPP_USING_IF_EXISTS;
+
+  using std::asinh _LIBCPP_USING_IF_EXISTS;
+  using std::asinhf _LIBCPP_USING_IF_EXISTS;
+  using std::asinhl _LIBCPP_USING_IF_EXISTS;
+
+  using std::atanh _LIBCPP_USING_IF_EXISTS;
+  using std::atanhf _LIBCPP_USING_IF_EXISTS;
+  using std::atanhl _LIBCPP_USING_IF_EXISTS;
+
+  using std::cosh _LIBCPP_USING_IF_EXISTS;
+  using std::coshf _LIBCPP_USING_IF_EXISTS;
+  using std::coshl _LIBCPP_USING_IF_EXISTS;
+
+  using std::sinh _LIBCPP_USING_IF_EXISTS;
+  using std::sinhf _LIBCPP_USING_IF_EXISTS;
+  using std::sinhl _LIBCPP_USING_IF_EXISTS;
+
+  using std::tanh _LIBCPP_USING_IF_EXISTS;
+  using std::tanhf _LIBCPP_USING_IF_EXISTS;
+  using std::tanhl _LIBCPP_USING_IF_EXISTS;
+
+  using std::exp _LIBCPP_USING_IF_EXISTS;
+  using std::expf _LIBCPP_USING_IF_EXISTS;
+  using std::expl _LIBCPP_USING_IF_EXISTS;
+
+  using std::exp2 _LIBCPP_USING_IF_EXISTS;
+  using std::exp2f _LIBCPP_USING_IF_EXISTS;
+  using std::exp2l _LIBCPP_USING_IF_EXISTS;
+
+  using std::expm1 _LIBCPP_USING_IF_EXISTS;
+  using std::expm1f _LIBCPP_USING_IF_EXISTS;
+  using std::expm1l _LIBCPP_USING_IF_EXISTS;
+
+  using std::frexp _LIBCPP_USING_IF_EXISTS;
+  using std::frexpf _LIBCPP_USING_IF_EXISTS;
+  using std::frexpl _LIBCPP_USING_IF_EXISTS;
+
+  using std::ilogb _LIBCPP_USING_IF_EXISTS;
+  using std::ilogbf _LIBCPP_USING_IF_EXISTS;
+  using std::ilogbl _LIBCPP_USING_IF_EXISTS;
+
+  using std::ldexp _LIBCPP_USING_IF_EXISTS;
+  using std::ldexpf _LIBCPP_USING_IF_EXISTS;
+  using std::ldexpl _LIBCPP_USING_IF_EXISTS;
+
+  using std::log _LIBCPP_USING_IF_EXISTS;
+  using std::logf _LIBCPP_USING_IF_EXISTS;
+  using std::logl _LIBCPP_USING_IF_EXISTS;
+
+  using std::log10 _LIBCPP_USING_IF_EXISTS;
+  using std::log10f _LIBCPP_USING_IF_EXISTS;
+  using std::log10l _LIBCPP_USING_IF_EXISTS;
+
+  using std::log1p _LIBCPP_USING_IF_EXISTS;
+  using std::log1pf _LIBCPP_USING_IF_EXISTS;
+  using std::log1pl _LIBCPP_USING_IF_EXISTS;
+
+  using std::log2 _LIBCPP_USING_IF_EXISTS;
+  using std::log2f _LIBCPP_USING_IF_EXISTS;
+  using std::log2l _LIBCPP_USING_IF_EXISTS;
+
+  using std::logb _LIBCPP_USING_IF_EXISTS;
+  using std::logbf _LIBCPP_USING_IF_EXISTS;
+  using std::logbl _LIBCPP_USING_IF_EXISTS;
+
+  using std::modf _LIBCPP_USING_IF_EXISTS;
+  using std::modff _LIBCPP_USING_IF_EXISTS;
+  using std::modfl _LIBCPP_USING_IF_EXISTS;
+
+  using std::scalbn _LIBCPP_USING_IF_EXISTS;
+  using std::scalbnf _LIBCPP_USING_IF_EXISTS;
+  using std::scalbnl _LIBCPP_USING_IF_EXISTS;
+
+  using std::scalbln _LIBCPP_USING_IF_EXISTS;
+  using std::scalblnf _LIBCPP_USING_IF_EXISTS;
+  using std::scalblnl _LIBCPP_USING_IF_EXISTS;
+
+  using std::cbrt _LIBCPP_USING_IF_EXISTS;
+  using std::cbrtf _LIBCPP_USING_IF_EXISTS;
+  using std::cbrtl _LIBCPP_USING_IF_EXISTS;
+
+  // [c.math.abs], absolute values
+  using std::abs _LIBCPP_USING_IF_EXISTS;
+
+  using std::fabs _LIBCPP_USING_IF_EXISTS;
+  using std::fabsf _LIBCPP_USING_IF_EXISTS;
+  using std::fabsl _LIBCPP_USING_IF_EXISTS;
+
+  using std::hypot _LIBCPP_USING_IF_EXISTS;
+  using std::hypotf _LIBCPP_USING_IF_EXISTS;
+  using std::hypotl _LIBCPP_USING_IF_EXISTS;
+
+  // [c.math.hypot3], three-dimensional hypotenuse
+
+  using std::pow _LIBCPP_USING_IF_EXISTS;
+  using std::powf _LIBCPP_USING_IF_EXISTS;
+  using std::powl _LIBCPP_USING_IF_EXISTS;
+
+  using std::sqrt _LIBCPP_USING_IF_EXISTS;
+  using std::sqrtf _LIBCPP_USING_IF_EXISTS;
+  using std::sqrtl _LIBCPP_USING_IF_EXISTS;
+
+  using std::erf _LIBCPP_USING_IF_EXISTS;
+  using std::erff _LIBCPP_USING_IF_EXISTS;
+  using std::erfl _LIBCPP_USING_IF_EXISTS;
+
+  using std::erfc _LIBCPP_USING_IF_EXISTS;
+  using std::erfcf _LIBCPP_USING_IF_EXISTS;
+  using std::erfcl _LIBCPP_USING_IF_EXISTS;
+
+  using std::lgamma _LIBCPP_USING_IF_EXISTS;
+  using std::lgammaf _LIBCPP_USING_IF_EXISTS;
+  using std::lgammal _LIBCPP_USING_IF_EXISTS;
+
+  using std::tgamma _LIBCPP_USING_IF_EXISTS;
+  using std::tgammaf _LIBCPP_USING_IF_EXISTS;
+  using std::tgammal _LIBCPP_USING_IF_EXISTS;
+
+  using std::ceil _LIBCPP_USING_IF_EXISTS;
+  using std::ceilf _LIBCPP_USING_IF_EXISTS;
+  using std::ceill _LIBCPP_USING_IF_EXISTS;
+
+  using std::floor _LIBCPP_USING_IF_EXISTS;
+  using std::floorf _LIBCPP_USING_IF_EXISTS;
+  using std::floorl _LIBCPP_USING_IF_EXISTS;
+
+  using std::nearbyint _LIBCPP_USING_IF_EXISTS;
+  using std::nearbyintf _LIBCPP_USING_IF_EXISTS;
+  using std::nearbyintl _LIBCPP_USING_IF_EXISTS;
+
+  using std::rint _LIBCPP_USING_IF_EXISTS;
+  using std::rintf _LIBCPP_USING_IF_EXISTS;
+  using std::rintl _LIBCPP_USING_IF_EXISTS;
+
+  using std::lrint _LIBCPP_USING_IF_EXISTS;
+  using std::lrintf _LIBCPP_USING_IF_EXISTS;
+  using std::lrintl _LIBCPP_USING_IF_EXISTS;
+
+  using std::llrint _LIBCPP_USING_IF_EXISTS;
+  using std::llrintf _LIBCPP_USING_IF_EXISTS;
+  using std::llrintl _LIBCPP_USING_IF_EXISTS;
+
+  using std::round _LIBCPP_USING_IF_EXISTS;
+  using std::roundf _LIBCPP_USING_IF_EXISTS;
+  using std::roundl _LIBCPP_USING_IF_EXISTS;
+
+  using std::lround _LIBCPP_USING_IF_EXISTS;
+  using std::lroundf _LIBCPP_USING_IF_EXISTS;
+  using std::lroundl _LIBCPP_USING_IF_EXISTS;
+
+  using std::llround _LIBCPP_USING_IF_EXISTS;
+  using std::llroundf _LIBCPP_USING_IF_EXISTS;
+  using std::llroundl _LIBCPP_USING_IF_EXISTS;
+
+  using std::trunc _LIBCPP_USING_IF_EXISTS;
+  using std::truncf _LIBCPP_USING_IF_EXISTS;
+  using std::truncl _LIBCPP_USING_IF_EXISTS;
+
+  using std::fmod _LIBCPP_USING_IF_EXISTS;
+  using std::fmodf _LIBCPP_USING_IF_EXISTS;
+  using std::fmodl _LIBCPP_USING_IF_EXISTS;
+
+  using std::remainder _LIBCPP_USING_IF_EXISTS;
+  using std::remainderf _LIBCPP_USING_IF_EXISTS;
+  using std::remainderl _LIBCPP_USING_IF_EXISTS;
+
+  using std::remquo _LIBCPP_USING_IF_EXISTS;
+  using std::remquof _LIBCPP_USING_IF_EXISTS;
+  using std::remquol _LIBCPP_USING_IF_EXISTS;
+
+  using std::copysign _LIBCPP_USING_IF_EXISTS;
+  using std::copysignf _LIBCPP_USING_IF_EXISTS;
+  using std::copysignl _LIBCPP_USING_IF_EXISTS;
+
+  using std::nan _LIBCPP_USING_IF_EXISTS;
+  using std::nanf _LIBCPP_USING_IF_EXISTS;
+  using std::nanl _LIBCPP_USING_IF_EXISTS;
+
+  using std::nextafter _LIBCPP_USING_IF_EXISTS;
+  using std::nextafterf _LIBCPP_USING_IF_EXISTS;
+  using std::nextafterl _LIBCPP_USING_IF_EXISTS;
+
+  using std::nexttoward _LIBCPP_USING_IF_EXISTS;
+  using std::nexttowardf _LIBCPP_USING_IF_EXISTS;
+  using std::nexttowardl _LIBCPP_USING_IF_EXISTS;
+
+  using std::fdim _LIBCPP_USING_IF_EXISTS;
+  using std::fdimf _LIBCPP_USING_IF_EXISTS;
+  using std::fdiml _LIBCPP_USING_IF_EXISTS;
+
+  using std::fmax _LIBCPP_USING_IF_EXISTS;
+  using std::fmaxf _LIBCPP_USING_IF_EXISTS;
+  using std::fmaxl _LIBCPP_USING_IF_EXISTS;
+
+  using std::fmin _LIBCPP_USING_IF_EXISTS;
+  using std::fminf _LIBCPP_USING_IF_EXISTS;
+  using std::fminl _LIBCPP_USING_IF_EXISTS;
+
+  using std::fma _LIBCPP_USING_IF_EXISTS;
+  using std::fmaf _LIBCPP_USING_IF_EXISTS;
+  using std::fmal _LIBCPP_USING_IF_EXISTS;
+
+  // [c.math.lerp], linear interpolation
+  using std::lerp _LIBCPP_USING_IF_EXISTS;
+
+  // [c.math.fpclass], classification / comparison functions
+  using std::fpclassify _LIBCPP_USING_IF_EXISTS;
+  using std::isfinite _LIBCPP_USING_IF_EXISTS;
+  using std::isgreater _LIBCPP_USING_IF_EXISTS;
+  using std::isgreaterequal _LIBCPP_USING_IF_EXISTS;
+  using std::isinf _LIBCPP_USING_IF_EXISTS;
+  using std::isless _LIBCPP_USING_IF_EXISTS;
+  using std::islessequal _LIBCPP_USING_IF_EXISTS;
+  using std::islessgreater _LIBCPP_USING_IF_EXISTS;
+  using std::isnan _LIBCPP_USING_IF_EXISTS;
+  using std::isnormal _LIBCPP_USING_IF_EXISTS;
+  using std::isunordered _LIBCPP_USING_IF_EXISTS;
+  using std::signbit _LIBCPP_USING_IF_EXISTS;
+
+  // [sf.cmath], mathematical special functions
+#if 0
+  // [sf.cmath.assoc.laguerre], associated Laguerre polynomials
+  using std::assoc_laguerre;
+  using std::assoc_laguerref;
+  using std::assoc_laguerrel;
+
+  // [sf.cmath.assoc.legendre], associated Legendre functions
+  using std::assoc_legendre;
+  using std::assoc_legendref;
+  using std::assoc_legendrel;
+
+  // [sf.cmath.beta], beta function
+  using std::beta;
+  using std::betaf;
+  using std::betal;
+
+  // [sf.cmath.comp.ellint.1], complete elliptic integral of the first kind
+  using std::comp_ellint_1;
+  using std::comp_ellint_1f;
+  using std::comp_ellint_1l;
+
+  // [sf.cmath.comp.ellint.2], complete elliptic integral of the second kind
+  using std::comp_ellint_2;
+  using std::comp_ellint_2f;
+  using std::comp_ellint_2l;
+
+  // [sf.cmath.comp.ellint.3], complete elliptic integral of the third kind
+  using std::comp_ellint_3;
+  using std::comp_ellint_3f;
+  using std::comp_ellint_3l;
+
+  // [sf.cmath.cyl.bessel.i], regular modified cylindrical Bessel functions
+  using std::cyl_bessel_i;
+  using std::cyl_bessel_if;
+  using std::cyl_bessel_il;
+
+  // [sf.cmath.cyl.bessel.j], cylindrical Bessel functions of the first kind
+  using std::cyl_bessel_j;
+  using std::cyl_bessel_jf;
+  using std::cyl_bessel_jl;
+
+  // [sf.cmath.cyl.bessel.k], irregular modified cylindrical Bessel functions
+  using std::cyl_bessel_k;
+  using std::cyl_bessel_kf;
+  using std::cyl_bessel_kl;
+
+  // [sf.cmath.cyl.neumann], cylindrical Neumann functions
+  // cylindrical Bessel functions of the second kind
+  using std::cyl_neumann;
+  using std::cyl_neumannf;
+  using std::cyl_neumannl;
+
+  // [sf.cmath.ellint.1], incomplete elliptic integral of the first kind
+  using std::ellint_1;
+  using std::ellint_1f;
+  using std::ellint_1l;
+
+  // [sf.cmath.ellint.2], incomplete elliptic integral of the second kind
+  using std::ellint_2;
+  using std::ellint_2f;
+  using std::ellint_2l;
+
+  // [sf.cmath.ellint.3], incomplete elliptic integral of the third kind
+  using std::ellint_3;
+  using std::ellint_3f;
+  using std::ellint_3l;
+
+  // [sf.cmath.expint], exponential integral
+  using std::expint;
+  using std::expintf;
+  using std::expintl;
+#endif
+
+  // [sf.cmath.hermite], Hermite polynomials
   using std::hermite;
   using std::hermitef;
   using std::hermitel;
-}
+
+#if 0
+  // [sf.cmath.laguerre], Laguerre polynomials
+  using std::laguerre;
+  using std::laguerref;
+  using std::laguerrel;
+
+  // [sf.cmath.legendre], Legendre polynomials
+  using std::legendre;
+  using std::legendref;
+  using std::legendrel;
+
+  // [sf.cmath.riemann.zeta], Riemann zeta function
+  using std::riemann_zeta;
+  using std::riemann_zetaf;
+  using std::riemann_zetal;
+
+  // [sf.cmath.sph.bessel], spherical Bessel functions of the first kind
+  using std::sph_bessel;
+  using std::sph_besself;
+  using std::sph_bessell;
+
+  // [sf.cmath.sph.legendre], spherical associated Legendre functions
+  using std::sph_legendre;
+  using std::sph_legendref;
+  using std::sph_legendrel;
+
+  // [sf.cmath.sph.neumann], spherical Neumann functions;
+  // spherical Bessel functions of the second kind
+  using std::sph_neumann;
+  using std::sph_neumannf;
+  using std::sph_neumannl;
+#endif
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-}
+#if _LIBCPP_HAS_LOCALIZATION
+#  if _LIBCPP_STD_VER < 26 || defined(_LIBCPP_ENABLE_CXX26_REMOVED_CODECVT)
+  using std::codecvt_mode;
+
+  using std::codecvt_utf16;
+  using std::codecvt_utf8;
+  using std::codecvt_utf8_utf16;
+#  endif // _LIBCPP_STD_VER < 26 || defined(_LIBCPP_ENABLE_CXX26_REMOVED_CODECVT)
+#endif   // _LIBCPP_HAS_LOCALIZATION
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+
+  // [cmp.categories], comparison category types
   using std::partial_ordering;
   using std::strong_ordering;
   using std::weak_ordering;
+
+  // named comparison functions
   using std::is_eq;
   using std::is_gt;
   using std::is_gteq;
   using std::is_lt;
   using std::is_lteq;
   using std::is_neq;
+
+  // [cmp.common], common comparison category type
   using std::common_comparison_category;
   using std::common_comparison_category_t;
+
+  // [cmp.concept], concept three_way_comparable
   using std::three_way_comparable;
   using std::three_way_comparable_with;
+
+  // [cmp.result], result of three-way comparison
   using std::compare_three_way_result;
+
   using std::compare_three_way_result_t;
+
+  // [comparisons.three.way], class compare_three_way
   using std::compare_three_way;
+
+  // [cmp.alg], comparison algorithms
   inline namespace __cpo {
     using std::__cpo::compare_partial_order_fallback;
     using std::__cpo::compare_strong_order_fallback;
@@ -1130,127 +2004,307 @@ export namespace std {
     using std::__cpo::partial_order;
     using std::__cpo::strong_order;
     using std::__cpo::weak_order;
-  }
-}
+  } // namespace __cpo
+
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+
+  // [complex], class template complex
   using std::complex;
+
+  // [complex.ops], operators
   using std::operator+;
   using std::operator-;
   using std::operator*;
   using std::operator/;
+
   using std::operator==;
+#if _LIBCPP_HAS_LOCALIZATION
   using std::operator>>;
   using std::operator<<;
+#endif // _LIBCPP_HAS_LOCALIZATION
+
+  // [complex.value.ops], values
   using std::imag;
   using std::real;
+
   using std::abs;
   using std::arg;
   using std::norm;
+
   using std::conj;
   using std::polar;
   using std::proj;
+
+  // [complex.transcendentals], transcendentals
   using std::acos;
   using std::asin;
   using std::atan;
+
   using std::acosh;
   using std::asinh;
   using std::atanh;
+
   using std::cos;
   using std::cosh;
   using std::exp;
   using std::log;
   using std::log10;
+
   using std::pow;
+
   using std::sin;
   using std::sinh;
   using std::sqrt;
   using std::tan;
   using std::tanh;
+
+#if _LIBCPP_STD_VER >= 26
+  // [complex.tuple], tuple interface
   using std::get;
   using std::tuple_element;
   using std::tuple_size;
+#endif
+
+  // [complex.literals], complex literals
   inline namespace literals {
     inline namespace complex_literals {
       using std::operator""il;
       using std::operator""i;
       using std::operator""if;
-    }
-  }
-}
+    } // namespace complex_literals
+  }   // namespace literals
+
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+
+  // [concepts.lang], language-related concepts
+  // [concept.same], concept same_as
   using std::same_as;
+
+  // [concept.derived], concept derived_from
   using std::derived_from;
+
+  // [concept.convertible], concept convertible_to
   using std::convertible_to;
+
+  // [concept.commonref], concept common_reference_with
   using std::common_reference_with;
+
+  // [concept.common], concept common_with
   using std::common_with;
+
+  // [concepts.arithmetic], arithmetic concepts
   using std::floating_point;
   using std::integral;
   using std::signed_integral;
   using std::unsigned_integral;
+
+  // [concept.assignable], concept assignable_from
   using std::assignable_from;
+
+  // [concept.swappable], concept swappable
   namespace ranges {
     inline namespace __cpo {
       using std::ranges::__cpo::swap;
     }
-  }
+  } // namespace ranges
+
   using std::swappable;
   using std::swappable_with;
+
+  // [concept.destructible], concept destructible
   using std::destructible;
+
+  // [concept.constructible], concept constructible_from
   using std::constructible_from;
+
+  // [concept.default.init], concept default_initializable
   using std::default_initializable;
+
+  // [concept.moveconstructible], concept move_constructible
   using std::move_constructible;
+
+  // [concept.copyconstructible], concept copy_constructible
   using std::copy_constructible;
+
+  // [concepts.compare], comparison concepts
+  // [concept.equalitycomparable], concept equality_comparable
   using std::equality_comparable;
   using std::equality_comparable_with;
+
+  // [concept.totallyordered], concept totally_ordered
   using std::totally_ordered;
   using std::totally_ordered_with;
+
+  // [concepts.object], object concepts
   using std::copyable;
   using std::movable;
   using std::regular;
   using std::semiregular;
+
+  // [concepts.callable], callable concepts
+  // [concept.invocable], concept invocable
   using std::invocable;
+
+  // [concept.regularinvocable], concept regular_invocable
   using std::regular_invocable;
+
+  // [concept.predicate], concept predicate
   using std::predicate;
+
+  // [concept.relation], concept relation
   using std::relation;
+
+  // [concept.equiv], concept equivalence_relation
   using std::equivalence_relation;
+
+  // [concept.strictweakorder], concept strict_weak_order
   using std::strict_weak_order;
-}
+
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_THREADS
+  // [thread.condition.condvar], class condition_variable
   using std::condition_variable;
+  // [thread.condition.condvarany], class condition_variable_any
   using std::condition_variable_any;
+
+  // [thread.condition.nonmember], non-member functions
   using std::notify_all_at_thread_exit;
+
   using std::cv_status;
-}
+#endif // _LIBCPP_HAS_THREADS
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+
+  // [coroutine.traits], coroutine traits
   using std::coroutine_traits;
+
+  // [coroutine.handle], coroutine handle
   using std::coroutine_handle;
+
+  // [coroutine.handle.compare], comparison operators
   using std::operator==;
   using std::operator<=>;
+
+  // [coroutine.handle.hash], hash support
   using std::hash;
+
+  // [coroutine.noop], no-op coroutines
   using std::noop_coroutine;
   using std::noop_coroutine_handle;
   using std::noop_coroutine_promise;
+
+  // [coroutine.trivial.awaitables], trivial awaitables
   using std::suspend_always;
   using std::suspend_never;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::jmp_buf __attribute__((__using_if_exists__));
-  using std::longjmp __attribute__((__using_if_exists__));
-}
+  using std::jmp_buf _LIBCPP_USING_IF_EXISTS;
+  using std::longjmp _LIBCPP_USING_IF_EXISTS;
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::sig_atomic_t __attribute__((__using_if_exists__));
-  using std::signal __attribute__((__using_if_exists__));
-  using std::raise __attribute__((__using_if_exists__));
-}
+  using std::sig_atomic_t _LIBCPP_USING_IF_EXISTS;
+
+  // [support.signal], signal handlers
+  using std::signal _LIBCPP_USING_IF_EXISTS;
+
+  using std::raise _LIBCPP_USING_IF_EXISTS;
+
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::va_list __attribute__((__using_if_exists__));
-}
+  using std::va_list _LIBCPP_USING_IF_EXISTS;
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::max_align_t __attribute__((__using_if_exists__));
+  using std::max_align_t _LIBCPP_USING_IF_EXISTS;
   using std::nullptr_t;
-  using std::ptrdiff_t __attribute__((__using_if_exists__));
-  using std::size_t __attribute__((__using_if_exists__));
+  using std::ptrdiff_t _LIBCPP_USING_IF_EXISTS;
+  using std::size_t _LIBCPP_USING_IF_EXISTS;
+
   using std::byte;
+
+  // [support.types.byteops], byte type operations
   using std::operator<<=;
   using std::operator<<;
   using std::operator>>=;
@@ -1263,279 +2317,439 @@ export namespace std {
   using std::operator^;
   using std::operator~;
   using std::to_integer;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::int8_t __attribute__((__using_if_exists__));
-  using std::int16_t __attribute__((__using_if_exists__));
-  using std::int32_t __attribute__((__using_if_exists__));
-  using std::int64_t __attribute__((__using_if_exists__));
-  using std::int_fast16_t __attribute__((__using_if_exists__));
-  using std::int_fast32_t __attribute__((__using_if_exists__));
-  using std::int_fast64_t __attribute__((__using_if_exists__));
-  using std::int_fast8_t __attribute__((__using_if_exists__));
-  using std::int_least16_t __attribute__((__using_if_exists__));
-  using std::int_least32_t __attribute__((__using_if_exists__));
-  using std::int_least64_t __attribute__((__using_if_exists__));
-  using std::int_least8_t __attribute__((__using_if_exists__));
-  using std::intmax_t __attribute__((__using_if_exists__));
-  using std::intptr_t __attribute__((__using_if_exists__));
-  using std::uint8_t __attribute__((__using_if_exists__));
-  using std::uint16_t __attribute__((__using_if_exists__));
-  using std::uint32_t __attribute__((__using_if_exists__));
-  using std::uint64_t __attribute__((__using_if_exists__));
-  using std::uint_fast16_t __attribute__((__using_if_exists__));
-  using std::uint_fast32_t __attribute__((__using_if_exists__));
-  using std::uint_fast64_t __attribute__((__using_if_exists__));
-  using std::uint_fast8_t __attribute__((__using_if_exists__));
-  using std::uint_least16_t __attribute__((__using_if_exists__));
-  using std::uint_least32_t __attribute__((__using_if_exists__));
-  using std::uint_least64_t __attribute__((__using_if_exists__));
-  using std::uint_least8_t __attribute__((__using_if_exists__));
-  using std::uintmax_t __attribute__((__using_if_exists__));
-  using std::uintptr_t __attribute__((__using_if_exists__));
-}
+  // signed
+  using std::int8_t _LIBCPP_USING_IF_EXISTS;
+  using std::int16_t _LIBCPP_USING_IF_EXISTS;
+  using std::int32_t _LIBCPP_USING_IF_EXISTS;
+  using std::int64_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::int_fast16_t _LIBCPP_USING_IF_EXISTS;
+  using std::int_fast32_t _LIBCPP_USING_IF_EXISTS;
+  using std::int_fast64_t _LIBCPP_USING_IF_EXISTS;
+  using std::int_fast8_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::int_least16_t _LIBCPP_USING_IF_EXISTS;
+  using std::int_least32_t _LIBCPP_USING_IF_EXISTS;
+  using std::int_least64_t _LIBCPP_USING_IF_EXISTS;
+  using std::int_least8_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::intmax_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::intptr_t _LIBCPP_USING_IF_EXISTS;
+
+  // unsigned
+  using std::uint8_t _LIBCPP_USING_IF_EXISTS;
+  using std::uint16_t _LIBCPP_USING_IF_EXISTS;
+  using std::uint32_t _LIBCPP_USING_IF_EXISTS;
+  using std::uint64_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::uint_fast16_t _LIBCPP_USING_IF_EXISTS;
+  using std::uint_fast32_t _LIBCPP_USING_IF_EXISTS;
+  using std::uint_fast64_t _LIBCPP_USING_IF_EXISTS;
+  using std::uint_fast8_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::uint_least16_t _LIBCPP_USING_IF_EXISTS;
+  using std::uint_least32_t _LIBCPP_USING_IF_EXISTS;
+  using std::uint_least64_t _LIBCPP_USING_IF_EXISTS;
+  using std::uint_least8_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::uintmax_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::uintptr_t _LIBCPP_USING_IF_EXISTS;
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::FILE __attribute__((__using_if_exists__));
-  using std::fpos_t __attribute__((__using_if_exists__));
-  using std::size_t __attribute__((__using_if_exists__));
-  using std::clearerr __attribute__((__using_if_exists__));
-  using std::fclose __attribute__((__using_if_exists__));
-  using std::feof __attribute__((__using_if_exists__));
-  using std::ferror __attribute__((__using_if_exists__));
-  using std::fflush __attribute__((__using_if_exists__));
-  using std::fgetc __attribute__((__using_if_exists__));
-  using std::fgetpos __attribute__((__using_if_exists__));
-  using std::fgets __attribute__((__using_if_exists__));
-  using std::fopen __attribute__((__using_if_exists__));
-  using std::fprintf __attribute__((__using_if_exists__));
-  using std::fputc __attribute__((__using_if_exists__));
-  using std::fputs __attribute__((__using_if_exists__));
-  using std::fread __attribute__((__using_if_exists__));
-  using std::freopen __attribute__((__using_if_exists__));
-  using std::fscanf __attribute__((__using_if_exists__));
-  using std::fseek __attribute__((__using_if_exists__));
-  using std::fsetpos __attribute__((__using_if_exists__));
-  using std::ftell __attribute__((__using_if_exists__));
-  using std::fwrite __attribute__((__using_if_exists__));
-  using std::getc __attribute__((__using_if_exists__));
-  using std::getchar __attribute__((__using_if_exists__));
-  using std::perror __attribute__((__using_if_exists__));
-  using std::printf __attribute__((__using_if_exists__));
-  using std::putc __attribute__((__using_if_exists__));
-  using std::putchar __attribute__((__using_if_exists__));
-  using std::puts __attribute__((__using_if_exists__));
-  using std::remove __attribute__((__using_if_exists__));
-  using std::rename __attribute__((__using_if_exists__));
-  using std::rewind __attribute__((__using_if_exists__));
-  using std::scanf __attribute__((__using_if_exists__));
-  using std::setbuf __attribute__((__using_if_exists__));
-  using std::setvbuf __attribute__((__using_if_exists__));
-  using std::snprintf __attribute__((__using_if_exists__));
-  using std::sprintf __attribute__((__using_if_exists__));
-  using std::sscanf __attribute__((__using_if_exists__));
-  using std::tmpfile __attribute__((__using_if_exists__));
-  using std::tmpnam __attribute__((__using_if_exists__));
-  using std::ungetc __attribute__((__using_if_exists__));
-  using std::vfprintf __attribute__((__using_if_exists__));
-  using std::vfscanf __attribute__((__using_if_exists__));
-  using std::vprintf __attribute__((__using_if_exists__));
-  using std::vscanf __attribute__((__using_if_exists__));
-  using std::vsnprintf __attribute__((__using_if_exists__));
-  using std::vsprintf __attribute__((__using_if_exists__));
-  using std::vsscanf __attribute__((__using_if_exists__));
-}
+  using std::FILE _LIBCPP_USING_IF_EXISTS;
+  using std::fpos_t _LIBCPP_USING_IF_EXISTS;
+  using std::size_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::clearerr _LIBCPP_USING_IF_EXISTS;
+  using std::fclose _LIBCPP_USING_IF_EXISTS;
+  using std::feof _LIBCPP_USING_IF_EXISTS;
+  using std::ferror _LIBCPP_USING_IF_EXISTS;
+  using std::fflush _LIBCPP_USING_IF_EXISTS;
+  using std::fgetc _LIBCPP_USING_IF_EXISTS;
+  using std::fgetpos _LIBCPP_USING_IF_EXISTS;
+  using std::fgets _LIBCPP_USING_IF_EXISTS;
+  using std::fopen _LIBCPP_USING_IF_EXISTS;
+  using std::fprintf _LIBCPP_USING_IF_EXISTS;
+  using std::fputc _LIBCPP_USING_IF_EXISTS;
+  using std::fputs _LIBCPP_USING_IF_EXISTS;
+  using std::fread _LIBCPP_USING_IF_EXISTS;
+  using std::freopen _LIBCPP_USING_IF_EXISTS;
+  using std::fscanf _LIBCPP_USING_IF_EXISTS;
+  using std::fseek _LIBCPP_USING_IF_EXISTS;
+  using std::fsetpos _LIBCPP_USING_IF_EXISTS;
+  using std::ftell _LIBCPP_USING_IF_EXISTS;
+  using std::fwrite _LIBCPP_USING_IF_EXISTS;
+  using std::getc _LIBCPP_USING_IF_EXISTS;
+  using std::getchar _LIBCPP_USING_IF_EXISTS;
+  using std::perror _LIBCPP_USING_IF_EXISTS;
+  using std::printf _LIBCPP_USING_IF_EXISTS;
+  using std::putc _LIBCPP_USING_IF_EXISTS;
+  using std::putchar _LIBCPP_USING_IF_EXISTS;
+  using std::puts _LIBCPP_USING_IF_EXISTS;
+  using std::remove _LIBCPP_USING_IF_EXISTS;
+  using std::rename _LIBCPP_USING_IF_EXISTS;
+  using std::rewind _LIBCPP_USING_IF_EXISTS;
+  using std::scanf _LIBCPP_USING_IF_EXISTS;
+  using std::setbuf _LIBCPP_USING_IF_EXISTS;
+  using std::setvbuf _LIBCPP_USING_IF_EXISTS;
+  using std::snprintf _LIBCPP_USING_IF_EXISTS;
+  using std::sprintf _LIBCPP_USING_IF_EXISTS;
+  using std::sscanf _LIBCPP_USING_IF_EXISTS;
+  using std::tmpfile _LIBCPP_USING_IF_EXISTS;
+  using std::tmpnam _LIBCPP_USING_IF_EXISTS;
+  using std::ungetc _LIBCPP_USING_IF_EXISTS;
+  using std::vfprintf _LIBCPP_USING_IF_EXISTS;
+  using std::vfscanf _LIBCPP_USING_IF_EXISTS;
+  using std::vprintf _LIBCPP_USING_IF_EXISTS;
+  using std::vscanf _LIBCPP_USING_IF_EXISTS;
+  using std::vsnprintf _LIBCPP_USING_IF_EXISTS;
+  using std::vsprintf _LIBCPP_USING_IF_EXISTS;
+  using std::vsscanf _LIBCPP_USING_IF_EXISTS;
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::div_t __attribute__((__using_if_exists__));
-  using std::ldiv_t __attribute__((__using_if_exists__));
-  using std::lldiv_t __attribute__((__using_if_exists__));
-  using std::size_t __attribute__((__using_if_exists__));
-  using std::_Exit __attribute__((__using_if_exists__));
-  using std::abort __attribute__((__using_if_exists__));
-  using std::at_quick_exit __attribute__((__using_if_exists__));
-  using std::atexit __attribute__((__using_if_exists__));
-  using std::exit __attribute__((__using_if_exists__));
-  using std::quick_exit __attribute__((__using_if_exists__));
-  using std::getenv __attribute__((__using_if_exists__));
-  using std::system __attribute__((__using_if_exists__));
-  using std::aligned_alloc __attribute__((__using_if_exists__));
-  using std::calloc __attribute__((__using_if_exists__));
-  using std::free __attribute__((__using_if_exists__));
-  using std::malloc __attribute__((__using_if_exists__));
-  using std::realloc __attribute__((__using_if_exists__));
-  using std::atof __attribute__((__using_if_exists__));
-  using std::atoi __attribute__((__using_if_exists__));
-  using std::atol __attribute__((__using_if_exists__));
-  using std::atoll __attribute__((__using_if_exists__));
-  using std::strtod __attribute__((__using_if_exists__));
-  using std::strtof __attribute__((__using_if_exists__));
-  using std::strtol __attribute__((__using_if_exists__));
-  using std::strtold __attribute__((__using_if_exists__));
-  using std::strtoll __attribute__((__using_if_exists__));
-  using std::strtoul __attribute__((__using_if_exists__));
-  using std::strtoull __attribute__((__using_if_exists__));
-  using std::mblen __attribute__((__using_if_exists__));
-  using std::mbstowcs __attribute__((__using_if_exists__));
-  using std::mbtowc __attribute__((__using_if_exists__));
-  using std::wcstombs __attribute__((__using_if_exists__));
-  using std::wctomb __attribute__((__using_if_exists__));
-  using std::bsearch __attribute__((__using_if_exists__));
-  using std::qsort __attribute__((__using_if_exists__));
-  using std::rand __attribute__((__using_if_exists__));
-  using std::srand __attribute__((__using_if_exists__));
-  using std::abs __attribute__((__using_if_exists__));
-  using std::labs __attribute__((__using_if_exists__));
-  using std::llabs __attribute__((__using_if_exists__));
-  using std::div __attribute__((__using_if_exists__));
-  using std::ldiv __attribute__((__using_if_exists__));
-  using std::lldiv __attribute__((__using_if_exists__));
-}
+  using std::div_t _LIBCPP_USING_IF_EXISTS;
+  using std::ldiv_t _LIBCPP_USING_IF_EXISTS;
+  using std::lldiv_t _LIBCPP_USING_IF_EXISTS;
+  using std::size_t _LIBCPP_USING_IF_EXISTS;
+
+  // [support.start.term], start and termination
+  using std::_Exit _LIBCPP_USING_IF_EXISTS;
+  using std::abort _LIBCPP_USING_IF_EXISTS;
+  using std::at_quick_exit _LIBCPP_USING_IF_EXISTS;
+  using std::atexit _LIBCPP_USING_IF_EXISTS;
+  using std::exit _LIBCPP_USING_IF_EXISTS;
+  using std::quick_exit _LIBCPP_USING_IF_EXISTS;
+
+  using std::getenv _LIBCPP_USING_IF_EXISTS;
+  using std::system _LIBCPP_USING_IF_EXISTS;
+
+  // [c.malloc], C library memory allocation
+  using std::aligned_alloc _LIBCPP_USING_IF_EXISTS;
+  using std::calloc _LIBCPP_USING_IF_EXISTS;
+  using std::free _LIBCPP_USING_IF_EXISTS;
+  using std::malloc _LIBCPP_USING_IF_EXISTS;
+  using std::realloc _LIBCPP_USING_IF_EXISTS;
+
+  using std::atof _LIBCPP_USING_IF_EXISTS;
+  using std::atoi _LIBCPP_USING_IF_EXISTS;
+  using std::atol _LIBCPP_USING_IF_EXISTS;
+  using std::atoll _LIBCPP_USING_IF_EXISTS;
+  using std::strtod _LIBCPP_USING_IF_EXISTS;
+  using std::strtof _LIBCPP_USING_IF_EXISTS;
+  using std::strtol _LIBCPP_USING_IF_EXISTS;
+  using std::strtold _LIBCPP_USING_IF_EXISTS;
+  using std::strtoll _LIBCPP_USING_IF_EXISTS;
+  using std::strtoul _LIBCPP_USING_IF_EXISTS;
+  using std::strtoull _LIBCPP_USING_IF_EXISTS;
+
+  // [c.mb.wcs], multibyte / wide string and character conversion functions
+  using std::mblen _LIBCPP_USING_IF_EXISTS;
+#if _LIBCPP_HAS_WIDE_CHARACTERS
+  using std::mbstowcs _LIBCPP_USING_IF_EXISTS;
+  using std::mbtowc _LIBCPP_USING_IF_EXISTS;
+  using std::wcstombs _LIBCPP_USING_IF_EXISTS;
+  using std::wctomb _LIBCPP_USING_IF_EXISTS;
+#endif
+  // [alg.c.library], C standard library algorithms
+  using std::bsearch _LIBCPP_USING_IF_EXISTS;
+  using std::qsort _LIBCPP_USING_IF_EXISTS;
+
+  // [c.math.rand], low-quality random number generation
+  using std::rand _LIBCPP_USING_IF_EXISTS;
+  using std::srand _LIBCPP_USING_IF_EXISTS;
+
+  // [c.math.abs], absolute values
+  using std::abs _LIBCPP_USING_IF_EXISTS;
+
+  using std::labs _LIBCPP_USING_IF_EXISTS;
+  using std::llabs _LIBCPP_USING_IF_EXISTS;
+
+  using std::div _LIBCPP_USING_IF_EXISTS;
+  using std::ldiv _LIBCPP_USING_IF_EXISTS;
+  using std::lldiv _LIBCPP_USING_IF_EXISTS;
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::size_t __attribute__((__using_if_exists__));
-  using std::memchr __attribute__((__using_if_exists__));
-  using std::memcmp __attribute__((__using_if_exists__));
-  using std::memcpy __attribute__((__using_if_exists__));
-  using std::memmove __attribute__((__using_if_exists__));
-  using std::memset __attribute__((__using_if_exists__));
-  using std::strcat __attribute__((__using_if_exists__));
-  using std::strchr __attribute__((__using_if_exists__));
-  using std::strcmp __attribute__((__using_if_exists__));
-  using std::strcoll __attribute__((__using_if_exists__));
-  using std::strcpy __attribute__((__using_if_exists__));
-  using std::strcspn __attribute__((__using_if_exists__));
-  using std::strerror __attribute__((__using_if_exists__));
-  using std::strlen __attribute__((__using_if_exists__));
-  using std::strncat __attribute__((__using_if_exists__));
-  using std::strncmp __attribute__((__using_if_exists__));
-  using std::strncpy __attribute__((__using_if_exists__));
-  using std::strpbrk __attribute__((__using_if_exists__));
-  using std::strrchr __attribute__((__using_if_exists__));
-  using std::strspn __attribute__((__using_if_exists__));
-  using std::strstr __attribute__((__using_if_exists__));
-  using std::strtok __attribute__((__using_if_exists__));
-  using std::strxfrm __attribute__((__using_if_exists__));
-}
+  using std::size_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::memchr _LIBCPP_USING_IF_EXISTS;
+  using std::memcmp _LIBCPP_USING_IF_EXISTS;
+  using std::memcpy _LIBCPP_USING_IF_EXISTS;
+  using std::memmove _LIBCPP_USING_IF_EXISTS;
+  using std::memset _LIBCPP_USING_IF_EXISTS;
+  using std::strcat _LIBCPP_USING_IF_EXISTS;
+  using std::strchr _LIBCPP_USING_IF_EXISTS;
+  using std::strcmp _LIBCPP_USING_IF_EXISTS;
+  using std::strcoll _LIBCPP_USING_IF_EXISTS;
+  using std::strcpy _LIBCPP_USING_IF_EXISTS;
+  using std::strcspn _LIBCPP_USING_IF_EXISTS;
+  using std::strerror _LIBCPP_USING_IF_EXISTS;
+  using std::strlen _LIBCPP_USING_IF_EXISTS;
+  using std::strncat _LIBCPP_USING_IF_EXISTS;
+  using std::strncmp _LIBCPP_USING_IF_EXISTS;
+  using std::strncpy _LIBCPP_USING_IF_EXISTS;
+  using std::strpbrk _LIBCPP_USING_IF_EXISTS;
+  using std::strrchr _LIBCPP_USING_IF_EXISTS;
+  using std::strspn _LIBCPP_USING_IF_EXISTS;
+  using std::strstr _LIBCPP_USING_IF_EXISTS;
+  using std::strtok _LIBCPP_USING_IF_EXISTS;
+  using std::strxfrm _LIBCPP_USING_IF_EXISTS;
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::clock_t __attribute__((__using_if_exists__));
-  using std::size_t __attribute__((__using_if_exists__));
-  using std::time_t __attribute__((__using_if_exists__));
-  using std::timespec __attribute__((__using_if_exists__));
-  using std::tm __attribute__((__using_if_exists__));
-  using std::asctime __attribute__((__using_if_exists__));
-  using std::clock __attribute__((__using_if_exists__));
-  using std::ctime __attribute__((__using_if_exists__));
-  using std::difftime __attribute__((__using_if_exists__));
-  using std::gmtime __attribute__((__using_if_exists__));
-  using std::localtime __attribute__((__using_if_exists__));
-  using std::mktime __attribute__((__using_if_exists__));
-  using std::strftime __attribute__((__using_if_exists__));
-  using std::time __attribute__((__using_if_exists__));
-  using std::timespec_get __attribute__((__using_if_exists__));
-}
+  using std::clock_t _LIBCPP_USING_IF_EXISTS;
+  using std::size_t _LIBCPP_USING_IF_EXISTS;
+  using std::time_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::timespec _LIBCPP_USING_IF_EXISTS;
+  using std::tm _LIBCPP_USING_IF_EXISTS;
+
+  using std::asctime _LIBCPP_USING_IF_EXISTS;
+  using std::clock _LIBCPP_USING_IF_EXISTS;
+  using std::ctime _LIBCPP_USING_IF_EXISTS;
+  using std::difftime _LIBCPP_USING_IF_EXISTS;
+  using std::gmtime _LIBCPP_USING_IF_EXISTS;
+  using std::localtime _LIBCPP_USING_IF_EXISTS;
+  using std::mktime _LIBCPP_USING_IF_EXISTS;
+  using std::strftime _LIBCPP_USING_IF_EXISTS;
+  using std::time _LIBCPP_USING_IF_EXISTS;
+  using std::timespec_get _LIBCPP_USING_IF_EXISTS;
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::mbrtoc16 __attribute__((__using_if_exists__));
-  using std::c16rtomb __attribute__((__using_if_exists__));
-  using std::mbrtoc32 __attribute__((__using_if_exists__));
-  using std::c32rtomb __attribute__((__using_if_exists__));
-}
+  // Note the Standard does not mark these symbols optional, but libc++'s header
+  // does. So this seems strictly not to be conforming.
+
+  // mbstate_t is conditionally here, but always present in cwchar.cppm. To avoid
+  // conflicing declarations omit the using here.
+
+  // size_t is conditionally here, but always present in cstddef.cppm. To avoid
+  // conflicing declarations omit the using here.
+
+#if _LIBCPP_HAS_C8RTOMB_MBRTOC8
+  using std::mbrtoc8 _LIBCPP_USING_IF_EXISTS;
+  using std::c8rtomb _LIBCPP_USING_IF_EXISTS;
+#endif
+  using std::mbrtoc16 _LIBCPP_USING_IF_EXISTS;
+  using std::c16rtomb _LIBCPP_USING_IF_EXISTS;
+  using std::mbrtoc32 _LIBCPP_USING_IF_EXISTS;
+  using std::c32rtomb _LIBCPP_USING_IF_EXISTS;
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::mbstate_t __attribute__((__using_if_exists__));
-  using std::size_t __attribute__((__using_if_exists__));
-  using std::wint_t __attribute__((__using_if_exists__));
-  using std::tm __attribute__((__using_if_exists__));
-  using std::btowc __attribute__((__using_if_exists__));
-  using std::fgetwc __attribute__((__using_if_exists__));
-  using std::fgetws __attribute__((__using_if_exists__));
-  using std::fputwc __attribute__((__using_if_exists__));
-  using std::fputws __attribute__((__using_if_exists__));
-  using std::fwide __attribute__((__using_if_exists__));
-  using std::fwprintf __attribute__((__using_if_exists__));
-  using std::fwscanf __attribute__((__using_if_exists__));
-  using std::getwc __attribute__((__using_if_exists__));
-  using std::getwchar __attribute__((__using_if_exists__));
-  using std::putwc __attribute__((__using_if_exists__));
-  using std::putwchar __attribute__((__using_if_exists__));
-  using std::swprintf __attribute__((__using_if_exists__));
-  using std::swscanf __attribute__((__using_if_exists__));
-  using std::ungetwc __attribute__((__using_if_exists__));
-  using std::vfwprintf __attribute__((__using_if_exists__));
-  using std::vfwscanf __attribute__((__using_if_exists__));
-  using std::vswprintf __attribute__((__using_if_exists__));
-  using std::vswscanf __attribute__((__using_if_exists__));
-  using std::vwprintf __attribute__((__using_if_exists__));
-  using std::vwscanf __attribute__((__using_if_exists__));
-  using std::wcscat __attribute__((__using_if_exists__));
-  using std::wcschr __attribute__((__using_if_exists__));
-  using std::wcscmp __attribute__((__using_if_exists__));
-  using std::wcscoll __attribute__((__using_if_exists__));
-  using std::wcscpy __attribute__((__using_if_exists__));
-  using std::wcscspn __attribute__((__using_if_exists__));
-  using std::wcsftime __attribute__((__using_if_exists__));
-  using std::wcslen __attribute__((__using_if_exists__));
-  using std::wcsncat __attribute__((__using_if_exists__));
-  using std::wcsncmp __attribute__((__using_if_exists__));
-  using std::wcsncpy __attribute__((__using_if_exists__));
-  using std::wcspbrk __attribute__((__using_if_exists__));
-  using std::wcsrchr __attribute__((__using_if_exists__));
-  using std::wcsspn __attribute__((__using_if_exists__));
-  using std::wcsstr __attribute__((__using_if_exists__));
-  using std::wcstod __attribute__((__using_if_exists__));
-  using std::wcstof __attribute__((__using_if_exists__));
-  using std::wcstok __attribute__((__using_if_exists__));
-  using std::wcstol __attribute__((__using_if_exists__));
-  using std::wcstold __attribute__((__using_if_exists__));
-  using std::wcstoll __attribute__((__using_if_exists__));
-  using std::wcstoul __attribute__((__using_if_exists__));
-  using std::wcstoull __attribute__((__using_if_exists__));
-  using std::wcsxfrm __attribute__((__using_if_exists__));
-  using std::wctob __attribute__((__using_if_exists__));
-  using std::wmemchr __attribute__((__using_if_exists__));
-  using std::wmemcmp __attribute__((__using_if_exists__));
-  using std::wmemcpy __attribute__((__using_if_exists__));
-  using std::wmemmove __attribute__((__using_if_exists__));
-  using std::wmemset __attribute__((__using_if_exists__));
-  using std::wprintf __attribute__((__using_if_exists__));
-  using std::wscanf __attribute__((__using_if_exists__));
-  using std::mbrlen __attribute__((__using_if_exists__));
-  using std::mbrtowc __attribute__((__using_if_exists__));
-  using std::mbsinit __attribute__((__using_if_exists__));
-  using std::mbsrtowcs __attribute__((__using_if_exists__));
-  using std::wcrtomb __attribute__((__using_if_exists__));
-  using std::wcsrtombs __attribute__((__using_if_exists__));
-}
+#if _LIBCPP_HAS_WIDE_CHARACTERS
+  using std::mbstate_t _LIBCPP_USING_IF_EXISTS;
+  using std::size_t _LIBCPP_USING_IF_EXISTS;
+  using std::wint_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::tm _LIBCPP_USING_IF_EXISTS;
+
+  using std::btowc _LIBCPP_USING_IF_EXISTS;
+  using std::fgetwc _LIBCPP_USING_IF_EXISTS;
+  using std::fgetws _LIBCPP_USING_IF_EXISTS;
+  using std::fputwc _LIBCPP_USING_IF_EXISTS;
+  using std::fputws _LIBCPP_USING_IF_EXISTS;
+  using std::fwide _LIBCPP_USING_IF_EXISTS;
+  using std::fwprintf _LIBCPP_USING_IF_EXISTS;
+  using std::fwscanf _LIBCPP_USING_IF_EXISTS;
+  using std::getwc _LIBCPP_USING_IF_EXISTS;
+  using std::getwchar _LIBCPP_USING_IF_EXISTS;
+  using std::putwc _LIBCPP_USING_IF_EXISTS;
+  using std::putwchar _LIBCPP_USING_IF_EXISTS;
+  using std::swprintf _LIBCPP_USING_IF_EXISTS;
+  using std::swscanf _LIBCPP_USING_IF_EXISTS;
+  using std::ungetwc _LIBCPP_USING_IF_EXISTS;
+  using std::vfwprintf _LIBCPP_USING_IF_EXISTS;
+  using std::vfwscanf _LIBCPP_USING_IF_EXISTS;
+  using std::vswprintf _LIBCPP_USING_IF_EXISTS;
+  using std::vswscanf _LIBCPP_USING_IF_EXISTS;
+  using std::vwprintf _LIBCPP_USING_IF_EXISTS;
+  using std::vwscanf _LIBCPP_USING_IF_EXISTS;
+  using std::wcscat _LIBCPP_USING_IF_EXISTS;
+  using std::wcschr _LIBCPP_USING_IF_EXISTS;
+  using std::wcscmp _LIBCPP_USING_IF_EXISTS;
+  using std::wcscoll _LIBCPP_USING_IF_EXISTS;
+  using std::wcscpy _LIBCPP_USING_IF_EXISTS;
+  using std::wcscspn _LIBCPP_USING_IF_EXISTS;
+  using std::wcsftime _LIBCPP_USING_IF_EXISTS;
+  using std::wcslen _LIBCPP_USING_IF_EXISTS;
+  using std::wcsncat _LIBCPP_USING_IF_EXISTS;
+  using std::wcsncmp _LIBCPP_USING_IF_EXISTS;
+  using std::wcsncpy _LIBCPP_USING_IF_EXISTS;
+  using std::wcspbrk _LIBCPP_USING_IF_EXISTS;
+  using std::wcsrchr _LIBCPP_USING_IF_EXISTS;
+  using std::wcsspn _LIBCPP_USING_IF_EXISTS;
+  using std::wcsstr _LIBCPP_USING_IF_EXISTS;
+  using std::wcstod _LIBCPP_USING_IF_EXISTS;
+  using std::wcstof _LIBCPP_USING_IF_EXISTS;
+  using std::wcstok _LIBCPP_USING_IF_EXISTS;
+  using std::wcstol _LIBCPP_USING_IF_EXISTS;
+  using std::wcstold _LIBCPP_USING_IF_EXISTS;
+  using std::wcstoll _LIBCPP_USING_IF_EXISTS;
+  using std::wcstoul _LIBCPP_USING_IF_EXISTS;
+  using std::wcstoull _LIBCPP_USING_IF_EXISTS;
+  using std::wcsxfrm _LIBCPP_USING_IF_EXISTS;
+  using std::wctob _LIBCPP_USING_IF_EXISTS;
+  using std::wmemchr _LIBCPP_USING_IF_EXISTS;
+  using std::wmemcmp _LIBCPP_USING_IF_EXISTS;
+  using std::wmemcpy _LIBCPP_USING_IF_EXISTS;
+  using std::wmemmove _LIBCPP_USING_IF_EXISTS;
+  using std::wmemset _LIBCPP_USING_IF_EXISTS;
+  using std::wprintf _LIBCPP_USING_IF_EXISTS;
+  using std::wscanf _LIBCPP_USING_IF_EXISTS;
+
+  // [c.mb.wcs], multibyte / wide string and character conversion functions
+  using std::mbrlen _LIBCPP_USING_IF_EXISTS;
+  using std::mbrtowc _LIBCPP_USING_IF_EXISTS;
+  using std::mbsinit _LIBCPP_USING_IF_EXISTS;
+  using std::mbsrtowcs _LIBCPP_USING_IF_EXISTS;
+  using std::wcrtomb _LIBCPP_USING_IF_EXISTS;
+  using std::wcsrtombs _LIBCPP_USING_IF_EXISTS;
+#endif // _LIBCPP_HAS_WIDE_CHARACTERS
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-  using std::wctrans_t __attribute__((__using_if_exists__));
-  using std::wctype_t __attribute__((__using_if_exists__));
-  using std::wint_t __attribute__((__using_if_exists__));
-  using std::iswalnum __attribute__((__using_if_exists__));
-  using std::iswalpha __attribute__((__using_if_exists__));
-  using std::iswblank __attribute__((__using_if_exists__));
-  using std::iswcntrl __attribute__((__using_if_exists__));
-  using std::iswctype __attribute__((__using_if_exists__));
-  using std::iswdigit __attribute__((__using_if_exists__));
-  using std::iswgraph __attribute__((__using_if_exists__));
-  using std::iswlower __attribute__((__using_if_exists__));
-  using std::iswprint __attribute__((__using_if_exists__));
-  using std::iswpunct __attribute__((__using_if_exists__));
-  using std::iswspace __attribute__((__using_if_exists__));
-  using std::iswupper __attribute__((__using_if_exists__));
-  using std::iswxdigit __attribute__((__using_if_exists__));
-  using std::towctrans __attribute__((__using_if_exists__));
-  using std::towlower __attribute__((__using_if_exists__));
-  using std::towupper __attribute__((__using_if_exists__));
-  using std::wctrans __attribute__((__using_if_exists__));
-  using std::wctype __attribute__((__using_if_exists__));
-}
+#if _LIBCPP_HAS_WIDE_CHARACTERS
+  using std::wctrans_t _LIBCPP_USING_IF_EXISTS;
+  using std::wctype_t _LIBCPP_USING_IF_EXISTS;
+  using std::wint_t _LIBCPP_USING_IF_EXISTS;
+
+  using std::iswalnum _LIBCPP_USING_IF_EXISTS;
+  using std::iswalpha _LIBCPP_USING_IF_EXISTS;
+  using std::iswblank _LIBCPP_USING_IF_EXISTS;
+  using std::iswcntrl _LIBCPP_USING_IF_EXISTS;
+  using std::iswctype _LIBCPP_USING_IF_EXISTS;
+  using std::iswdigit _LIBCPP_USING_IF_EXISTS;
+  using std::iswgraph _LIBCPP_USING_IF_EXISTS;
+  using std::iswlower _LIBCPP_USING_IF_EXISTS;
+  using std::iswprint _LIBCPP_USING_IF_EXISTS;
+  using std::iswpunct _LIBCPP_USING_IF_EXISTS;
+  using std::iswspace _LIBCPP_USING_IF_EXISTS;
+  using std::iswupper _LIBCPP_USING_IF_EXISTS;
+  using std::iswxdigit _LIBCPP_USING_IF_EXISTS;
+  using std::towctrans _LIBCPP_USING_IF_EXISTS;
+  using std::towlower _LIBCPP_USING_IF_EXISTS;
+  using std::towupper _LIBCPP_USING_IF_EXISTS;
+  using std::wctrans _LIBCPP_USING_IF_EXISTS;
+  using std::wctype _LIBCPP_USING_IF_EXISTS;
+#endif // _LIBCPP_HAS_WIDE_CHARACTERS
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [deque], class template deque
   using std::deque;
+
   using std::operator==;
   using std::operator<=>;
+
   using std::swap;
+
+  // [deque.erasure], erasure
   using std::erase;
   using std::erase_if;
+
   namespace pmr {
     using std::pmr::deque;
   }
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
   using std::bad_exception;
   using std::current_exception;
@@ -1550,33 +2764,127 @@ export namespace std {
   using std::terminate;
   using std::terminate_handler;
   using std::throw_with_nested;
+#ifdef _LIBCPP_ENABLE_CXX20_REMOVED_UNCAUGHT_EXCEPTION
+  using std::uncaught_exception;
+#endif
   using std::uncaught_exceptions;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
+#ifdef _LIBCPP_ENABLE_EXPERIMENTAL
 export namespace std {
+  // [execpol.type], execution policy type trait
+  using std::is_execution_policy;
+  using std::is_execution_policy_v;
+} // namespace std
+
+export namespace std::execution {
+  // [execpol.seq], sequenced execution policy
+  using std::execution::sequenced_policy;
+
+  // [execpol.par], parallel execution policy
+  using std::execution::parallel_policy;
+
+  // [execpol.parunseq], parallel and unsequenced execution policy
+  using std::execution::parallel_unsequenced_policy;
+
+  // [execpol.unseq], unsequenced execution policy
+  using std::execution::unsequenced_policy;
+
+  // [execpol.objects], execution policy objects
+  using std::execution::par;
+  using std::execution::par_unseq;
+  using std::execution::seq;
+  using std::execution::unseq;
+} // namespace std::execution
+#endif // _LIBCPP_ENABLE_EXPERIMENTAL
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
+export namespace std {
+#if _LIBCPP_STD_VER >= 23
+  // [expected.unexpected], class template unexpected
   using std::unexpected;
+
+  // [expected.bad], class template bad_expected_access
   using std::bad_expected_access;
+
+  // in-place construction of unexpected values
   using std::unexpect;
   using std::unexpect_t;
+
+  // [expected.expected], class template expected
   using std::expected;
-}
+#endif // _LIBCPP_STD_VER >= 23
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std::filesystem {
+  // [fs.class.path], paths
   using std::filesystem::path;
+
+  // [fs.path.nonmember], path non-member functions
   using std::filesystem::hash_value;
   using std::filesystem::swap;
+
+  // [fs.class.filesystem.error], filesystem errors
   using std::filesystem::filesystem_error;
+
+#if _LIBCPP_HAS_FILESYSTEM
+  // [fs.class.directory.entry], directory entries
   using std::filesystem::directory_entry;
+
+  // [fs.class.directory.iterator], directory iterators
   using std::filesystem::directory_iterator;
+
+  // [fs.dir.itr.nonmembers], range access for directory iterators
   using std::filesystem::begin;
   using std::filesystem::end;
+
+  // [fs.class.rec.dir.itr], recursive directory iterators
   using std::filesystem::recursive_directory_iterator;
+#endif // _LIBCPP_HAS_FILESYSTEM
+
+  // [fs.rec.dir.itr.nonmembers], range access for recursive directory iterators
+
+  // [fs.class.file.status], file status
   using std::filesystem::file_status;
   using std::filesystem::space_info;
+
+  // [fs.enum], enumerations
   using std::filesystem::copy_options;
   using std::filesystem::directory_options;
   using std::filesystem::file_type;
   using std::filesystem::perm_options;
   using std::filesystem::perms;
+
   using std::filesystem::file_time_type;
+
+  // several of these enums are a bitmask type.
+  // [bitmask.types] specified operators
   using std::filesystem::operator&;
   using std::filesystem::operator&=;
   using std::filesystem::operator^;
@@ -1584,6 +2892,9 @@ export namespace std::filesystem {
   using std::filesystem::operator|;
   using std::filesystem::operator|=;
   using std::filesystem::operator~;
+
+#if _LIBCPP_HAS_FILESYSTEM
+  // [fs.op.funcs], filesystem operations
   using std::filesystem::absolute;
   using std::filesystem::canonical;
   using std::filesystem::copy;
@@ -1599,6 +2910,7 @@ export namespace std::filesystem {
   using std::filesystem::exists;
   using std::filesystem::file_size;
   using std::filesystem::hard_link_count;
+
   using std::filesystem::is_block_file;
   using std::filesystem::is_character_file;
   using std::filesystem::is_directory;
@@ -1608,12 +2920,14 @@ export namespace std::filesystem {
   using std::filesystem::is_regular_file;
   using std::filesystem::is_socket;
   using std::filesystem::is_symlink;
+
   using std::filesystem::last_write_time;
   using std::filesystem::permissions;
   using std::filesystem::proximate;
   using std::filesystem::read_symlink;
   using std::filesystem::relative;
   using std::filesystem::remove;
+
   using std::filesystem::remove_all;
   using std::filesystem::rename;
   using std::filesystem::resize_file;
@@ -1623,122 +2937,320 @@ export namespace std::filesystem {
   using std::filesystem::symlink_status;
   using std::filesystem::temp_directory_path;
   using std::filesystem::weakly_canonical;
+#endif // _LIBCPP_HAS_FILESYSTEM
+
+  // [depr.fs.path.factory]
   using std::filesystem::u8path;
-}
+} // namespace std::filesystem
+
+// [fs.path.hash], hash support
 export namespace std {
   using std::hash;
 }
+
 export namespace std::ranges {
+#if _LIBCPP_HAS_FILESYSTEM
   using std::ranges::enable_borrowed_range;
   using std::ranges::enable_view;
-}
+#endif // _LIBCPP_HAS_FILESYSTEM
+} // namespace std::ranges
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_STD_VER >= 23
+  // [flat.map], class template flat_map
   using std::flat_map;
+
   using std::sorted_unique;
   using std::sorted_unique_t;
+
   using std::uses_allocator;
+
+  // [flat.map.erasure], erasure for flat_map
   using std::erase_if;
+
+  // [flat.multimap], class template flat_multimap
   using std::flat_multimap;
+
   using std::sorted_equivalent;
   using std::sorted_equivalent_t;
-}
+
+  // [flat.multimap.erasure], erasure for flat_multimap
+#endif // _LIBCPP_STD_VER >= 23
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-}
+#if _LIBCPP_STD_VER >= 23
+  // [flat.set], class template flat_­set
+  using std::flat_set;
+
+  using std::sorted_unique;
+  using std::sorted_unique_t;
+
+  using std::uses_allocator;
+
+  // [flat.set.erasure], erasure for flat_­set
+  using std::erase_if;
+
+  // [flat.multiset], class template flat_­multiset
+  using std::flat_multiset;
+
+  using std::sorted_equivalent;
+  using std::sorted_equivalent_t;
+#endif // _LIBCPP_STD_VER >= 23
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [format.context], class template basic_format_context
   using std::basic_format_context;
   using std::format_context;
+#if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wformat_context;
+#endif
+
+  // [format.args], class template basic_format_args
   using std::basic_format_args;
   using std::format_args;
+#if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wformat_args;
+#endif
+
+  // [format.fmt.string], class template basic_format_string
   using std::basic_format_string;
   using std::format_string;
+#if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wformat_string;
+#endif
+#if _LIBCPP_STD_VER >= 26
   using std::runtime_format;
+#endif // _LIBCPP_STD_VER >= 26
+
+  // [format.functions], formatting functions
   using std::format;
   using std::format_to;
   using std::vformat;
   using std::vformat_to;
+
   using std::format_to_n;
   using std::format_to_n_result;
   using std::formatted_size;
+
+  // [format.formatter], formatter
   using std::formatter;
+
+#if _LIBCPP_STD_VER >= 23
   using std::enable_nonlocking_formatter_optimization;
+
+  // [format.formattable], concept formattable
   using std::formattable;
+#endif
+
+  // [format.parse.ctx], class template basic_format_parse_context
   using std::basic_format_parse_context;
   using std::format_parse_context;
+#if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wformat_parse_context;
+#endif
+
+#if _LIBCPP_STD_VER >= 23
+  // [format.range], formatting of ranges
+  // [format.range.fmtkind], variable template format_kind
   using std::format_kind;
   using std::range_format;
+
+  // [format.range.formatter], class template range_formatter
   using std::range_formatter;
+#endif // _LIBCPP_STD_VER >= 23
+
+  // [format.arg], class template basic_format_arg
   using std::basic_format_arg;
   using std::visit_format_arg;
+
+  // [format.arg.store], class template format-arg-store
   using std::make_format_args;
+#if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::make_wformat_args;
+#endif
+
+  // [format.error], class format_error
   using std::format_error;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [forward.list], class template forward_list
   using std::forward_list;
+
   using std::operator==;
   using std::operator<=>;
+
   using std::swap;
+
+  // [forward.list.erasure], erasure
   using std::erase;
   using std::erase_if;
+
   namespace pmr {
     using std::pmr::forward_list;
   }
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_LOCALIZATION
   using std::basic_filebuf;
+
+#  if _LIBCPP_HAS_FILESYSTEM
   using std::swap;
+#  endif
+
   using std::filebuf;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wfilebuf;
+#  endif
+
   using std::basic_ifstream;
+
   using std::ifstream;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wifstream;
+#  endif
+
   using std::basic_ofstream;
+
   using std::ofstream;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wofstream;
+#  endif
+
   using std::basic_fstream;
+
   using std::fstream;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wfstream;
-}
+#  endif
+#endif // _LIBCPP_HAS_LOCALIZATION
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [func.invoke], invoke
   using std::invoke;
+#if _LIBCPP_STD_VER >= 23
   using std::invoke_r;
+#endif
+
+#if _LIBCPP_STD_VER >= 20
+  using std::basic_common_reference;
+#endif
+
+  // [refwrap], reference_wrapper
   using std::reference_wrapper;
+
   using std::cref;
   using std::ref;
+
+  // [arithmetic.operations], arithmetic operations
   using std::divides;
   using std::minus;
   using std::modulus;
   using std::multiplies;
   using std::negate;
   using std::plus;
+  // [comparisons], comparisons
   using std::equal_to;
   using std::greater;
   using std::greater_equal;
   using std::less;
   using std::less_equal;
   using std::not_equal_to;
+
+  // [comparisons.three.way], class compare_three_way
   using std::compare_three_way;
+
+  // [logical.operations], logical operations
   using std::logical_and;
   using std::logical_not;
   using std::logical_or;
+
+  // [bitwise.operations], bitwise operations
   using std::bit_and;
   using std::bit_not;
   using std::bit_or;
   using std::bit_xor;
+
+  // [func.identity], identity
   using std::identity;
+
+  // [func.not.fn], function template not_fn
   using std::not_fn;
+
+  // [func.bind.partial], function templates bind_front and bind_back
   using std::bind_front;
+#if _LIBCPP_STD_VER >= 23
   using std::bind_back;
+#endif
+
+  // [func.bind], bind
   using std::is_bind_expression;
   using std::is_bind_expression_v;
   using std::is_placeholder;
   using std::is_placeholder_v;
+
   using std::bind;
+
   namespace placeholders {
+    // M is the implementation-defined number of placeholders
     using std::placeholders::_1;
     using std::placeholders::_10;
     using std::placeholders::_2;
@@ -1749,29 +3261,61 @@ export namespace std {
     using std::placeholders::_7;
     using std::placeholders::_8;
     using std::placeholders::_9;
-  }
+  } // namespace placeholders
+
+  // [func.memfn], member function adaptors
   using std::mem_fn;
+
+  // [func.wrap], polymorphic function wrappers
   using std::bad_function_call;
+
   using std::function;
+
   using std::swap;
+
   using std::operator==;
+
+  // [func.wrap.move], move only wrapper
+  // using std::move_only_function;
+
+  // [func.search], searchers
   using std::default_searcher;
+
   using std::boyer_moore_searcher;
+
   using std::boyer_moore_horspool_searcher;
+
+  // [unord.hash], class template hash
   using std::hash;
+
   namespace ranges {
+    // [range.cmp], concept-constrained comparisons
     using std::ranges::equal_to;
     using std::ranges::greater;
     using std::ranges::greater_equal;
     using std::ranges::less;
     using std::ranges::less_equal;
     using std::ranges::not_equal_to;
-  }
-}
+  } // namespace ranges
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_THREADS
   using std::future_errc;
   using std::future_status;
   using std::launch;
+
+  // launch is a bitmask type.
+  // [bitmask.types] specified operators
   using std::operator&;
   using std::operator&=;
   using std::operator^;
@@ -1779,29 +3323,105 @@ export namespace std {
   using std::operator|;
   using std::operator|=;
   using std::operator~;
+
+  // [futures.errors], error handling
   using std::is_error_code_enum;
   using std::make_error_code;
   using std::make_error_condition;
+
   using std::future_category;
+
+  // [futures.future.error], class future_error
   using std::future_error;
+
+  // [futures.promise], class template promise
   using std::promise;
+
   using std::swap;
+
   using std::uses_allocator;
+
+  // [futures.unique.future], class template future
   using std::future;
+
+  // [futures.shared.future], class template shared_future
   using std::shared_future;
+
+  // [futures.task], class template packaged_task
   using std::packaged_task;
+
+  // [futures.async], function template async
   using std::async;
-}
+#endif // _LIBCPP_HAS_THREADS
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-}
+#if 0
+  using std::generator;
+#endif
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-}
+#if 0
+#  if _LIBCPP_STD_VER >= 23
+  // 4.1.3, class template hazard_pointer_obj_base
+  using std::hazard_pointer_obj_base;
+  // 4.1.4, class hazard_pointer
+  using std::hazard_pointer;
+  // 4.1.5, Construct non-empty hazard_pointer
+  using std::make_hazard_pointer;
+  // 4.1.6, Hazard pointer swap
+  using std::swap;
+#  endif // _LIBCPP_STD_VER >= 23
+#endif
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
   using std::initializer_list;
+
+  // [support.initlist.range], initializer list range access
   using std::begin;
   using std::end;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_LOCALIZATION
   using std::get_money;
   using std::get_time;
   using std::put_money;
@@ -1812,142 +3432,344 @@ export namespace std {
   using std::setiosflags;
   using std::setprecision;
   using std::setw;
+
   using std::quoted;
-}
+#endif // _LIBCPP_HAS_LOCALIZATION
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_LOCALIZATION
   using std::fpos;
-  using std::operator!=;
+  // based on [tab:fpos.operations]
+  using std::operator!=; // Note not affected by P1614, seems like a bug.
   using std::operator-;
   using std::operator==;
+
   using std::streamoff;
   using std::streamsize;
+
   using std::basic_ios;
   using std::ios_base;
+
+  // [std.ios.manip], manipulators
   using std::boolalpha;
   using std::noboolalpha;
+
   using std::noshowbase;
   using std::showbase;
+
   using std::noshowpoint;
   using std::showpoint;
+
   using std::noshowpos;
   using std::showpos;
+
   using std::noskipws;
   using std::skipws;
+
   using std::nouppercase;
   using std::uppercase;
+
   using std::nounitbuf;
   using std::unitbuf;
+
+  // [adjustfield.manip], adjustfield
   using std::internal;
   using std::left;
   using std::right;
+
+  // [basefield.manip], basefield
   using std::dec;
   using std::hex;
   using std::oct;
+
+  // [floatfield.manip], floatfield
   using std::defaultfloat;
   using std::fixed;
   using std::hexfloat;
   using std::scientific;
+
+  // [error.reporting], error reporting
   using std::io_errc;
+
   using std::iostream_category;
   using std::is_error_code_enum;
   using std::make_error_code;
   using std::make_error_condition;
+
+  // [iosfwd.syn]
   using std::ios;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wios;
-}
+#  endif
+#endif // _LIBCPP_HAS_LOCALIZATION
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
   using std::streampos;
+#if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wstreampos;
+#endif
   using std::u16streampos;
   using std::u32streampos;
+#if _LIBCPP_HAS_CHAR8_T
   using std::u8streampos;
+#endif
+
+#if _LIBCPP_HAS_EXPERIMENTAL_SYNCSTREAM
+  using std::basic_osyncstream;
+  using std::basic_syncbuf;
+#endif
+
   using std::istreambuf_iterator;
   using std::ostreambuf_iterator;
+
+#if _LIBCPP_HAS_EXPERIMENTAL_SYNCSTREAM
+  using std::osyncstream;
+  using std::syncbuf;
+
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
+  using std::wosyncstream;
+  using std::wsyncbuf;
+#  endif
+#endif // _LIBCPP_HAS_EXPERIMENTAL_SYNCSTREAM
+
   using std::fpos;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_LOCALIZATION
   using std::cerr;
   using std::cin;
   using std::clog;
   using std::cout;
+
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wcerr;
   using std::wcin;
   using std::wclog;
   using std::wcout;
-}
+#  endif
+#endif // _LIBCPP_HAS_LOCALIZATION
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_LOCALIZATION
   using std::basic_istream;
+
   using std::istream;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wistream;
+#  endif
+
   using std::basic_iostream;
+
   using std::iostream;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wiostream;
+#  endif
+
   using std::ws;
+
   using std::operator>>;
-}
+#endif // _LIBCPP_HAS_LOCALIZATION
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [iterator.assoc.types], associated types
+  // [incrementable.traits], incrementable traits
   using std::incrementable_traits;
   using std::iter_difference_t;
+
   using std::indirectly_readable_traits;
   using std::iter_value_t;
+
+  // [iterator.traits], iterator traits
   using std::iterator_traits;
+
   using std::iter_reference_t;
+
   namespace ranges {
+    // [iterator.cust], customization point objects
     inline namespace __cpo {
+      // [iterator.cust.move], ranges::iter_move
       using std::ranges::__cpo::iter_move;
+
+      // [iterator.cust.swap], ranges::iter_swap
       using std::ranges::__cpo::iter_swap;
-    }
-  }
+    } // namespace __cpo
+  }   // namespace ranges
+
   using std::iter_rvalue_reference_t;
+
+  // [iterator.concepts], iterator concepts
+  // [iterator.concept.readable], concept indirectly_readable
   using std::indirectly_readable;
+
   using std::iter_common_reference_t;
+
+  // [iterator.concept.writable], concept indirectly_writable
   using std::indirectly_writable;
+
+  // [iterator.concept.winc], concept weakly_incrementable
   using std::weakly_incrementable;
+
+  // [iterator.concept.inc], concept incrementable
   using std::incrementable;
+
+  // [iterator.concept.iterator], concept input_or_output_iterator
   using std::input_or_output_iterator;
+
+  // [iterator.concept.sentinel], concept sentinel_for
   using std::sentinel_for;
+
+  // [iterator.concept.sizedsentinel], concept sized_sentinel_for
   using std::disable_sized_sentinel_for;
+
   using std::sized_sentinel_for;
+
+  // [iterator.concept.input], concept input_iterator
   using std::input_iterator;
+
+  // [iterator.concept.output], concept output_iterator
   using std::output_iterator;
+
+  // [iterator.concept.forward], concept forward_iterator
   using std::forward_iterator;
+
+  // [iterator.concept.bidir], concept bidirectional_iterator
   using std::bidirectional_iterator;
+
+  // [iterator.concept.random.access], concept random_access_iterator
   using std::random_access_iterator;
+
+  // [iterator.concept.contiguous], concept contiguous_iterator
   using std::contiguous_iterator;
+
+  // [indirectcallable], indirect callable requirements
+  // [indirectcallable.indirectinvocable], indirect callables
   using std::indirectly_unary_invocable;
+
   using std::indirectly_regular_unary_invocable;
+
   using std::indirect_unary_predicate;
+
   using std::indirect_binary_predicate;
+
   using std::indirect_equivalence_relation;
+
   using std::indirect_strict_weak_order;
+
   using std::indirect_result_t;
+
+  // [projected], projected
   using std::projected;
+
+  // [alg.req], common algorithm requirements
+  // [alg.req.ind.move], concept indirectly_movable
   using std::indirectly_movable;
+
   using std::indirectly_movable_storable;
+
+  // [alg.req.ind.copy], concept indirectly_copyable
   using std::indirectly_copyable;
+
   using std::indirectly_copyable_storable;
+
+  // [alg.req.ind.swap], concept indirectly_swappable
   using std::indirectly_swappable;
+
+  // [alg.req.ind.cmp], concept indirectly_comparable
   using std::indirectly_comparable;
+
+  // [alg.req.permutable], concept permutable
   using std::permutable;
+
+  // [alg.req.mergeable], concept mergeable
   using std::mergeable;
+
+  // [alg.req.sortable], concept sortable
   using std::sortable;
+
+  // [iterator.primitives], primitives
+  // [std.iterator.tags], iterator tags
   using std::bidirectional_iterator_tag;
   using std::contiguous_iterator_tag;
   using std::forward_iterator_tag;
   using std::input_iterator_tag;
   using std::output_iterator_tag;
   using std::random_access_iterator_tag;
+
+  // [iterator.operations], iterator operations
   using std::advance;
   using std::distance;
   using std::next;
   using std::prev;
+
+  // [range.iter.ops], range iterator operations
   namespace ranges {
+    // [range.iter.op.advance], ranges​::​advance
     using std::ranges::advance;
+
+    // [range.iter.op.distance], ranges​::​distance
     using std::ranges::distance;
+
+    // [range.iter.op.next], ranges​::​next
     using std::ranges::next;
+
+    // [range.iter.op.prev], ranges​::​prev
     using std::ranges::prev;
-  }
+  } // namespace ranges
+
+  // [predef.iterators], predefined iterators and sentinels
+  // [reverse.iterators], reverse iterators
   using std::reverse_iterator;
+
   using std::operator==;
   using std::operator!=;
   using std::operator<;
@@ -1955,28 +3777,66 @@ export namespace std {
   using std::operator<=;
   using std::operator>=;
   using std::operator<=>;
+
   using std::operator-;
   using std::operator+;
+
   using std::make_reverse_iterator;
+
+  // using std::disable_sized_sentinel_for;
+
+  // [insert.iterators], insert iterators
   using std::back_insert_iterator;
   using std::back_inserter;
+
   using std::front_insert_iterator;
   using std::front_inserter;
+
   using std::insert_iterator;
   using std::inserter;
+
+  // [const.iterators], constant iterators and sentinels
+  // [const.iterators.alias], alias templates
+  //  using std::const_iterator;
+  //  using std::const_sentinel;
+  //  using std::iter_const_reference_t;
+
+  // [const.iterators.iterator], class template basic_const_iterator
+  //  using std::basic_const_iterator;
+
+  // using std::common_type;
+
+  //  using std::make_const_iterator;
+
+  // [move.iterators], move iterators and sentinels
   using std::move_iterator;
+
   using std::make_move_iterator;
+
   using std::move_sentinel;
+
   using std::common_iterator;
+
+  // [default.sentinel], default sentinel
   using std::default_sentinel;
   using std::default_sentinel_t;
+
+  // [iterators.counted], counted iterators
   using std::counted_iterator;
+
+  // [unreachable.sentinel], unreachable sentinel
   using std::unreachable_sentinel;
   using std::unreachable_sentinel_t;
+
+  // [stream.iterators], stream iterators
   using std::istream_iterator;
+
   using std::ostream_iterator;
+
   using std::istreambuf_iterator;
   using std::ostreambuf_iterator;
+
+  // [iterator.range], range access
   using std::begin;
   using std::cbegin;
   using std::cend;
@@ -1985,35 +3845,94 @@ export namespace std {
   using std::end;
   using std::rbegin;
   using std::rend;
+
   using std::empty;
   using std::size;
   using std::ssize;
+
   using std::data;
+
+  // [depr.iterator]
   using std::iterator;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_THREADS
   using std::latch;
-}
+#endif // _LIBCPP_HAS_THREADS
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [fp.style], floating-point type properties
   using std::float_denorm_style;
   using std::float_round_style;
+
+  // [numeric.limits], class template numeric_­limits
   using std::numeric_limits;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [list], class template list
   using std::list;
+
   using std::operator==;
   using std::operator<=>;
+
   using std::swap;
+
+  // [list.erasure], erasure
   using std::erase;
   using std::erase_if;
+
   namespace pmr {
     using std::pmr::list;
   }
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_LOCALIZATION
+  // [locale], locale
   using std::has_facet;
   using std::locale;
   using std::use_facet;
+
+  // [locale.convenience], convenience interfaces
   using std::isalnum;
   using std::isalpha;
   using std::isblank;
@@ -2028,213 +3947,473 @@ export namespace std {
   using std::isxdigit;
   using std::tolower;
   using std::toupper;
+
+  // [category.ctype], ctype
   using std::codecvt;
   using std::codecvt_base;
   using std::codecvt_byname;
   using std::ctype;
   using std::ctype_base;
   using std::ctype_byname;
+
+  // [category.numeric], numeric
   using std::num_get;
   using std::num_put;
   using std::numpunct;
   using std::numpunct_byname;
+
+  // [category.collate], collation
   using std::collate;
   using std::collate_byname;
+
+  // [category.time], date and time
   using std::time_base;
   using std::time_get;
   using std::time_get_byname;
   using std::time_put;
   using std::time_put_byname;
+
+  // [category.monetary], money
   using std::money_base;
   using std::money_get;
   using std::money_put;
   using std::moneypunct;
   using std::moneypunct_byname;
+
+  // [category.messages], message retrieval
   using std::messages;
   using std::messages_base;
   using std::messages_byname;
-}
+
+#  if _LIBCPP_STD_VER < 26 || defined(_LIBCPP_ENABLE_CXX26_REMOVED_WSTRING_CONVERT)
+
+  // [depr.conversions.buffer]
+  using std::wbuffer_convert;
+
+  // [depr.conversions.string]
+  using std::wstring_convert;
+
+#  endif // _LIBCPP_STD_VER < 26 || defined(_LIBCPP_ENABLE_CXX26_REMOVED_WSTRING_CONVERT)
+
+#endif // _LIBCPP_HAS_LOCALIZATION
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [map], class template map
   using std::map;
+
   using std::operator==;
   using std::operator<=>;
+
   using std::swap;
+
+  // [map.erasure], erasure for map
   using std::erase_if;
+
+  // [multimap], class template multimap
   using std::multimap;
+
   namespace pmr {
     using std::pmr::map;
     using std::pmr::multimap;
-  }
-}
+  } // namespace pmr
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_STD_VER >= 23
+  // [mdspan.extents], class template extents
   using std::extents;
+
+  // [mdspan.extents.dextents], alias template dextents
   using std::dextents;
+
+#  if _LIBCPP_STD_VER >= 26
+  // [mdspan.extents.dims]
   using std::dims;
+#  endif // _LIBCPP_STD_VER >= 26
+
+  // [mdspan.layout], layout mapping
   using std::layout_left;
   using std::layout_right;
   using std::layout_stride;
+
+  // [mdspan.accessor.default], class template default_accessor
   using std::default_accessor;
+
+#  if _LIBCPP_STD_VER >= 26
+  // [mdspan.accessor.aligned], class template aligned_accessor
+  using std::aligned_accessor;
+#  endif // _LIBCPP_STD_VER >= 26
+
+  // [mdspan.mdspan], class template mdspan
   using std::mdspan;
-}
+#endif // _LIBCPP_STD_VER >= 23
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [pointer.traits], pointer traits
   using std::pointer_traits;
+
+  // [pointer.conversion], pointer conversion
   using std::to_address;
+
+  // [ptr.align], pointer alignment
   using std::align;
   using std::assume_aligned;
+#if _LIBCPP_STD_VER >= 26
+  using std::is_sufficiently_aligned;
+#endif
+
+  // [obj.lifetime], explicit lifetime management
+  //  using std::start_lifetime_as;
+  //  using std::start_lifetime_as_array;
+
+  // [allocator.tag], allocator argument tag
   using std::allocator_arg;
   using std::allocator_arg_t;
+
+  // [allocator.uses], uses_allocator
   using std::uses_allocator;
+
+  // [allocator.uses.trait], uses_allocator
   using std::uses_allocator_v;
+
+  // [allocator.uses.construction], uses-allocator construction
   using std::uses_allocator_construction_args;
+
   using std::make_obj_using_allocator;
   using std::uninitialized_construct_using_allocator;
+
+  // [allocator.traits], allocator traits
   using std::allocator_traits;
+
+#if _LIBCPP_STD_VER >= 23
   using std::allocation_result;
+#endif
+
+  // [default.allocator], the default allocator
   using std::allocator;
   using std::operator==;
+
+  // [specialized.addressof], addressof
   using std::addressof;
+
+  // [specialized.algorithms], specialized algorithms
+  // [special.mem.concepts], special memory concepts
+
   using std::uninitialized_default_construct;
   using std::uninitialized_default_construct_n;
+
   namespace ranges {
     using std::ranges::uninitialized_default_construct;
     using std::ranges::uninitialized_default_construct_n;
-  }
+  } // namespace ranges
+
   using std::uninitialized_value_construct;
   using std::uninitialized_value_construct_n;
+
   namespace ranges {
     using std::ranges::uninitialized_value_construct;
     using std::ranges::uninitialized_value_construct_n;
-  }
+  } // namespace ranges
+
   using std::uninitialized_copy;
   using std::uninitialized_copy_n;
+
   namespace ranges {
     using std::ranges::uninitialized_copy;
     using std::ranges::uninitialized_copy_result;
+
     using std::ranges::uninitialized_copy_n;
     using std::ranges::uninitialized_copy_n_result;
-  }
+  } // namespace ranges
+
   using std::uninitialized_move;
   using std::uninitialized_move_n;
+
   namespace ranges {
     using std::ranges::uninitialized_move;
     using std::ranges::uninitialized_move_result;
+
     using std::ranges::uninitialized_move_n;
     using std::ranges::uninitialized_move_n_result;
-  }
+  } // namespace ranges
+
   using std::uninitialized_fill;
   using std::uninitialized_fill_n;
+
   namespace ranges {
     using std::ranges::uninitialized_fill;
     using std::ranges::uninitialized_fill_n;
-  }
+  } // namespace ranges
+
+  // [specialized.construct], construct_at
   using std::construct_at;
+
   namespace ranges {
     using std::ranges::construct_at;
   }
+  // [specialized.destroy], destroy
   using std::destroy;
   using std::destroy_at;
   using std::destroy_n;
+
   namespace ranges {
     using std::ranges::destroy;
     using std::ranges::destroy_at;
     using std::ranges::destroy_n;
-  }
+  } // namespace ranges
+
+  // [unique.ptr], class template unique_ptr
   using std::default_delete;
   using std::unique_ptr;
+
   using std::make_unique;
   using std::make_unique_for_overwrite;
+
   using std::operator<;
   using std::operator>;
   using std::operator<=;
   using std::operator>=;
   using std::operator<=>;
+
   using std::operator<<;
+
+  // [util.smartptr.weak.bad], class bad_weak_ptr
   using std::bad_weak_ptr;
+
+  // [util.smartptr.shared], class template shared_ptr
   using std::shared_ptr;
+
+  // [util.smartptr.shared.create], shared_ptr creation
   using std::allocate_shared;
   using std::allocate_shared_for_overwrite;
   using std::make_shared;
   using std::make_shared_for_overwrite;
+
+  // [util.smartptr.shared.spec], shared_ptr specialized algorithms
   using std::swap;
+
+  // [util.smartptr.shared.cast], shared_ptr casts
   using std::const_pointer_cast;
   using std::dynamic_pointer_cast;
   using std::reinterpret_pointer_cast;
   using std::static_pointer_cast;
+
+#if _LIBCPP_HAS_RTTI
   using std::get_deleter;
+#endif // _LIBCPP_HAS_RTTI
+
+  // [util.smartptr.shared.io], shared_ptr I/O
+
+  // [util.smartptr.weak], class template weak_ptr
   using std::weak_ptr;
+
+  // [util.smartptr.weak.spec], weak_ptr specialized algorithms
+
+  // [util.smartptr.ownerless], class template owner_less
   using std::owner_less;
+
+  // [util.smartptr.enab], class template enable_shared_from_this
   using std::enable_shared_from_this;
+
+  // [util.smartptr.hash], hash support
   using std::hash;
+
+  // [util.smartptr.atomic], atomic smart pointers
+  // using std::atomic;
+
+#if _LIBCPP_STD_VER >= 23
+  // [out.ptr.t], class template out_ptr_t
   using std::out_ptr_t;
+
+  // [out.ptr], function template out_ptr
   using std::out_ptr;
+
+  // [inout.ptr.t], class template inout_ptr_t
   using std::inout_ptr_t;
+
+  // [inout.ptr], function template inout_ptr
   using std::inout_ptr;
+#endif // _LIBCPP_STD_VER >= 23
+
+#if _LIBCPP_HAS_THREADS
+  // [depr.util.smartptr.shared.atomic]
   using std::atomic_is_lock_free;
+
   using std::atomic_load;
   using std::atomic_load_explicit;
+
   using std::atomic_store;
   using std::atomic_store_explicit;
+
   using std::atomic_exchange;
   using std::atomic_exchange_explicit;
+
   using std::atomic_compare_exchange_strong;
   using std::atomic_compare_exchange_strong_explicit;
   using std::atomic_compare_exchange_weak;
   using std::atomic_compare_exchange_weak_explicit;
-}
+#endif // _LIBCPP_HAS_THREADS
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std::pmr {
+  // [mem.res.class], class memory_resource
   using std::pmr::memory_resource;
+
   using std::pmr::operator==;
+
+  // [mem.poly.allocator.class], class template polymorphic_allocator
   using std::pmr::polymorphic_allocator;
+
+  // [mem.res.global], global memory resources
   using std::pmr::get_default_resource;
   using std::pmr::new_delete_resource;
   using std::pmr::null_memory_resource;
   using std::pmr::set_default_resource;
+
+  // [mem.res.pool], pool resource classes
   using std::pmr::monotonic_buffer_resource;
   using std::pmr::pool_options;
   using std::pmr::synchronized_pool_resource;
   using std::pmr::unsynchronized_pool_resource;
-}
+} // namespace std::pmr
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_THREADS
+  // [thread.mutex.class], class mutex
   using std::mutex;
+  // [thread.mutex.recursive], class recursive_mutex
   using std::recursive_mutex;
+  // [thread.timedmutex.class] class timed_mutex
   using std::timed_mutex;
+  // [thread.timedmutex.recursive], class recursive_timed_mutex
   using std::recursive_timed_mutex;
+
   using std::adopt_lock_t;
   using std::defer_lock_t;
   using std::try_to_lock_t;
+
   using std::adopt_lock;
   using std::defer_lock;
   using std::try_to_lock;
+
+  // [thread.lock], locks
   using std::lock_guard;
   using std::scoped_lock;
   using std::unique_lock;
+
   using std::swap;
+
+  // [thread.lock.algorithm], generic locking algorithms
   using std::lock;
   using std::try_lock;
+#endif // _LIBCPP_HAS_THREADS
+
   using std::once_flag;
+
   using std::call_once;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [alloc.errors], storage allocation errors
   using std::bad_alloc;
   using std::bad_array_new_length;
+
   using std::destroying_delete;
   using std::destroying_delete_t;
+
+  // global operator new control
   using std::align_val_t;
+
   using std::nothrow;
   using std::nothrow_t;
+
   using std::get_new_handler;
   using std::new_handler;
   using std::set_new_handler;
+
+  // [ptr.launder], pointer optimization barrier
   using std::launder;
+#if _LIBCPP_STD_VER >= 17
+#  if defined(__GCC_DESTRUCTIVE_SIZE) && defined(__GCC_CONSTRUCTIVE_SIZE)
+  // [hardware.interference], hardware interference size
   using std::hardware_constructive_interference_size;
   using std::hardware_destructive_interference_size;
-}
+#  endif
+#endif // _LIBCPP_STD_VER >= 17
+} // namespace std
+
 export {
   using ::operator new;
   using ::operator delete;
   using ::operator new[];
   using ::operator delete[];
-}
+} // export
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std::numbers {
   using std::numbers::e_v;
   using std::numbers::egamma_v;
@@ -2249,6 +4428,7 @@ export namespace std::numbers {
   using std::numbers::pi_v;
   using std::numbers::sqrt2_v;
   using std::numbers::sqrt3_v;
+
   using std::numbers::e;
   using std::numbers::egamma;
   using std::numbers::inv_pi;
@@ -2262,35 +4442,101 @@ export namespace std::numbers {
   using std::numbers::pi;
   using std::numbers::sqrt2;
   using std::numbers::sqrt3;
-}
+} // namespace std::numbers
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [accumulate], accumulate
   using std::accumulate;
+
+  // [reduce], reduce
   using std::reduce;
+
+  // [inner.product], inner product
   using std::inner_product;
+
+  // [transform.reduce], transform reduce
   using std::transform_reduce;
+
+  // [partial.sum], partial sum
   using std::partial_sum;
+
+  // [exclusive.scan], exclusive scan
   using std::exclusive_scan;
+
+  // [inclusive.scan], inclusive scan
   using std::inclusive_scan;
+
+  // [transform.exclusive.scan], transform exclusive scan
   using std::transform_exclusive_scan;
+
+  // [transform.inclusive.scan], transform inclusive scan
   using std::transform_inclusive_scan;
+
+  // [adjacent.difference], adjacent difference
   using std::adjacent_difference;
+
+  // [numeric.iota], iota
   using std::iota;
+
   namespace ranges {
-  }
+
+#if _LIBCPP_STD_VER >= 23
+    using std::ranges::iota;
+    using std::ranges::iota_result;
+#endif // _LIBCPP_STD_VER >= 23
+
+  } // namespace ranges
+
+  // [numeric.ops.gcd], greatest common divisor
   using std::gcd;
+
+  // [numeric.ops.lcm], least common multiple
   using std::lcm;
+
+  // [numeric.ops.midpoint], midpoint
   using std::midpoint;
+
+#if _LIBCPP_STD_VER >= 26
+  // [numeric.sat], saturation arithmetic
   using std::add_sat;
   using std::div_sat;
   using std::mul_sat;
   using std::saturate_cast;
   using std::sub_sat;
-}
+#endif
+
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [optional.optional], class template optional
   using std::optional;
+
+  // [optional.nullopt], no-value state indicator
   using std::nullopt;
   using std::nullopt_t;
+
+  // [optional.bad.access], class bad_optional_access
   using std::bad_optional_access;
+
+  // [optional.relops], relational operators
   using std::operator==;
   using std::operator!=;
   using std::operator<;
@@ -2298,31 +4544,94 @@ export namespace std {
   using std::operator<=;
   using std::operator>=;
   using std::operator<=>;
+
+  // [optional.specalg], specialized algorithms
   using std::swap;
+
   using std::make_optional;
+
+  // [optional.hash], hash support
   using std::hash;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_LOCALIZATION
   using std::basic_ostream;
+
   using std::ostream;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wostream;
+#  endif
+
   using std::endl;
   using std::ends;
   using std::flush;
+
+#  if 0
+  using std::emit_on_flush;
+  using std::flush_emit;
+  using std::noemit_on_flush;
+#  endif
   using std::operator<<;
+
+#  if _LIBCPP_STD_VER >= 23
+  // [ostream.formatted.print], print functions
   using std::print;
   using std::println;
+
   using std::vprint_nonunicode;
+#    if _LIBCPP_HAS_UNICODE
   using std::vprint_unicode;
-}
+#    endif // _LIBCPP_HAS_UNICODE
+#  endif   // _LIBCPP_STD_VER >= 23
+
+#endif // _LIBCPP_HAS_LOCALIZATION
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_STD_VER >= 23
+  // [print.fun], print functions
   using std::print;
   using std::println;
+
   using std::vprint_nonunicode;
+#  if _LIBCPP_HAS_UNICODE
   using std::vprint_unicode;
-}
+#  endif // _LIBCPP_HAS_UNICODE
+#endif   // _LIBCPP_STD_VER >= 23
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [queue], class template queue
   using std::queue;
+
   using std::operator==;
   using std::operator!=;
   using std::operator<;
@@ -2330,18 +4639,46 @@ export namespace std {
   using std::operator<=;
   using std::operator>=;
   using std::operator<=>;
+
   using std::swap;
   using std::uses_allocator;
+
+  // [priority.queue], class template priority_queue
   using std::priority_queue;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [rand.req.urng], uniform random bit generator requirements
   using std::uniform_random_bit_generator;
+
+  // [rand.eng.lcong], class template linear_congruential_engine
   using std::linear_congruential_engine;
+
+  // [rand.eng.mers], class template mersenne_twister_engine
   using std::mersenne_twister_engine;
+
+  // [rand.eng.sub], class template subtract_with_carry_engine
   using std::subtract_with_carry_engine;
+
+  // [rand.adapt.disc], class template discard_block_engine
   using std::discard_block_engine;
+
+  // [rand.adapt.ibits], class template independent_bits_engine
   using std::independent_bits_engine;
+
+  // [rand.adapt.shuf], class template shuffle_order_engine
   using std::shuffle_order_engine;
+
+  // [rand.predef], engines and engine adaptors with predefined parameters
   using std::knuth_b;
   using std::minstd_rand;
   using std::minstd_rand0;
@@ -2351,34 +4688,94 @@ export namespace std {
   using std::ranlux24_base;
   using std::ranlux48;
   using std::ranlux48_base;
+
   using std::default_random_engine;
+
+#if _LIBCPP_HAS_RANDOM_DEVICE
+  // [rand.device], class random_device
   using std::random_device;
+#endif
+
+  // [rand.util.seedseq], class seed_seq
   using std::seed_seq;
+
+  // [rand.util.canonical], function template generate_canonical
   using std::generate_canonical;
+
+  // [rand.dist.uni.int], class template uniform_int_distribution
   using std::uniform_int_distribution;
+
+  // [rand.dist.uni.real], class template uniform_real_distribution
   using std::uniform_real_distribution;
+
+  // [rand.dist.bern.bernoulli], class bernoulli_distribution
   using std::bernoulli_distribution;
+
+  // [rand.dist.bern.bin], class template binomial_distribution
   using std::binomial_distribution;
+
+  // [rand.dist.bern.geo], class template geometric_distribution
   using std::geometric_distribution;
+
+  // [rand.dist.bern.negbin], class template negative_binomial_distribution
   using std::negative_binomial_distribution;
+
+  // [rand.dist.pois.poisson], class template poisson_distribution
   using std::poisson_distribution;
+
+  // [rand.dist.pois.exp], class template exponential_distribution
   using std::exponential_distribution;
+
+  // [rand.dist.pois.gamma], class template gamma_distribution
   using std::gamma_distribution;
+
+  // [rand.dist.pois.weibull], class template weibull_distribution
   using std::weibull_distribution;
+
+  // [rand.dist.pois.extreme], class template extreme_value_distribution
   using std::extreme_value_distribution;
+
+  // [rand.dist.norm.normal], class template normal_distribution
   using std::normal_distribution;
+
+  // [rand.dist.norm.lognormal], class template lognormal_distribution
   using std::lognormal_distribution;
+
+  // [rand.dist.norm.chisq], class template chi_squared_distribution
   using std::chi_squared_distribution;
+
+  // [rand.dist.norm.cauchy], class template cauchy_distribution
   using std::cauchy_distribution;
+
+  // [rand.dist.norm.f], class template fisher_f_distribution
   using std::fisher_f_distribution;
+
+  // [rand.dist.norm.t], class template student_t_distribution
   using std::student_t_distribution;
+
+  // [rand.dist.samp.discrete], class template discrete_distribution
   using std::discrete_distribution;
+
+  // [rand.dist.samp.pconst], class template piecewise_constant_distribution
   using std::piecewise_constant_distribution;
+
+  // [rand.dist.samp.plinear], class template piecewise_linear_distribution
   using std::piecewise_linear_distribution;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
   namespace ranges {
     inline namespace __cpo {
+      // [range.access], range access
       using std::ranges::__cpo::begin;
       using std::ranges::__cpo::cbegin;
       using std::ranges::__cpo::cend;
@@ -2387,16 +4784,25 @@ export namespace std {
       using std::ranges::__cpo::end;
       using std::ranges::__cpo::rbegin;
       using std::ranges::__cpo::rend;
+
       using std::ranges::__cpo::cdata;
       using std::ranges::__cpo::data;
       using std::ranges::__cpo::empty;
       using std::ranges::__cpo::size;
       using std::ranges::__cpo::ssize;
-    }
+    } // namespace __cpo
+
+    // [range.range], ranges
     using std::ranges::range;
+
     using std::ranges::enable_borrowed_range;
+
     using std::ranges::borrowed_range;
+
+    // using std::ranges::const_iterator_t;
+    // using std::ranges::const_sentinel_t;
     using std::ranges::iterator_t;
+    // using std::ranges::range_const_reference_t;
     using std::ranges::range_common_reference_t;
     using std::ranges::range_difference_t;
     using std::ranges::range_reference_t;
@@ -2404,150 +4810,360 @@ export namespace std {
     using std::ranges::range_size_t;
     using std::ranges::range_value_t;
     using std::ranges::sentinel_t;
+
+    // [range.sized], sized ranges
     using std::ranges::disable_sized_range;
     using std::ranges::sized_range;
+
+    // [range.view], views
     using std::ranges::enable_view;
     using std::ranges::view;
     using std::ranges::view_base;
+
+    // [range.refinements], other range refinements
     using std::ranges::bidirectional_range;
     using std::ranges::common_range;
+    // using std::ranges::constant_range;
     using std::ranges::contiguous_range;
     using std::ranges::forward_range;
     using std::ranges::input_range;
     using std::ranges::output_range;
     using std::ranges::random_access_range;
     using std::ranges::viewable_range;
+
+    // [view.interface], class template view_­interface
     using std::ranges::view_interface;
+
+    // [range.subrange], sub-ranges
     using std::ranges::subrange;
     using std::ranges::subrange_kind;
+
     using std::ranges::get;
-  }
+  } // namespace ranges
+
   using std::ranges::get;
+
   namespace ranges {
+
+    // [range.dangling], dangling iterator handling
     using std::ranges::dangling;
+
+    // [range.elementsof], class template elements_­of
+    // using std::ranges::elements_of;
+
     using std::ranges::borrowed_iterator_t;
+
     using std::ranges::borrowed_subrange_t;
+
+#if _LIBCPP_STD_VER >= 23
+    // [range.utility.conv], range conversions
     using std::ranges::to;
+#endif
+
+    // [range.empty], empty view
     using std::ranges::empty_view;
+
     namespace views {
       using std::ranges::views::empty;
     }
+
+    // [range.single], single view
     using std::ranges::single_view;
+
     namespace views {
       using std::ranges::views::single;
-    }
+    } // namespace views
+
+    // [range.iota], iota view
     using std::ranges::iota_view;
+
     namespace views {
       using std::ranges::views::iota;
-    }
+    } // namespace views
+
+#if _LIBCPP_STD_VER >= 23
+    // [range.repeat], repeat view
     using std::ranges::repeat_view;
+
     namespace views {
       using std::ranges::views::repeat;
-    }
+    } // namespace views
+#endif // _LIBCPP_STD_VER >= 23
+
+#if _LIBCPP_HAS_LOCALIZATION
+    // [range.istream], istream view
     using std::ranges::basic_istream_view;
     using std::ranges::istream_view;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
     using std::ranges::wistream_view;
+#  endif
+
     namespace views {
       using std::ranges::views::istream;
     }
+#endif // _LIBCPP_HAS_LOCALIZATION
+
+    // Note: This declaration not in the synopsis or explicitly in the wording.
+    // However it is needed for the range adaptors.
+    // [range.adaptor.object]/3
+    //   The template parameter D for range_adaptor_closure may be an
+    //   incomplete type. If an expression of type cv D is used as an operand
+    //   to the | operator, D shall be complete and model
+    //   derived_from<range_adaptor_closure<D>>. The behavior of an expression
+    //   involving an object of type cv D as an operand to the | operator is
+    //   undefined if overload resolution selects a program-defined operator|
+    //   function.
+    // This is used internally in C++20 mode.
     using std::ranges::operator|;
+#if _LIBCPP_STD_VER >= 23
+    // [range.adaptor.object], range adaptor objects
     using std::ranges::range_adaptor_closure;
+#endif
+
+    // [range.all], all view
     namespace views {
       using std::ranges::views::all;
       using std::ranges::views::all_t;
-    }
+    } // namespace views
+
+    // [range.ref.view], ref view
     using std::ranges::ref_view;
+
+    // [range.owning.view], owning view
     using std::ranges::owning_view;
+
+#if _LIBCPP_STD_VER >= 23
+    // [range.as.rvalue], as rvalue view
     using std::ranges::as_rvalue_view;
+
     namespace views {
       using std::ranges::views::as_rvalue;
-    }
+    } // namespace views
+#endif // _LIBCPP_STD_VER >= 23
+
+    // [range.filter], filter view
     using std::ranges::filter_view;
+
     namespace views {
       using std::ranges::views::filter;
-    }
+    } // namespace views
+
+    // [range.transform], transform view
     using std::ranges::transform_view;
+
     namespace views {
       using std::ranges::views::transform;
-    }
+    } // namespace views
+
+    // [range.take], take view
     using std::ranges::take_view;
+
     namespace views {
       using std::ranges::views::take;
-    }
+    } // namespace views
+
+    // [range.take.while], take while view
     using std::ranges::take_while_view;
+
     namespace views {
       using std::ranges::views::take_while;
-    }
+    } // namespace views
+
+    // [range.drop], drop view
     using std::ranges::drop_view;
+
     namespace views {
       using std::ranges::views::drop;
-    }
+    } // namespace views
+
+    // [range.drop.while], drop while view
     using std::ranges::drop_while_view;
+
     namespace views {
       using std::ranges::views::drop_while;
-    }
+    } // namespace views
+
     using std::ranges::join_view;
+
     namespace views {
       using std::ranges::views::join;
-    }
+    } // namespace views
+
+#if _LIBCPP_STD_VER >= 23
+    // [range.join.with]
+    using std::ranges::join_with_view;
+
+    namespace views {
+      using std::ranges::views::join_with;
+    } // namespace views
+#endif // _LIBCPP_STD_VER >= 23
+
     using std::ranges::lazy_split_view;
+
+    // [range.split], split view
     using std::ranges::split_view;
+
     namespace views {
       using std::ranges::views::lazy_split;
       using std::ranges::views::split;
-    }
+    } // namespace views
+
+    // [range.counted], counted view
     namespace views {
       using std::ranges::views::counted;
-    }
+    } // namespace views
+
+    // [range.common], common view
     using std::ranges::common_view;
+
     namespace views {
       using std::ranges::views::common;
-    }
+    } // namespace views
+
+    // [range.reverse], reverse view
     using std::ranges::reverse_view;
+
     namespace views {
       using std::ranges::views::reverse;
-    }
+    } // namespace views
+
+    // [range.as.const], as const view
+#if 0
+    using std::ranges::as_const_view;
+
+    namespace views {
+      using std::ranges::views::as_const;
+    } // namespace views
+#endif
+    // [range.elements], elements view
     using std::ranges::elements_view;
+
     using std::ranges::keys_view;
     using std::ranges::values_view;
+
     namespace views {
       using std::ranges::views::elements;
       using std::ranges::views::keys;
       using std::ranges::views::values;
-    }
+    } // namespace views
+
+#if _LIBCPP_STD_VER >= 23
+    // [range.zip], zip view
     using std::ranges::zip_view;
+
     namespace views {
       using std::ranges::views::zip;
+    } // namespace views
+#endif // _LIBCPP_STD_VER >= 23
+
+#if 0
+    // [range.zip.transform], zip transform view
+    using std::ranges::zip_transform_view;
+
+    namespace views {
+      using std::ranges::views::zip_transform;
     }
+
+    using std::ranges::adjacent_view;
+
+    namespace views {
+      using std::ranges::views::adjacent;
+      using std::ranges::views::pairwise;
+    } // namespace views
+
+    using std::ranges::adjacent_transform_view;
+
+    namespace views {
+      using std::ranges::views::adjacent_transform;
+      using std::ranges::views::pairwise_transform;
+    } // namespace views
+
+    using std::ranges::chunk_view;
+
+    using std::ranges::chunk_view<V>;
+
+    namespace views {
+      using std::ranges::views::chunk;
+    }
+
+    using std::ranges::slide_view;
+
+    namespace views {
+      using std::ranges::views::slide;
+    }
+#endif
+
+#if _LIBCPP_STD_VER >= 23
+    // [range.chunk.by], chunk by view
     using std::ranges::chunk_by_view;
+
     namespace views {
       using std::ranges::views::chunk_by;
     }
-  }
+#endif // _LIBCPP_STD_VER >= 23
+
+#if 0
+    // [range.stride], stride view
+    using std::ranges::stride_view;
+
+    namespace views {
+      using std::ranges::views::stride;
+    }
+
+    using std::ranges::cartesian_product_view;
+
+    namespace views {
+      using std::ranges::views::cartesian_product;
+    }
+#endif
+  } // namespace ranges
+
   namespace views = ranges::views;
+
   using std::tuple_element;
   using std::tuple_size;
+
+#if _LIBCPP_STD_VER >= 23
   using std::from_range;
   using std::from_range_t;
-}
+#endif // _LIBCPP_STD_VER >= 23
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [ratio.ratio], class template ratio
   using std::ratio;
+
+  // [ratio.arithmetic], ratio arithmetic
   using std::ratio_add;
   using std::ratio_divide;
   using std::ratio_multiply;
   using std::ratio_subtract;
+
+  // [ratio.comparison], ratio comparison
   using std::ratio_equal;
   using std::ratio_greater;
   using std::ratio_greater_equal;
   using std::ratio_less;
   using std::ratio_less_equal;
   using std::ratio_not_equal;
+
   using std::ratio_equal_v;
   using std::ratio_greater_equal_v;
   using std::ratio_greater_v;
   using std::ratio_less_equal_v;
   using std::ratio_less_v;
   using std::ratio_not_equal_v;
+
+  // [ratio.si], convenience SI typedefs
   using std::atto;
   using std::centi;
   using std::deca;
@@ -2564,14 +5180,56 @@ export namespace std {
   using std::peta;
   using std::pico;
   using std::tera;
-}
+
+  // These are not supported by libc++, due to the range of intmax_t
+  // using std::yocto;
+  // using std::yotta;
+  // using std::zepto;
+  // using std::zetta
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-}
+#if 0
+#  if _LIBCPP_STD_VER >= 23
+  // 2.2.3, class template rcu_obj_base using std::rcu_obj_base;
+  // 2.2.4, class rcu_domain
+  using std::rcu_domain;
+  using std::rcu_default_domain();
+  using std::rcu_barrier;
+  using std::rcu_retire;
+  using std::rcu_synchronize;
+#  endif // _LIBCPP_STD_VER >= 23
+#endif
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_LOCALIZATION
+  // [re.const], regex constants
   namespace regex_constants {
     using std::regex_constants::error_type;
     using std::regex_constants::match_flag_type;
     using std::regex_constants::syntax_option_type;
+
+    // regex_constants is a bitmask type.
+    // [bitmask.types] specified operators
     using std::regex_constants::operator&;
     using std::regex_constants::operator&=;
     using std::regex_constants::operator^;
@@ -2579,105 +5237,324 @@ export namespace std {
     using std::regex_constants::operator|;
     using std::regex_constants::operator|=;
     using std::regex_constants::operator~;
-  }
+
+  } // namespace regex_constants
+
+  // [re.badexp], class regex_error
   using std::regex_error;
+
+  // [re.traits], class template regex_traits
   using std::regex_traits;
+
+  // [re.regex], class template basic_regex
   using std::basic_regex;
+
   using std::regex;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wregex;
+#  endif
+
+  // [re.regex.swap], basic_regex swap
   using std::swap;
+
+  // [re.submatch], class template sub_match
   using std::sub_match;
+
   using std::csub_match;
   using std::ssub_match;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wcsub_match;
   using std::wssub_match;
+#  endif
+
+  // [re.submatch.op], sub_match non-member operators
   using std::operator==;
   using std::operator<=>;
+
   using std::operator<<;
+
+  // [re.results], class template match_results
   using std::match_results;
+
   using std::cmatch;
   using std::smatch;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wcmatch;
   using std::wsmatch;
+#  endif
+
+  // match_results comparisons
+
+  // [re.results.swap], match_results swap
+
+  // [re.alg.match], function template regex_match
   using std::regex_match;
+
+  // [re.alg.search], function template regex_search
   using std::regex_search;
+
+  // [re.alg.replace], function template regex_replace
   using std::regex_replace;
+
+  // [re.regiter], class template regex_iterator
   using std::regex_iterator;
+
   using std::cregex_iterator;
   using std::sregex_iterator;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wcregex_iterator;
   using std::wsregex_iterator;
+#  endif
+
+  // [re.tokiter], class template regex_token_iterator
   using std::regex_token_iterator;
+
   using std::cregex_token_iterator;
   using std::sregex_token_iterator;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wcregex_token_iterator;
   using std::wsregex_token_iterator;
+#  endif
+
   namespace pmr {
     using std::pmr::match_results;
+
     using std::pmr::cmatch;
     using std::pmr::smatch;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
     using std::pmr::wcmatch;
     using std::pmr::wsmatch;
-  }
-}
+#  endif
+  }    // namespace pmr
+#endif // _LIBCPP_HAS_LOCALIZATION
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // class template scoped_allocator_adaptor
   using std::scoped_allocator_adaptor;
+
+  // [scoped.adaptor.operators], scoped allocator operators
   using std::operator==;
-}
+
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_THREADS
+  // [thread.sema.cnt], class template counting_semaphore
   using std::counting_semaphore;
+
   using std::binary_semaphore;
-}
+#endif // _LIBCPP_HAS_THREADS
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [set], class template set
   using std::set;
+
   using std::operator==;
   using std::operator<=>;
+
   using std::swap;
+
+  // [set.erasure], erasure for set
   using std::erase_if;
+
+  // [multiset], class template multiset
   using std::multiset;
+
   namespace pmr {
     using std::pmr::multiset;
     using std::pmr::set;
-  }
-}
+  } // namespace pmr
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_THREADS
+  // [thread.sharedmutex.class], class shared_­mutex
   using std::shared_mutex;
+  // [thread.sharedtimedmutex.class], class shared_­timed_­mutex
   using std::shared_timed_mutex;
+  // [thread.lock.shared], class template shared_­lock
   using std::shared_lock;
   using std::swap;
-}
+#endif // _LIBCPP_HAS_THREADS
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
   using std::source_location;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // constants
   using std::dynamic_extent;
+
+  // [views.span], class template span
   using std::span;
+
   namespace ranges {
     using std::ranges::enable_borrowed_range;
     using std::ranges::enable_view;
-  }
+  } // namespace ranges
+
+  // [span.objectrep], views of object representation
   using std::as_bytes;
+
   using std::as_writable_bytes;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-}
-export namespace std {
-  using std::basic_stringbuf;
+#if 0
+  using std::basic_spanbuf;
+
   using std::swap;
-  using std::stringbuf;
-  using std::wstringbuf;
-  using std::basic_istringstream;
-  using std::istringstream;
-  using std::wistringstream;
-  using std::basic_ostringstream;
-  using std::ostringstream;
-  using std::wostringstream;
-  using std::basic_stringstream;
-  using std::stringstream;
-  using std::wstringstream;
-}
+
+  using std::spanbuf;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
+  using std::wspanbuf;
+#  endif
+
+  using std::basic_ispanstream;
+
+  using std::ispanstream;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
+  using std::wispanstream;
+#  endif
+
+  using std::basic_ospanstream;
+
+  using std::ospanstream;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
+  using std::wospanstream;
+#  endif
+
+  using std::basic_spanstream;
+
+  using std::spanstream;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
+  using std::wspanstream;
+#  endif
+#endif
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_LOCALIZATION
+  using std::basic_stringbuf;
+
+  using std::swap;
+
+  using std::stringbuf;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
+  using std::wstringbuf;
+#  endif
+
+  using std::basic_istringstream;
+
+  using std::istringstream;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
+  using std::wistringstream;
+#  endif
+
+  using std::basic_ostringstream;
+
+  using std::ostringstream;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
+  using std::wostringstream;
+#  endif
+
+  using std::basic_stringstream;
+
+  using std::stringstream;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
+  using std::wstringstream;
+#  endif
+#endif // _LIBCPP_HAS_LOCALIZATION
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
+export namespace std {
+  // [stack], class template stack
   using std::stack;
+
   using std::operator==;
   using std::operator!=;
   using std::operator<;
@@ -2685,11 +5562,56 @@ export namespace std {
   using std::operator<=;
   using std::operator>=;
   using std::operator<=>;
+
   using std::swap;
   using std::uses_allocator;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-}
+#if 0
+  // [stacktrace.entry], class stacktrace_­entry
+  using std::stacktrace_entry;
+
+  // [stacktrace.basic], class template basic_­stacktrace
+  using std::basic_stacktrace;
+
+  // basic_­stacktrace typedef-names
+  using std::stacktrace;
+
+  // [stacktrace.basic.nonmem], non-member functions
+  using std::swap;
+
+  using std::to_string;
+
+  using std::operator<<;
+
+  namespace pmr {
+    using std::pmr::stacktrace;
+  }
+
+  // [stacktrace.basic.hash], hash support
+  using std::hash;
+#endif
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
   using std::domain_error;
   using std::invalid_argument;
@@ -2700,38 +5622,124 @@ export namespace std {
   using std::range_error;
   using std::runtime_error;
   using std::underflow_error;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-}
+#if defined(__STDCPP_FLOAT16_T__)
+  using std::float16_t;
+#endif
+#if defined(__STDCPP_FLOAT32_T__)
+  using std::float32_t;
+#endif
+#if defined(__STDCPP_FLOAT64_T__)
+  using std::float64_t;
+#endif
+#if defined(__STDCPP_FLOAT128_T__)
+  using std::float128_t;
+#endif
+#if defined(__STDCPP_BFLOAT16_T__)
+  using std::bfloat16_t;
+#endif
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_THREADS
+  // [stoptoken], class stop_­token
   using std::stop_token;
+
+  // [stopsource], class stop_­source
   using std::stop_source;
+
+  // no-shared-stop-state indicator
   using std::nostopstate;
   using std::nostopstate_t;
+
+  // [stopcallback], class template stop_­callback
   using std::stop_callback;
-}
+#endif // _LIBCPP_HAS_THREADS
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_LOCALIZATION
   using std::basic_streambuf;
   using std::streambuf;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wstreambuf;
-}
+#  endif
+#endif // _LIBCPP_HAS_LOCALIZATION
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [char.traits], character traits
   using std::char_traits;
+
+  // [basic.string], basic_string
   using std::basic_string;
+
   using std::operator+;
   using std::operator==;
   using std::operator<=>;
+
+  // [string.special], swap
   using std::swap;
+
+  // [string.io], inserters and extractors
   using std::operator>>;
   using std::operator<<;
   using std::getline;
+
+  // [string.erasure], erasure
   using std::erase;
   using std::erase_if;
+
+  // basic_string typedef-names
   using std::string;
   using std::u16string;
   using std::u32string;
+#if _LIBCPP_HAS_CHAR8_T
   using std::u8string;
+#endif
+#if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wstring;
+#endif
+
+  // [string.conversions], numeric conversions
   using std::stod;
   using std::stof;
   using std::stoi;
@@ -2741,110 +5749,310 @@ export namespace std {
   using std::stoul;
   using std::stoull;
   using std::to_string;
+#if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::to_wstring;
+#endif
+
   namespace pmr {
     using std::pmr::basic_string;
     using std::pmr::string;
     using std::pmr::u16string;
     using std::pmr::u32string;
+#if _LIBCPP_HAS_CHAR8_T
     using std::pmr::u8string;
+#endif
+#if _LIBCPP_HAS_WIDE_CHARACTERS
     using std::pmr::wstring;
-  }
+#endif
+  } // namespace pmr
+
+  // [basic.string.hash], hash support
   using std::hash;
+
   inline namespace literals {
     inline namespace string_literals {
+      // [basic.string.literals], suffix for basic_string literals
       using std::literals::string_literals::operator""s;
-    }
-  }
-}
+    } // namespace string_literals
+  } // namespace literals
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [string.view.template], class template basic_string_view
   using std::basic_string_view;
+
   namespace ranges {
     using std::ranges::enable_borrowed_range;
     using std::ranges::enable_view;
-  }
+  } // namespace ranges
+
+  // [string.view.comparison], non-member comparison functions
   using std::operator==;
   using std::operator<=>;
+
+  // [string.view.io], inserters and extractors
   using std::operator<<;
+
+  // basic_string_view typedef-names
   using std::string_view;
   using std::u16string_view;
   using std::u32string_view;
+#if _LIBCPP_HAS_CHAR8_T
   using std::u8string_view;
+#endif
+#if _LIBCPP_HAS_WIDE_CHARACTERS
   using std::wstring_view;
+#endif
+
+  // [string.view.hash], hash support
   using std::hash;
+
   inline namespace literals {
     inline namespace string_view_literals {
+      // [string.view.literals], suffix for basic_string_view literals
       using std::literals::string_view_literals::operator""sv;
-    }
-  }
-}
+    } // namespace string_view_literals
+  }   // namespace literals
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-}
+#if _LIBCPP_HAS_LOCALIZATION
+#  if _LIBCPP_STD_VER < 26 || defined(_LIBCPP_ENABLE_CXX26_REMOVED_STRSTREAM)
+  using std::istrstream;
+  using std::ostrstream;
+  using std::strstream;
+  using std::strstreambuf;
+#  endif // _LIBCPP_STD_VER < 26 || defined(_LIBCPP_ENABLE_CXX26_REMOVED_STRSTREAM)
+#endif   // _LIBCPP_HAS_LOCALIZATION
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-}
+#if _LIBCPP_HAS_LOCALIZATION && _LIBCPP_HAS_EXPERIMENTAL_SYNCSTREAM
+  using std::basic_syncbuf;
+
+  // [syncstream.syncbuf.special], specialized algorithms
+  using std::swap;
+
+  using std::syncbuf;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
+  using std::wsyncbuf;
+#  endif
+  using std::basic_osyncstream;
+
+  using std::osyncstream;
+#  if _LIBCPP_HAS_WIDE_CHARACTERS
+  using std::wosyncstream;
+#  endif
+#endif // _LIBCPP_HAS_LOCALIZATION && _LIBCPP_HAS_EXPERIMENTAL_SYNCSTREAM
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
   using std::error_category;
   using std::generic_category;
   using std::system_category;
+
   using std::error_code;
   using std::error_condition;
   using std::system_error;
+
   using std::is_error_code_enum;
   using std::is_error_condition_enum;
+
   using std::errc;
+
+  // [syserr.errcode.nonmembers], non-member functions
   using std::make_error_code;
+
   using std::operator<<;
+
+  // [syserr.errcondition.nonmembers], non-member functions
   using std::make_error_condition;
+
+  // [syserr.compare], comparison operator functions
   using std::operator==;
   using std::operator<=>;
+
+  // [syserr.hash], hash support
   using std::hash;
+
+  // [syserr], system error support
   using std::is_error_code_enum_v;
   using std::is_error_condition_enum_v;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-}
+#if 0
+#  if _LIBCPP_STD_VER >= 23
+  using std::text_encoding;
+
+  // hash support
+  using std::hash;
+#  endif // _LIBCPP_STD_VER >= 23
+#endif
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+#if _LIBCPP_HAS_THREADS
+  // [thread.thread.class], class thread
   using std::thread;
+
   using std::swap;
+
+  // [thread.jthread.class], class jthread
   using std::jthread;
+
+  // [thread.thread.this], namespace this_thread
   namespace this_thread {
     using std::this_thread::get_id;
+
     using std::this_thread::sleep_for;
     using std::this_thread::sleep_until;
     using std::this_thread::yield;
-  }
+  } // namespace this_thread
+
+  // [thread.thread.id]
   using std::operator==;
   using std::operator<=>;
+#  if _LIBCPP_HAS_LOCALIZATION
   using std::operator<<;
+#  endif // _LIBCPP_HAS_LOCALIZATION
+
+#  if _LIBCPP_STD_VER >= 23
   using std::formatter;
+#  endif
+
   using std::hash;
-}
+#endif // _LIBCPP_HAS_THREADS
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [tuple.tuple], class template tuple
   using std::tuple;
+
+  // [tuple.like], concept tuple-like
+
+#if _LIBCPP_STD_VER >= 23
+  // [tuple.common.ref], common_reference related specializations
   using std::basic_common_reference;
   using std::common_type;
+#endif
+
+  // [tuple.creation], tuple creation functions
   using std::ignore;
+
   using std::forward_as_tuple;
   using std::make_tuple;
   using std::tie;
   using std::tuple_cat;
+
+  // [tuple.apply], calling a function with a tuple of arguments
   using std::apply;
+
   using std::make_from_tuple;
+
+  // [tuple.helper], tuple helper classes
   using std::tuple_element;
   using std::tuple_size;
+
+  // [tuple.elem], element access
   using std::get;
   using std::tuple_element_t;
+
+  // [tuple.rel], relational operators
   using std::operator==;
   using std::operator<=>;
+
+  // [tuple.traits], allocator-related traits
   using std::uses_allocator;
+
+  // [tuple.special], specialized algorithms
   using std::swap;
+
+  // [tuple.helper], tuple helper classes
   using std::tuple_size_v;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [meta.help], helper class
   using std::integral_constant;
+
   using std::bool_constant;
   using std::false_type;
   using std::true_type;
+
+  // [meta.unary.cat], primary type categories
   using std::is_array;
   using std::is_class;
   using std::is_enum;
@@ -2859,6 +6067,8 @@ export namespace std {
   using std::is_rvalue_reference;
   using std::is_union;
   using std::is_void;
+
+  // [meta.unary.comp], composite type categories
   using std::is_arithmetic;
   using std::is_compound;
   using std::is_fundamental;
@@ -2866,6 +6076,8 @@ export namespace std {
   using std::is_object;
   using std::is_reference;
   using std::is_scalar;
+
+  // [meta.unary.prop], type properties
   using std::is_abstract;
   using std::is_aggregate;
   using std::is_const;
@@ -2876,84 +6088,138 @@ export namespace std {
   using std::is_trivial;
   using std::is_trivially_copyable;
   using std::is_volatile;
+
   using std::is_bounded_array;
+#if _LIBCPP_STD_VER >= 23
   using std::is_scoped_enum;
+#endif
   using std::is_signed;
   using std::is_unbounded_array;
   using std::is_unsigned;
+
   using std::is_constructible;
   using std::is_copy_constructible;
   using std::is_default_constructible;
   using std::is_move_constructible;
+
   using std::is_assignable;
   using std::is_copy_assignable;
   using std::is_move_assignable;
+
   using std::is_swappable;
   using std::is_swappable_with;
+
   using std::is_destructible;
+
   using std::is_trivially_constructible;
   using std::is_trivially_copy_constructible;
   using std::is_trivially_default_constructible;
   using std::is_trivially_move_constructible;
+
   using std::is_trivially_assignable;
   using std::is_trivially_copy_assignable;
   using std::is_trivially_destructible;
   using std::is_trivially_move_assignable;
+
   using std::is_nothrow_constructible;
   using std::is_nothrow_copy_constructible;
   using std::is_nothrow_default_constructible;
   using std::is_nothrow_move_constructible;
+
   using std::is_nothrow_assignable;
   using std::is_nothrow_copy_assignable;
   using std::is_nothrow_move_assignable;
+
   using std::is_nothrow_swappable;
   using std::is_nothrow_swappable_with;
+
   using std::is_nothrow_destructible;
+
+#if _LIBCPP_STD_VER >= 23 && __has_builtin(__builtin_is_implicit_lifetime)
   using std::is_implicit_lifetime;
+#endif
+
   using std::has_virtual_destructor;
+
   using std::has_unique_object_representations;
+
+#if _LIBCPP_STD_VER >= 23
+#  if __has_builtin(__reference_constructs_from_temporary)
+  using std::reference_constructs_from_temporary;
+#  endif
+#  if __has_builtin(__reference_converts_from_temporary)
+  using std::reference_converts_from_temporary;
+#  endif
+#endif
+
+  // [meta.unary.prop.query], type property queries
   using std::alignment_of;
   using std::extent;
   using std::rank;
+
+  // [meta.rel], type relations
   using std::is_base_of;
+#if _LIBCPP_STD_VER >= 26 && __has_builtin(__builtin_is_virtual_base_of)
   using std::is_virtual_base_of;
+#endif
   using std::is_convertible;
+  // using std::is_layout_compatible;
   using std::is_nothrow_convertible;
+  // using std::is_pointer_interconvertible_base_of;
   using std::is_same;
+
   using std::is_invocable;
   using std::is_invocable_r;
+
   using std::is_nothrow_invocable;
   using std::is_nothrow_invocable_r;
+
+  // [meta.trans.cv], const-volatile modifications
   using std::add_const;
   using std::add_cv;
   using std::add_volatile;
   using std::remove_const;
   using std::remove_cv;
   using std::remove_volatile;
+
   using std::add_const_t;
   using std::add_cv_t;
   using std::add_volatile_t;
   using std::remove_const_t;
   using std::remove_cv_t;
   using std::remove_volatile_t;
+
+  // [meta.trans.ref], reference modifications
   using std::add_lvalue_reference;
   using std::add_rvalue_reference;
   using std::remove_reference;
+
   using std::add_lvalue_reference_t;
   using std::add_rvalue_reference_t;
   using std::remove_reference_t;
+
+  // [meta.trans.sign], sign modifications
   using std::make_signed;
   using std::make_unsigned;
+
   using std::make_signed_t;
   using std::make_unsigned_t;
+
+  // [meta.trans.arr], array modifications
   using std::remove_all_extents;
   using std::remove_extent;
+
   using std::remove_all_extents_t;
   using std::remove_extent_t;
+
+  // [meta.trans.ptr], pointer modifications
   using std::add_pointer;
   using std::remove_pointer;
+
   using std::add_pointer_t;
   using std::remove_pointer_t;
+
+  // [meta.trans.other], other transformations
   using std::basic_common_reference;
   using std::common_reference;
   using std::common_type;
@@ -2966,6 +6232,7 @@ export namespace std {
   using std::underlying_type;
   using std::unwrap_ref_decay;
   using std::unwrap_reference;
+
   using std::common_reference_t;
   using std::common_type_t;
   using std::conditional_t;
@@ -2978,9 +6245,13 @@ export namespace std {
   using std::unwrap_ref_decay_t;
   using std::unwrap_reference_t;
   using std::void_t;
+
+  // [meta.logical], logical operator traits
   using std::conjunction;
   using std::disjunction;
   using std::negation;
+
+  // [meta.unary.cat], primary type categories
   using std::is_array_v;
   using std::is_class_v;
   using std::is_enum_v;
@@ -2995,6 +6266,8 @@ export namespace std {
   using std::is_rvalue_reference_v;
   using std::is_union_v;
   using std::is_void_v;
+
+  // [meta.unary.comp], composite type categories
   using std::is_arithmetic_v;
   using std::is_compound_v;
   using std::is_fundamental_v;
@@ -3002,6 +6275,8 @@ export namespace std {
   using std::is_object_v;
   using std::is_reference_v;
   using std::is_scalar_v;
+
+  // [meta.unary.prop], type properties
   using std::has_unique_object_representations_v;
   using std::has_virtual_destructor_v;
   using std::is_abstract_v;
@@ -3016,7 +6291,9 @@ export namespace std {
   using std::is_destructible_v;
   using std::is_empty_v;
   using std::is_final_v;
+#if _LIBCPP_STD_VER >= 23 && __has_builtin(__builtin_is_implicit_lifetime)
   using std::is_implicit_lifetime_v;
+#endif
   using std::is_move_assignable_v;
   using std::is_move_constructible_v;
   using std::is_nothrow_assignable_v;
@@ -3030,7 +6307,9 @@ export namespace std {
   using std::is_nothrow_swappable_v;
   using std::is_nothrow_swappable_with_v;
   using std::is_polymorphic_v;
+#if _LIBCPP_STD_VER >= 23
   using std::is_scoped_enum_v;
+#endif
   using std::is_signed_v;
   using std::is_standard_layout_v;
   using std::is_swappable_v;
@@ -3048,107 +6327,252 @@ export namespace std {
   using std::is_unbounded_array_v;
   using std::is_unsigned_v;
   using std::is_volatile_v;
+#if _LIBCPP_STD_VER >= 23
+#  if __has_builtin(__reference_constructs_from_temporary)
+  using std::reference_constructs_from_temporary_v;
+#  endif
+#  if __has_builtin(__reference_converts_from_temporary)
+  using std::reference_converts_from_temporary_v;
+#  endif
+#endif
+
+  // [meta.unary.prop.query], type property queries
   using std::alignment_of_v;
   using std::extent_v;
   using std::rank_v;
+
+  // [meta.rel], type relations
   using std::is_base_of_v;
+#if _LIBCPP_STD_VER >= 26 && __has_builtin(__builtin_is_virtual_base_of)
   using std::is_virtual_base_of_v;
+#endif
   using std::is_convertible_v;
   using std::is_invocable_r_v;
   using std::is_invocable_v;
+  // using std::is_layout_compatible_v;
   using std::is_nothrow_convertible_v;
   using std::is_nothrow_invocable_r_v;
   using std::is_nothrow_invocable_v;
+  // using std::is_pointer_interconvertible_base_of_v;
   using std::is_same_v;
+
+  // [meta.logical], logical operator traits
   using std::conjunction_v;
   using std::disjunction_v;
   using std::negation_v;
+
+  // [meta.member], member relationships
+  // using std::is_corresponding_member;
+  // using std::is_pointer_interconvertible_with_class;
+
+  // [meta.const.eval], constant evaluation context
   using std::is_constant_evaluated;
+
+  // [depr.meta.types]
   using std::aligned_storage;
   using std::aligned_storage_t;
   using std::aligned_union;
   using std::aligned_union_t;
   using std::is_pod;
   using std::is_pod_v;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
   using std::hash;
   using std::type_index;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
   using std::bad_cast;
   using std::bad_typeid;
   using std::type_info;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [unord.map], class template unordered_­map
   using std::unordered_map;
+
+  // [unord.multimap], class template unordered_­multimap
   using std::unordered_multimap;
+
   using std::operator==;
+
   using std::swap;
+
+  // [unord.map.erasure], erasure for unordered_­map
   using std::erase_if;
+
   namespace pmr {
     using std::pmr::unordered_map;
     using std::pmr::unordered_multimap;
-  }
-}
+  } // namespace pmr
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [unord.set], class template unordered_­set
   using std::unordered_set;
+
+  // [unord.multiset], class template unordered_­multiset
   using std::unordered_multiset;
+
   using std::operator==;
+
   using std::swap;
+
+  // [unord.set.erasure], erasure for unordered_­set
   using std::erase_if;
+
   namespace pmr {
     using std::pmr::unordered_multiset;
     using std::pmr::unordered_set;
-  }
-}
+  } // namespace pmr
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [utility.swap], swap
   using std::swap;
+
+  // [utility.exchange], exchange
   using std::exchange;
+
+  // [forward], forward/move
   using std::forward;
+#if _LIBCPP_STD_VER >= 23
   using std::forward_like;
+#endif
   using std::move;
   using std::move_if_noexcept;
+
+  // [utility.as.const], as_const
   using std::as_const;
+
+  // [declval], declval
   using std::declval;
+
+  // [utility.intcmp], integer comparison functions
   using std::cmp_equal;
   using std::cmp_not_equal;
+
   using std::cmp_greater;
   using std::cmp_greater_equal;
   using std::cmp_less;
   using std::cmp_less_equal;
+
   using std::in_range;
+
+#if _LIBCPP_STD_VER >= 23
+  // [utility.underlying], to_underlying
   using std::to_underlying;
+
+  // [utility.unreachable], unreachable
   using std::unreachable;
+#endif // _LIBCPP_STD_VER >= 23
+
+  // [intseq], compile-time integer sequences
   using std::index_sequence;
   using std::integer_sequence;
+
   using std::make_index_sequence;
   using std::make_integer_sequence;
+
   using std::index_sequence_for;
+
+  // [pairs], class template pair
   using std::pair;
+
+#if _LIBCPP_STD_VER >= 23
   using std::basic_common_reference;
   using std::common_type;
+#endif
+  // [pairs.spec], pair specialized algorithms
   using std::operator==;
   using std::operator<=>;
+
   using std::make_pair;
+
+  // [pair.astuple], tuple-like access to pair
   using std::tuple_element;
   using std::tuple_size;
+
   using std::get;
+
+  // [pair.piecewise], pair piecewise construction
   using std::piecewise_construct;
   using std::piecewise_construct_t;
+
+  // in-place construction
   using std::in_place;
   using std::in_place_t;
+
   using std::in_place_type;
   using std::in_place_type_t;
+
   using std::in_place_index;
   using std::in_place_index_t;
+
+  // [depr.relops]
   namespace rel_ops {
     using rel_ops::operator!=;
     using rel_ops::operator>;
     using rel_ops::operator<=;
     using rel_ops::operator>=;
-  }
-}
+  } // namespace rel_ops
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
   using std::gslice;
   using std::gslice_array;
@@ -3157,54 +6581,84 @@ export namespace std {
   using std::slice;
   using std::slice_array;
   using std::valarray;
+
   using std::swap;
+
   using std::operator*;
   using std::operator/;
   using std::operator%;
   using std::operator+;
   using std::operator-;
+
   using std::operator^;
   using std::operator&;
   using std::operator|;
+
   using std::operator<<;
   using std::operator>>;
+
   using std::operator&&;
   using std::operator||;
+
   using std::operator==;
   using std::operator!=;
+
   using std::operator<;
   using std::operator>;
   using std::operator<=;
   using std::operator>=;
+
   using std::abs;
   using std::acos;
   using std::asin;
   using std::atan;
+
   using std::atan2;
+
   using std::cos;
   using std::cosh;
   using std::exp;
   using std::log;
   using std::log10;
+
   using std::pow;
+
   using std::sin;
   using std::sinh;
   using std::sqrt;
   using std::tan;
   using std::tanh;
+
   using std::begin;
   using std::end;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [variant.variant], class template variant
   using std::variant;
+
+  // [variant.helper], variant helper classes
   using std::variant_alternative;
   using std::variant_npos;
   using std::variant_size;
   using std::variant_size_v;
+
+  // [variant.get], value access
   using std::get;
   using std::get_if;
   using std::holds_alternative;
   using std::variant_alternative_t;
+
+  // [variant.relops], relational operators
   using std::operator==;
   using std::operator!=;
   using std::operator<;
@@ -3212,24 +6666,69 @@ export namespace std {
   using std::operator<=;
   using std::operator>=;
   using std::operator<=>;
+
+  // [variant.visit], visitation
   using std::visit;
+
+  // [variant.monostate], class monostate
   using std::monostate;
+
+  // [variant.specalg], specialized algorithms
   using std::swap;
+
+  // [variant.bad.access], class bad_variant_access
   using std::bad_variant_access;
+
+  // [variant.hash], hash support
   using std::hash;
-}
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
+  // [vector], class template vector
   using std::vector;
+
   using std::operator==;
   using std::operator<=>;
+
   using std::swap;
+
+  // [vector.erasure], erasure
   using std::erase;
   using std::erase_if;
+
   namespace pmr {
     using std::pmr::vector;
   }
+
+  // hash support
   using std::hash;
+
+#if _LIBCPP_STD_VER >= 23
+  // [vector.bool.fmt], formatter specialization for vector<bool>
   using std::formatter;
-}
+#endif
+} // namespace std
+
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
 export namespace std {
-}
+  // This module exports nothing.
+} // namespace std
+
+

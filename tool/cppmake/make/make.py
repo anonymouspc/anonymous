@@ -1,39 +1,38 @@
 from cppmake.basic.config       import config
 from cppmake.system.all         import system
 from cppmake.target.package     import Package
-from cppmake.utility.filesystem import absolute_path, exist_dir, create_dir, remove_dir
+from cppmake.utility.filesystem import absolute_path, create_dir, remove_dir
 from cppmake.utility.process    import run_process
 
 async def autogen(name, file, args=[]):
     package = await Package(name)
     try:
-        if not exist_dir(package.build_dir):
-            await run_process(
-                command=[
-                    absolute_path(file),
-                    *args
-                ]
-            )
+        await run_process(
+            command=[
+                absolute_path(file),
+                *args
+            ]
+        )
     except:
+        remove_dir(package.build_dir)
         raise
 
 async def configure(name, file, args=[]):
     package = await Package(name)
     try:
-        if not exist_dir(package.build_dir):
-            env=system.env.copy()
-            env["CXX"] = config.compiler
-            create_dir(package.build_dir)
-            await run_process(
-                command=[
-                    absolute_path(file),
-                    f"--prefix={absolute_path(package.install_dir)}",
-                    f"--libdir={absolute_path(package.install_dir)}/lib",
-                    *args
-                ],
-                cwd=package.build_dir,
-                env=env
-            )
+        env=system.env.copy()
+        env["CXX"] = config.compiler
+        create_dir(package.build_dir)
+        await run_process(
+            command=[
+                absolute_path(file),
+                f"--prefix={absolute_path(package.install_dir)}",
+                f"--libdir={absolute_path(package.install_dir)}/lib",
+                *args
+            ],
+            cwd=package.build_dir,
+            env=env
+        )
     except:
         remove_dir(package.build_dir)
         raise

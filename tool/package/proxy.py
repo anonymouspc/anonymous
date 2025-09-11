@@ -8,5 +8,4 @@ async def build():
     await cppmake.module(
         name="proxy",
         file="./package/proxy/include/proxy/v4/proxy.ixx",
-        replace={"proxy.v4": "proxy"}
     )

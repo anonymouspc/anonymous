@@ -6,7 +6,6 @@ import           :compiler;
 
 export namespace std
 {
-#define libcpp_assert(expr, message) assert(expr)
 
 template <class _ElementType>
 struct default_accessor {
@@ -161,8 +160,8 @@ public:
         // e.g. using my_mdspan_t = mdspan<int, extents<int, 10>>; my_mdspan_t = m(new int[5], 5);
         // Right-hand-side construction looks ok with allocation and size matching,
         // and since (potentially elsewhere defined) my_mdspan_t has static size m now thinks its range is 10 not 5
-        libcpp_assert(
-            __values[__i] == static_cast<_TDynamic>(__static_val),
+        assert(
+            __values[__i] == static_cast<_TDynamic>(__static_val) &&
             "extents construction: mismatch of provided arguments with static extents.");
     }
   }
@@ -180,25 +179,25 @@ public:
         // e.g. using my_mdspan_t = mdspan<int, extents<int, 10>>; my_mdspan_t = m(new int[N], span<int,1>(&N));
         // Right-hand-side construction looks ok with allocation and size matching,
         // and since (potentially elsewhere defined) my_mdspan_t has static size m now thinks its range is 10 not N
-        libcpp_assert(
-            static_cast<_TDynamic>(__vals[__i]) == static_cast<_TDynamic>(__static_val),
+        assert(
+            static_cast<_TDynamic>(__vals[__i]) == static_cast<_TDynamic>(__static_val) &&
             "extents construction: mismatch of provided arguments with static extents.");
     }
   }
 
   // access functions
  static constexpr _TStatic __static_value(size_t __i) noexcept {
-    libcpp_assert(__i < __size_, "extents access: index must be less than rank");
+    assert(__i < __size_ && "extents access: index must be less than rank");
     return _StaticValues::__get(__i);
   }
 
  constexpr _TDynamic __value(size_t __i) const {
-    libcpp_assert(__i < __size_, "extents access: index must be less than rank");
+    assert(__i < __size_ && "extents access: index must be less than rank");
     _TStatic __static_val = _StaticValues::__get(__i);
     return __static_val == _DynTag ? __dyn_vals_[_DynamicIdxMap::__get(__i)] : static_cast<_TDynamic>(__static_val);
   }
  constexpr _TDynamic operator[](size_t __i) const {
-    libcpp_assert(__i < __size_, "extents access: index must be less than rank");
+    assert(__i < __size_ && "extents access: index must be less than rank");
     return __value(__i);
   }
 
@@ -303,7 +302,7 @@ public:
       : __vals_(static_cast<index_type>(__dynvals)...) {
     // Not catching this could lead to out of bounds errors later
     // e.g. mdspan m(ptr, dextents<char, 1>(200u)); leads to an extent of -56 on m
-    libcpp_assert(__mdspan_detail::__are_representable_as<index_type>(__dynvals...),
+    assert(__mdspan_detail::__are_representable_as<index_type>(__dynvals...) &&
                                         "extents ctor: arguments must be representable as index_type and nonnegative");
   }
 
@@ -316,7 +315,7 @@ public:
       : __vals_(span(__exts)) {
     // Not catching this could lead to out of bounds errors later
     // e.g. mdspan m(ptr, dextents<char, 1>(array<unsigned,1>(200))); leads to an extent of -56 on m
-    libcpp_assert(__mdspan_detail::__are_representable_as<index_type>(span(__exts)),
+    assert(__mdspan_detail::__are_representable_as<index_type>(span(__exts)) &&
                                         "extents ctor: arguments must be representable as index_type and nonnegative");
   }
 
@@ -330,7 +329,7 @@ public:
     // Not catching this could lead to out of bounds errors later
     // e.g. array a{200u}; mdspan<int, dextents<char,1>> m(ptr, extents(span<unsigned,1>(a))); leads to an extent of -56
     // on m
-    libcpp_assert(__mdspan_detail::__are_representable_as<index_type>(__exts),
+    assert(__mdspan_detail::__are_representable_as<index_type>(__exts) &&
                                         "extents ctor: arguments must be representable as index_type and nonnegative");
   }
 
@@ -382,14 +381,14 @@ public:
                       static_cast<make_unsigned_t<_OtherIndexType>>(numeric_limits<_OtherIndexType>::max())) {
           // Not catching this could lead to out of bounds errors later
           // e.g. dextents<char,1>> e(dextents<unsigned,1>(200)) leads to an extent of -56 on e
-          libcpp_assert(
-              __mdspan_detail::__is_representable_as<index_type>(__other.extent(__r)),
+          assert(
+              __mdspan_detail::__is_representable_as<index_type>(__other.extent(__r)) &&
               "extents ctor: arguments must be representable as index_type and nonnegative");
         }
         // Not catching this could lead to out of bounds errors later
         // e.g. mdspan<int, extents<int, 10>> m = mdspan<int, dextents<int, 1>>(new int[5], 5);
         // Right-hand-side construction was ok, and m now thinks its range is 10 not 5
-        libcpp_assert(
+        assert(
             (_Values::__static_value(__r) == dynamic_extent) ||
                 (static_cast<index_type>(__other.extent(__r)) == static_cast<index_type>(_Values::__static_value(__r))),
             "extents construction: mismatch of provided arguments with static extents.");
@@ -547,8 +546,8 @@ public:
  constexpr mapping(const extents_type& __ext) noexcept : __extents_(__ext) {
     // not catching this could lead to out-of-bounds access later when used inside mdspan
     // mapping<dextents<char, 2>> map(dextents<char, 2>(40,40)); map(10, 3) == -126
-    libcpp_assert(
-        __required_span_size_is_representable(__ext),
+    assert(
+        __required_span_size_is_representable(__ext) &&
         "layout_left::mapping extents ctor: product of extents must be representable as index_type.");
   }
 
@@ -559,8 +558,8 @@ public:
       : __extents_(__other.extents()) {
     // not catching this could lead to out-of-bounds access later when used inside mdspan
     // mapping<dextents<char, 2>> map(mapping<dextents<int, 2>>(dextents<int, 2>(40,40))); map(10, 3) == -126
-    libcpp_assert(
-        __mdspan_detail::__is_representable_as<index_type>(__other.required_span_size()),
+    assert(
+        __mdspan_detail::__is_representable_as<index_type>(__other.required_span_size()) &&
         "layout_left::mapping converting ctor: other.required_span_size() must be representable as index_type.");
   }
 
@@ -571,12 +570,12 @@ public:
       : __extents_(__other.extents()) {
     // not catching this could lead to out-of-bounds access later when used inside mdspan
     // Note: since this is constraint to rank 1, extents itself would catch the invalid conversion first
-    //       and thus this libcpp_assertion should never be triggered, and keeping it here for consistency
+    //       and thus this assertion should never be triggered, and keeping it here for consistency
     // layout_left::mapping<dextents<char, 1>> map(
     //           layout_right::mapping<dextents<unsigned, 1>>(dextents<unsigned, 1>(200))); map.extents().extent(0) ==
     //           -56
-    libcpp_assert(
-        __mdspan_detail::__is_representable_as<index_type>(__other.required_span_size()),
+    assert(
+        __mdspan_detail::__is_representable_as<index_type>(__other.required_span_size()) &&
         "layout_left::mapping converting ctor: other.required_span_size() must be representable as index_type.");
   }
 
@@ -586,7 +585,7 @@ public:
       mapping(const layout_stride::mapping<_OtherExtents>& __other) noexcept
       : __extents_(__other.extents()) {
     if constexpr (extents_type::rank() > 0) {
-      libcpp_assert(
+      assert(
           ([&]() {
             using _CommonType = common_type_t<typename extents_type::index_type, typename _OtherExtents::index_type>;
             for (rank_type __r = 0; __r < extents_type::rank(); __r++)
@@ -595,8 +594,8 @@ public:
             return true;
           }()),
           "layout_left::mapping from layout_stride ctor: strides are not compatible with layout_left.");
-      libcpp_assert(
-          __mdspan_detail::__is_representable_as<index_type>(__other.required_span_size()),
+      assert(
+          __mdspan_detail::__is_representable_as<index_type>(__other.required_span_size()) &&
           "layout_left::mapping from layout_stride ctor: other.required_span_size() must be representable as "
           "index_type.");
     }
@@ -622,7 +621,7 @@ public:
     // return a value exceeding required_span_size(), which is used to know how large an allocation one needs
     // Thus, this is a canonical point in multi-dimensional data structures to make invalid element access checks
     // However, mdspan does check this on its own, so for now we avoid double checking in hardened mode
-    libcpp_assert(__mdspan_detail::__is_multidimensional_index_in(__extents_, __idx...),
+    assert(__mdspan_detail::__is_multidimensional_index_in(__extents_, __idx...) &&
                                  "layout_left::mapping: out of bounds indexing");
     array<index_type, extents_type::rank()> __idx_a{static_cast<index_type>(__idx)...};
     return [&]<size_t... _Pos>(index_sequence<_Pos...>) {
@@ -646,8 +645,8 @@ public:
   {
     // While it would be caught by extents itself too, using a too large __r
     // is functionally an out of bounds access on the stored information needed to compute strides
-    libcpp_assert(
-        __r < extents_type::rank(), "layout_left::mapping::stride(): invalid rank index");
+    assert(
+        __r < extents_type::rank() && "layout_left::mapping::stride(): invalid rank index");
     index_type __s = 1;
     for (rank_type __i = 0; __i < __r; __i++)
       __s *= __extents_.extent(__i);
@@ -701,8 +700,8 @@ public:
    constexpr mapping(const extents_type& __ext) noexcept : __extents_(__ext) {
     // not catching this could lead to out-of-bounds access later when used inside mdspan
     // mapping<dextents<char, 2>> map(dextents<char, 2>(40,40)); map(3, 10) == -126
-    libcpp_assert(
-        __required_span_size_is_representable(__ext),
+    assert(
+        __required_span_size_is_representable(__ext) &&
         "layout_right::mapping extents ctor: product of extents must be representable as index_type.");
   }
 
@@ -713,8 +712,8 @@ public:
       : __extents_(__other.extents()) {
     // not catching this could lead to out-of-bounds access later when used inside mdspan
     // mapping<dextents<char, 2>> map(mapping<dextents<int, 2>>(dextents<int, 2>(40,40))); map(3, 10) == -126
-    libcpp_assert(
-        __mdspan_detail::__is_representable_as<index_type>(__other.required_span_size()),
+    assert(
+        __mdspan_detail::__is_representable_as<index_type>(__other.required_span_size()) &&
         "layout_right::mapping converting ctor: other.required_span_size() must be representable as index_type.");
   }
 
@@ -725,12 +724,12 @@ public:
       : __extents_(__other.extents()) {
     // not catching this could lead to out-of-bounds access later when used inside mdspan
     // Note: since this is constraint to rank 1, extents itself would catch the invalid conversion first
-    //       and thus this libcpp_assertion should never be triggered, and keeping it here for consistency
+    //       and thus this assertion should never be triggered, and keeping it here for consistency
     // layout_right::mapping<dextents<char, 1>> map(
     //           layout_left::mapping<dextents<unsigned, 1>>(dextents<unsigned, 1>(200))); map.extents().extent(0) ==
     //           -56
-    libcpp_assert(
-        __mdspan_detail::__is_representable_as<index_type>(__other.required_span_size()),
+    assert(
+        __mdspan_detail::__is_representable_as<index_type>(__other.required_span_size()) &&
         "layout_right::mapping converting ctor: other.required_span_size() must be representable as index_type.");
   }
 
@@ -740,7 +739,7 @@ public:
       mapping(const layout_stride::mapping<_OtherExtents>& __other) noexcept
       : __extents_(__other.extents()) {
     if constexpr (extents_type::rank() > 0) {
-      libcpp_assert(
+      assert(
           ([&]() {
             using _CommonType = common_type_t<typename extents_type::index_type, typename _OtherExtents::index_type>;
             for (rank_type __r = 0; __r < extents_type::rank(); __r++)
@@ -749,8 +748,8 @@ public:
             return true;
           }()),
           "layout_right::mapping from layout_stride ctor: strides are not compatible with layout_right.");
-      libcpp_assert(
-          __mdspan_detail::__is_representable_as<index_type>(__other.required_span_size()),
+      assert(
+          __mdspan_detail::__is_representable_as<index_type>(__other.required_span_size()) &&
           "layout_right::mapping from layout_stride ctor: other.required_span_size() must be representable as "
           "index_type.");
     }
@@ -776,7 +775,7 @@ public:
     // return a value exceeding required_span_size(), which is used to know how large an allocation one needs
     // Thus, this is a canonical point in multi-dimensional data structures to make invalid element access checks
     // However, mdspan does check this on its own, so for now we avoid double checking in hardened mode
-    libcpp_assert(__mdspan_detail::__is_multidimensional_index_in(__extents_, __idx...),
+    assert(__mdspan_detail::__is_multidimensional_index_in(__extents_, __idx...) &&
                                  "layout_right::mapping: out of bounds indexing");
     return [&]<size_t... _Pos>(index_sequence<_Pos...>) {
       index_type __res = 0;
@@ -798,8 +797,8 @@ public:
   {
     // While it would be caught by extents itself too, using a too large __r
     // is functionally an out of bounds access on the stored information needed to compute strides
-    libcpp_assert(
-        __r < extents_type::rank(), "layout_right::mapping::stride(): invalid rank index");
+    assert(
+        __r < extents_type::rank() && "layout_right::mapping::stride(): invalid rank index");
     index_type __s = 1;
     for (rank_type __i = extents_type::rank() - 1; __i > __r; __i--)
       __s *= __extents_.extent(__i);
@@ -929,7 +928,7 @@ private:
 public:
   // [mdspan.layout.stride.cons], constructors
    constexpr mapping() noexcept : __extents_(extents_type()) {
-    // Note the nominal precondition is covered by above static libcpp_assert since
+    // Note the nominal precondition is covered by above static assert since
     // if rank_dynamic is != 0 required_span_size is zero for default construction
     if constexpr (__rank_ > 0) {
       index_type __stride = 1;
@@ -951,7 +950,7 @@ public:
           return __mdspan_detail::__possibly_empty_array<index_type, __rank_>{
               static_cast<index_type>(std::as_const(__strides[_Pos]))...};
         }(make_index_sequence<__rank_>())) {
-    libcpp_assert(
+    assert(
         ([&]<size_t... _Pos>(index_sequence<_Pos...>) {
           // For integrals we can do a pre-conversion check, for other types not
           if constexpr (is_integral_v<_OtherIndexType>) {
@@ -961,11 +960,11 @@ public:
           }
         }(make_index_sequence<__rank_>())),
         "layout_stride::mapping ctor: all strides must be greater than 0");
-    libcpp_assert(
-        __required_span_size_is_representable(__ext, __strides),
+    assert(
+        __required_span_size_is_representable(__ext, __strides) &&
         "layout_stride::mapping ctor: required span size is not representable as index_type.");
     if constexpr (__rank_ > 1) {
-      libcpp_assert(
+      assert(
           ([&]<size_t... _Pos>(index_sequence<_Pos...>) {
             // basically sort the dimensions based on strides and extents, sorting is represented in permute array
             array<rank_type, __rank_> __permute{_Pos...};
@@ -1010,16 +1009,16 @@ public:
         }(make_index_sequence<__rank_>())) {
     // stride() only compiles for rank > 0
     if constexpr (__rank_ > 0) {
-      libcpp_assert(
+      assert(
           ([&]<size_t... _Pos>(index_sequence<_Pos...>) {
             return ((static_cast<index_type>(__other.stride(_Pos)) > static_cast<index_type>(0)) && ... && true);
           }(make_index_sequence<__rank_>())),
           "layout_stride::mapping converting ctor: all strides must be greater than 0");
     }
-    libcpp_assert(
-        __mdspan_detail::__is_representable_as<index_type>(__other.required_span_size()),
+    assert(
+        __mdspan_detail::__is_representable_as<index_type>(__other.required_span_size()) &&
         "layout_stride::mapping converting ctor: other.required_span_size() must be representable as index_type.");
-    libcpp_assert(static_cast<index_type>(0) == __offset(__other),
+    assert(static_cast<index_type>(0) == __offset(__other) &&
                                         "layout_stride::mapping converting ctor: base offset of mapping must be zero.");
   }
 
@@ -1058,7 +1057,7 @@ public:
     // return a value exceeding required_span_size(), which is used to know how large an allocation one needs
     // Thus, this is a canonical point in multi-dimensional data structures to make invalid element access checks
     // However, mdspan does check this on its own, so for now we avoid double checking in hardened mode
-    libcpp_assert(__mdspan_detail::__is_multidimensional_index_in(__extents_, __idx...),
+    assert(__mdspan_detail::__is_multidimensional_index_in(__extents_, __idx...) &&
                                  "layout_stride::mapping: out of bounds indexing");
     return [&]<size_t... _Pos>(index_sequence<_Pos...>) {
       return ((static_cast<index_type>(__idx) * __strides_[_Pos]) + ... + index_type(0));
@@ -1104,7 +1103,7 @@ public:
   // according to the standard layout_stride does not have a constraint on stride(r) for rank>0
   // it still has the precondition though
    constexpr index_type stride(rank_type __r) const noexcept {
-    libcpp_assert(__r < __rank_, "layout_stride::mapping::stride(): invalid rank index");
+    assert(__r < __rank_ && "layout_stride::mapping::stride(): invalid rank index");
     return __strides_[__r];
   }
 
@@ -1246,7 +1245,7 @@ public:
         // Not catching this could lead to out of bounds errors later
         // e.g. mdspan<int, dextents<char,1>, non_checking_layout> m =
         //        mdspan<int, dextents<unsigned, 1>, non_checking_layout>(ptr, 200); leads to an extent of -56 on m
-        libcpp_assert(
+        assert(
             (static_extent(__r) == dynamic_extent) ||
                 (static_cast<index_type>(__other.extent(__r)) == static_cast<index_type>(static_extent(__r))),
             "mdspan: conversion mismatch of source dynamic extents with static extents");
@@ -1267,7 +1266,7 @@ public:
    constexpr reference operator[](_OtherIndexTypes... __indices) const {
     // Note the standard layouts would also check this, and user provided ones may not, so we
     // check the precondition here
-    libcpp_assert(__mdspan_detail::__is_multidimensional_index_in(extents(), __indices...),
+    assert(__mdspan_detail::__is_multidimensional_index_in(extents(), __indices...) &&
                                         "mdspan: operator[] out of bounds access");
     return __acc_.access(__ptr_, __map_(static_cast<index_type>(std::move(__indices))...));
   }
@@ -1293,7 +1292,7 @@ public:
    constexpr size_type size() const noexcept {
     // Could leave this as only checked in debug mode: semantically size() is never
     // guaranteed to be related to any accessible range
-    libcpp_assert(
+    assert(
         false == ([&]<size_t... _Idxs>(index_sequence<_Idxs...>) {
           size_type __prod = 1;
           return (__builtin_mul_overflow(__prod, extent(_Idxs), &__prod) || ... || false);

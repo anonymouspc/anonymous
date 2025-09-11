@@ -25,7 +25,6 @@ namespace ranges
   template<move_constructible _Fp, input_range... _Vs>
     requires (view<_Vs> && ...) && (sizeof...(_Vs) > 0) && is_object_v<_Fp>
       && regular_invocable<_Fp&, range_reference_t<_Vs>...>
-      && std::__can_reference<invoke_result_t<_Fp&, range_reference_t<_Vs>...>>
   class zip_transform_view : public view_interface<zip_transform_view<_Fp, _Vs...>>
   {
     [[no_unique_address]] std::optional<_Fp> _M_fun;
@@ -130,7 +129,6 @@ namespace ranges
   template<move_constructible _Fp, input_range... _Vs>
     requires (view<_Vs> && ...) && (sizeof...(_Vs) > 0) && is_object_v<_Fp>
       && regular_invocable<_Fp&, range_reference_t<_Vs>...>
-      && std::__can_reference<invoke_result_t<_Fp&, range_reference_t<_Vs>...>>
   template<bool _Const>
   class zip_transform_view<_Fp, _Vs...>::_Iterator : public __iter_cat<_Const>
   {
@@ -260,7 +258,6 @@ namespace ranges
   template<move_constructible _Fp, input_range... _Vs>
     requires (view<_Vs> && ...) && (sizeof...(_Vs) > 0) && is_object_v<_Fp>
       && regular_invocable<_Fp&, range_reference_t<_Vs>...>
-      && std::__can_reference<invoke_result_t<_Fp&, range_reference_t<_Vs>...>>
   template<bool _Const>
   class zip_transform_view<_Fp, _Vs...>::_Sentinel
   {
@@ -706,8 +703,6 @@ namespace ranges
   template<forward_range _Vp, move_constructible _Fp, size_t _Nm>
    requires view<_Vp> && (_Nm > 0) && is_object_v<_Fp>
      && regular_invocable<__unarize<_Fp&, _Nm>, range_reference_t<_Vp>>
-     && std::__can_reference<invoke_result_t<__unarize<_Fp&, _Nm>,
-						       range_reference_t<_Vp>>>
   class adjacent_transform_view : public view_interface<adjacent_transform_view<_Vp, _Fp, _Nm>>
   {
     [[no_unique_address]] std::optional<_Fp> _M_fun;
@@ -776,8 +771,6 @@ namespace ranges
   template<forward_range _Vp, move_constructible _Fp, size_t _Nm>
    requires view<_Vp> && (_Nm > 0) && is_object_v<_Fp>
      && regular_invocable<__unarize<_Fp&, _Nm>, range_reference_t<_Vp>>
-     && std::__can_reference<invoke_result_t<__unarize<_Fp&, _Nm>,
-						       range_reference_t<_Vp>>>
   template<bool _Const>
   class adjacent_transform_view<_Vp, _Fp, _Nm>::_Iterator
   {
@@ -943,8 +936,6 @@ namespace ranges
   template<forward_range _Vp, move_constructible _Fp, size_t _Nm>
    requires view<_Vp> && (_Nm > 0) && is_object_v<_Fp>
      && regular_invocable<__unarize<_Fp&, _Nm>, range_reference_t<_Vp>>
-     && std::__can_reference<invoke_result_t<__unarize<_Fp&, _Nm>,
-						       range_reference_t<_Vp>>>
   template<bool _Const>
   class adjacent_transform_view<_Vp, _Fp, _Nm>::_Sentinel
   {

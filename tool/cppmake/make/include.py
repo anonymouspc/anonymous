@@ -30,7 +30,8 @@ async def module(name, file, replace={}):
     try:
         with open(file, 'r') as reader:
             content = reader.read()
-            content = content.replace("module;", "module;\n#undef in\n#undef self")
+            content = re.sub(r'^\s*module;',                 "module;\n#undef in\n#undef self", content)
+            content = re.sub(r'^\s*export\s+module\s+.*;$', f"export module {name};",           content)
             for old, new in replace.items():
                 content = content.replace(old, new)
         with open(module.code_file, 'w') as writer:

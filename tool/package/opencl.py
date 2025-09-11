@@ -1,7 +1,7 @@
 import cppmake
 
 if cppmake.system.name == "macos":
-    cppmake.link_flags += ["-framework OpenCL"]
+    cppmake.compiler.link_flags += ["-framework OpenCL"]
 
 async def build():
     await cppmake.include(
