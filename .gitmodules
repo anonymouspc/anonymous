@@ -31,6 +31,13 @@
 [submodule "package/lz4"]
 	path = package/lz4
 	url = https://github.com/lz4/lz4
+[submodule "package/opencl"]
+	path = package/opencl
+	url = https://github.com/KhronosGroup/OpenCL-Headers
+[submodule "package/opengl"]
+	path = package/opengl
+	url = https://github.com/KhronosGroup/OpenGL-Registry
+    shallow = true
 [submodule "package/openssl"]
 	path = package/openssl
 	url = https://github.com/openssl/openssl
@@ -57,6 +64,10 @@
 [submodule "package/tiff"]
 	path = package/tiff
 	url = https://gitlab.com/libtiff/libtiff
+[submodule "package/vulkan"]
+	path = package/vulkan
+	url = https://github.com/KhronosGroup/Vulkan-Headers
+    shallow = true
 [submodule "package/xlnt"]
 	path = package/xlnt
 	url = https://github.com/xlnt-community/xlnt
@@ -69,3 +80,6 @@
 [submodule "package/zstd"]
 	path = package/zstd
 	url = https://github.com/facebook/zstd
+[submodule "package/openal"]
+	path = package/openal
+	url = https://github.com/kcat/openal-soft
