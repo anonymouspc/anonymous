@@ -1,10 +1,10 @@
-from cppmake.basic.context     import set_context
 from cppmake.error.logic       import LogicError
 from cppmake.error.process     import ProcessError
 from cppmake.target.executable import Executable
 from cppmake.target.module     import Module
 from cppmake.target.package    import Package
 from cppmake.target.source     import Source
+from cppmake.utility.decorator import context
 import asyncio
 import sys
 
@@ -12,9 +12,9 @@ def main(func):
     try:
         async def async_main():
             try:
-                set_context("imag")
+                context.set("imag")
                 await func
-                set_context("real")
+                context.set("real")
                 await asyncio.gather(*Package   .tasks) if hasattr(Package,    "tasks") else None
                 await asyncio.gather(*Module    .tasks) if hasattr(Module,     "tasks") else None
                 await asyncio.gather(*Source    .tasks) if hasattr(Source,     "tasks") else None
