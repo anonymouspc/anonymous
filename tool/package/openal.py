@@ -13,7 +13,7 @@ async def build():
     )
     await cppmake.module(
         name="openal",
-        dir="./package/openal/modules/al.cppm"
+        file="./package/openal/modules/al.cppm"
     )
 
 """
