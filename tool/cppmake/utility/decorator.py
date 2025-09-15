@@ -1,4 +1,3 @@
-from cppmake.basic.context              import get_context
 from cppmake.error.logic                import LogicError
 from cppmake.logger.module_dependencies import module_dependencies_logger
 from cppmake.utility.algorithm          import recursive_search
@@ -6,16 +5,22 @@ from cppmake.utility.filesystem         import iterate_dir
 from cppmake.utility.scheduler          import scheduler
 import asyncio
 import functools
-import inspect
 
 def context(func):
+    context._value = "real"
+    def get():
+        return context._value
+    context.get = get
+    def set(new_value):
+        context._value = new_value
+    context.set = set
     @functools.wraps(func)
     async def wrapper(self, *args, **kwargs):
         if not hasattr(self.__class__, "tasks"):
                setattr(self.__class__, "tasks", [])
-        if get_context() == "real":
+        if context.get() == "real":
             await func(self, *args, **kwargs)
-        elif get_context() == "imag":
+        elif context.get() == "imag":
             innerfunc = func
             while hasattr(innerfunc, "__wrapped__"):
                 innerfunc = innerfunc.__wrapped__
@@ -52,22 +57,23 @@ def depmod(func):
 def deppkg(func):
     @functools.wraps(func)
     async def wrapper(self, name):
-        if not hasattr(self, "deppkg_ok"):
-               setattr(self, "deppkg_ok", True)
+        if not hasattr(self, "depcycle_ok"):
+               setattr(self, "depcycle_ok", True)
                async def navigate(name):
-                   return await 
+                   return await ...
+               def on_cycle(chain):
+                   raise LogicError(f"package import cycle [{' -> '.join(chain)}]")
                await recursive_search(name, navigate=navigate, on_cycle=on_cycle)
-        await func(self, name)
-        await recursive_search(self,        navigate=lambda package: package.import_packages, on_cycle=lambda history: self.import_packages.remove(history[1]) if history[1] in self.import_packages else None)
-    wrapper.__name__ = f"{func.__name__}_deppkg"
+               await func(self, name)
+    wrapper.__name__ = f"{func.__name__}_deprev"
     return wrapper
 
 def once(func):
     @functools.wraps(func)
     async def wrapper(self, *args, **kwargs):
-        if not       hasattr(self, f"{func.__name__}_{get_context()}_task"):
-                     setattr(self, f"{func.__name__}_{get_context()}_task", asyncio.create_task(func(self, *args, **kwargs)))
-        return await getattr(self, f"{func.__name__}_{get_context()}_task")
+        if not       hasattr(self, f"{func.__name__}_{context.get()}_task"):
+                     setattr(self, f"{func.__name__}_{context.get()}_task", asyncio.create_task(func(self, *args, **kwargs)))
+        return await getattr(self, f"{func.__name__}_{context.get()}_task")
     wrapper.__name__ = f"{func.__name__}_once"
     return wrapper
 
@@ -129,5 +135,5 @@ class _SkipScheduler:
 class _Skipped(Exception):
     pass
 
-async def _dfs():
-    pass
+async def _throw(exception):
+    raise exception
