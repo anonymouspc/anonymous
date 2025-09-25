@@ -57,15 +57,15 @@ def depmod(func):
 def deppkg(func):
     @functools.wraps(func)
     async def wrapper(self, name):
-        if not hasattr(self, "depcycle_ok"):
-               setattr(self, "depcycle_ok", True)
+        if not hasattr(self, "deppkg_ok"):
+               setattr(self, "deppkg_ok", True)
                async def navigate(name):
                    return await ...
-               def on_cycle(chain):
-                   raise LogicError(f"package import cycle [{' -> '.join(chain)}]")
+               def on_cycle(history):
+                   raise LogicError(f"package import cycle [{' -> '.join(history)}]")
                await recursive_search(name, navigate=navigate, on_cycle=on_cycle)
                await func(self, name)
-    wrapper.__name__ = f"{func.__name__}_deprev"
+    wrapper.__name__ = f"{func.__name__}_deppkg"
     return wrapper
 
 def once(func):

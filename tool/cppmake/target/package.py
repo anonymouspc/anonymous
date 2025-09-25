@@ -16,7 +16,6 @@ class Package:
     @trace
     async def new(self, name):
         from cppmake.target.module import Module
-        from cppmake.target.module import Module
         self.name            = name
         self.build_dir       = f"./binary/{config.type}/package/{self.name}/build"
         self.install_dir     = f"./binary/{config.type}/package/{self.name}/install"
