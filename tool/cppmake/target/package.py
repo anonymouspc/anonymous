@@ -3,7 +3,7 @@ from cppmake.logger.build_progress import build_progress_logger
 from cppmake.system.all            import system
 from cppmake.utility.algorithm     import recursive_search
 from cppmake.utility.algorithm     import recursive_search
-from cppmake.utility.decorator     import context, deppkg, once, storetrue, trace, unique
+from cppmake.utility.decorator     import context, once, storetrue, trace, unique
 from cppmake.utility.filesystem    import exist_dir, exist_file, iterate_dir
 from cppmake.utility.scheduler     import scheduler
 import asyncio
@@ -11,7 +11,6 @@ import importlib
 
 @unique
 class Package:
-    @deppkg
     @once
     @trace
     async def new(self, name):
