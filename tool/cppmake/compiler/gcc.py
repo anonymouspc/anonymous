@@ -1,5 +1,6 @@
 from cppmake.basic.config       import config
 from cppmake.basic.define       import define
+from cppmake.basic.keyword      import keyword
 from cppmake.error.process      import ProcessError
 from cppmake.utility.process    import run_process, run_process_sync
 from cppmake.utility.filesystem import parent_path, create_dir
@@ -44,36 +45,35 @@ class Gcc:
             return_stdout=True
         )
 
-    async def compile_module(self, code_file, module_file, object_file, include_dirs, module_only=False):
+    async def compile_module(self, code_file, module_file, object_file, include_dirs, with_keyword=True):
         create_dir(parent_path(module_file))
         create_dir(parent_path(object_file))
         await run_process(
             command=[
                 self.path,
                 *self.compile_flags,
-                *([f"-fmodule-only"] if module_only else []),
-                *[f"-I{include_dir}" for include_dir in include_dirs  ],
-                *[f"-D{key}={value}" for key, value  in define.items()],
+                * [f"-I{include_dir}" for include_dir in include_dirs  ],
+                * [f"-D{key}={value}" for key, value  in define .items()],
+                *([f"-D{key}={value}" for key, value  in keyword.items()] if with_keyword else []),
                 "-c", code_file,
                 "-o", object_file
             ],
             log_command=(True, code_file)
         )
 
-    async def compile_source(self, output, code_file, output_file, include_dirs, object_files, library_files):
-        create_dir(parent_path(output_file))
+    async def compile_source(self, code_file, executable_file, include_dirs, link_files, with_keyword=True):
+        create_dir(parent_path(executable_file))
         await run_process(
             command=[
                 self.path,
                 *self.compile_flags,
-                *[f"-I{include_dir}" for include_dir in include_dirs  ],
-                *[f"-D{key}={value}" for key, value  in define.items()],
+                * [f"-I{include_dir}" for include_dir in include_dirs  ],
+                * [f"-D{key}={value}" for key, value  in define .items()],
+                *([f"-D{key}={value}" for key, value  in keyword.items()] if with_keyword else []),
                 code_file,
                 *self.link_flags,
-                *(["-shared", "-fPIC"] if output == "shared" else []),
-                *object_files,
-                *library_files,
-                "-o", output_file
+                *link_files
+                "-o", executable_file
             ],
             log_command=(True, code_file)
         )

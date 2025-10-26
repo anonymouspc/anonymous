@@ -3,7 +3,7 @@ from cppmake.logger.build_progress import build_progress_logger
 from cppmake.system.all            import system
 from cppmake.utility.algorithm     import recursive_search
 from cppmake.utility.algorithm     import recursive_search
-from cppmake.utility.decorator     import context, once, storetrue, trace, unique
+from cppmake.utility.decorator     import once, storetrue, trace, unique
 from cppmake.utility.filesystem    import exist_dir, exist_file, iterate_dir
 from cppmake.utility.scheduler     import scheduler
 import asyncio
@@ -15,23 +15,36 @@ class Package:
     @trace
     async def new(self, name):
         from cppmake.target.module import Module
+        self.name = name
+        self.install_dir     = f"./binary/{config.type}/package/{self.name}/install"
+        self.include_dir     = f"./binary/{config.type}/package/{self.name}/install/include"
+        self.library_dir     = f"./binary/{config.type}/package/{self.name}/install/lib"
+        self.from_modules    = 
+        self.import_packages = recursive_search(await Module(self.name), navigate=lambda module: module.import_modules, collect=lambda module: module.import_package, root=False)
+        self.tool            = importlib.util.module_from_spec(importlib.util.spec_from_file_location(name=f"package.{self.name}.tool.build", location=f"./package/{self.name}/tool/build.py"))
+
         self.name            = name
+        self.root_dir        = f"./package/{self.name}"
+        self.git_dir         = f"./package/{self.name}/git"
+        self.module_dir      = f"./package/{self.name}/module"
+        self.tool_dir        = f"./package/{self.name}/tool"
         self.build_dir       = f"./binary/{config.type}/package/{self.name}/build"
         self.install_dir     = f"./binary/{config.type}/package/{self.name}/install"
         self.include_dir     = f"./binary/{config.type}/package/{self.name}/install/include"
         self.library_dir     = f"./binary/{config.type}/package/{self.name}/install/lib"
         self.library_files   = [file for file in iterate_dir(self.library_dir, file_only=True) if file.endswith(system.static_suffix) or file.endswith(system.shared_suffix)] if exist_dir(self.library_dir) else []
+        self.module_files    = [file for file in iterate_dir(self.module_dir,  file_only=True) if file.endswith(".cpp")]                                                      if exist_dir(self.module_dir)  else []
+        self.module_names    = [file.removeprefix(f"./package/{self.name}/module").removesuffix(".cpp").replace('/', '.') for file in self.module_files]
+        self.modules         = [await Module(name) if name in Module.pool.keys() else Module.pool[name] for name in self.module_names]
         self.import_packages = recursive_search(await Module(self.name), navigate=lambda module: module.import_modules, collect=lambda module: module.import_package, root=False)
-        self.tool            = importlib.import_module(f"package.{self.name}")
+        self.tool            = importlib.util.module_from_spec(importlib.util.spec_from_file_location(name=f"package.{self.name}.tool.build", location=f"./package/{self.name}/tool/build.py"))
 
-    @context
     @once
     @trace
     async def build(self):
         if not self.is_built():
             await asyncio.gather(*[import_package.build() for import_package in self.import_packages])
             async with scheduler.schedule(scheduler.max):
-                build_progress_logger.log("build package", self)
                 await self.tool.build()
                 self.library_files = [file for file in iterate_dir(self.library_dir, file_only=True) if file.endswith(system.static_suffix) or file.endswith(system.shared_suffix)] if exist_dir(self.library_dir) else []
 

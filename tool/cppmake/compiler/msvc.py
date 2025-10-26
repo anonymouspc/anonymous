@@ -25,10 +25,10 @@ class Msvc:
     async def preprocess_file(self, code_file):
         pass
 
-    async def compile_module(self, code_file, module_file, object_file, include_dirs, module_only=False):
+    async def compile_module(self, code_file, module_file, object_file, include_dirs):
         pass
 
-    async def compile_source(self, output, code_file, output_file, include_dirs, object_files, library_files):
+    async def compile_source(self, code_file, executable_file, include_dirs, link_files):
         pass
 
     def check(path):
