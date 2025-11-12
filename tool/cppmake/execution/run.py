@@ -6,37 +6,45 @@ import asyncio
 import sys
 import time
 
-async def run_process(
-    command, 
+# Every project has its own kind of shit mountain,
+# and the main difference between them is where these mountains are placed. 
+# Some put it in an obvious place that is transparent to users
+# (for example, C++ template, which "zero-cost" exposes every bit
+# of mess from their inner implementations), 
+# while others hide them in a corner where no one can reach
+# (for example, the Python GIL).
+#
+# Here, in this project, we've gathered and hid
+# all our shit in the file below. :)
+
+async def async_run(
+    command,
     cwd           ='.', 
     env           =None,
     print_command =config.verbose or config.dry_run,
-    log_command   =(False, None),
+    log_command   =False, # or (True, code_file)
     run_command   =not config.dry_run,
-    input_stdin   =None,
     print_stdout  =config.verbose,
-    print_stderr  =True,
+    log_stdout    =False, # or True, or (True, processor)
     return_stdout =False,
+    print_stderr  =True,
+    log_stderr    =False, # or True, or (True, processor)
     return_stderr =False,
     timeout       =None
 ):
     if print_command:
         print(f">>> {' '.join(command)}")
-    if log_command[0] is True:
+    assert not (type(log_command) is bool and log_command == True)
+    if type(log_command) is tuple and log_command[0] == True:
         compile_commands_logger.log(command=command, code_file=log_command[1])
     if run_command:
         proc = await asyncio.subprocess.create_subprocess_exec(
-            *command,
+           *command,
             cwd=cwd,
             env=env,
-            stdin =asyncio.subprocess.PIPE,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE
         )
-        if input_stdin is not None:
-            proc.stdin.write(input_stdin.encode())
-            await proc.stdin.drain()
-        proc.stdin.close()
         try:
             async def read_stream(stream, into, tee):
                 while True:
@@ -69,7 +77,13 @@ async def run_process(
                 proc.kill()
             except ProcessLookupError:
                 pass
-            raise TimeoutError(f"command {' '.join(command)} timeout after {timeout} seconds")
+            raise TimeoutError(f"process {' '.join(command)} timeouts after {timeout} seconds")
+        if (type(log_stdout) is bool  and log_stdout    == True) or \
+           (type(log_stdout) is tuple and log_stdout[0] == True):
+            compile_outputs_logger.log(stdout if type(log_stdout) is bool else log_stdout[1](stdout))
+        if (type(log_stderr) is bool  and log_stderr    == True) or \
+           (type(log_stderr) is tuple and log_stderr[0] == True):
+            compile_outputs_logger.log(stderr if type(log_stderr) is bool else log_stderr[1](stderr))
         if code == 0:
             return (stdout, stderr) if return_stdout and return_stderr else \
                     stdout          if return_stdout                   else \
@@ -78,6 +92,3 @@ async def run_process(
         else:
             compile_outputs_logger.log(stderr)
             raise ProcessError(stderr, is_stderr_printed=print_stderr)
-        
-def run_process_sync(*args, **kwargs):
-    return asyncio.run(run_process(*args, **kwargs))

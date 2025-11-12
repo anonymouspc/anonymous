@@ -1,4 +1,3 @@
-from cppmake.compiler.msvc import Msvc
 import os
 import sys
 
@@ -7,7 +6,7 @@ class Windows:
     executable_suffix = ".exe"
     static_suffix     = ".lib"
     shared_suffix     = ".dll"
-    default_compiler  = Msvc()
+    default_compiler  = "msvc"
     env               = os.environ
     env_seperator     = ';'
 

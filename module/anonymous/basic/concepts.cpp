@@ -1,6 +1,5 @@
 export module anonymous:basic.concepts;
 export import          :basic.concepts.core;
-export import          :basic.concepts.ios;
 export import          :basic.concepts.iterators;
 export import          :basic.concepts.numbers;
 export import          :basic.concepts.operators;

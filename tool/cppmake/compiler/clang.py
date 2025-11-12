@@ -1,91 +1,96 @@
+from .detail.sarif              import make_sarif
+from .detail.version            import async_check_version
 from cppmake.basic.config       import config
-from cppmake.basic.define       import define
-from cppmake.basic.keyword      import keyword
-from cppmake.error.process      import ProcessError
+from cppmake.execution.run      import async_run
+from cppmake.utility.decorator  import member, syncable
 from cppmake.utility.filesystem import parent_path, create_dir
-from cppmake.utility.process    import run_process, run_process_sync
+import json
 
+@syncable
 class Clang:
     name          = "clang"
     module_suffix = ".pcm"
     object_suffix = ".o"
+    async def async_init           (self, path="clang++"): ...
+    async def async_preprocess_code(self, code_file,                                                                           defines={}): ...
+    async def async_compile_module (self, code_file, module_file, object_file, module_dirs=[], include_dirs=[],                defines={}): ...
+    async def async_compile_source (self, code_file, executable_file,          module_dirs=[], include_dirs=[], link_files=[], defines={}): ...
 
-    def __init__(self, path="clang++"):
-        self.path = path
-        self.compile_flags = [
-            "-std=c++26", 
-            "-Wall", 
-            "-fdiagnostics-color=always",
-           f"-fprebuilt-module-path=./binary/{config.type}/module",
-            "-Wno-reserved-module-identifier",
-            "-Wno-deprecated-missing-comma-variadic-parameter",
-            *(["-O0", "-g", "-DDEBUG", "-fno-inline"] if config.type == "debug"   else
-              ["-O3",       "-DNDEBUG"              ] if config.type == "release" else
-              ["-Os"                                ] if config.type == "size"    else 
-              [])
+
+
+@member(Clang)
+async def async_init(self, path="clang++"):
+    await async_check_version(command=[path, "--version"], contains="clang")
+    self.path = path
+    self.compile_flags = [
+       f"-std={config.standard}",   
+        "-fdiagnostics-color=always",
+        "-Wall", "-Wno-reserved-module-identifier", "-Wno-deprecated-missing-comma-variadic-parameter",
+     *(["-O0", "-g", "-DDEBUG", "-fno-inline"] if config.type == "debug"   else
+       ["-O3",       "-DNDEBUG"              ] if config.type == "release" else
+       ["-Os"                                ] if config.type == "size"    else 
+       [])
+    ]
+    self.link_flags = [
+     *(["-s"] if config.type == "release" or config.type == "size" else 
+       [])
+    ]
+    return self
+
+@member(Clang)
+async def async_preprocess_code(self, code_file, defines={}):
+    return await async_run(
+        command=[
+            self.path,
+           *self.compile_flags,
+           *[f"-D{key}={value}" for key, value in defines.items()],
+            "-E", code_file,
+            "-o", "-"
+        ],
+        print_stdout=False,
+        return_stdout=True
+    )
+
+@member(Clang)
+async def async_compile_module(self, code_file, module_file, object_file, module_dirs=[], include_dirs=[], defines={}):
+    create_dir(parent_path(module_file))
+    create_dir(parent_path(object_file))
+    await async_run(
+        command=[
+            self.path,
+           *self.compile_flags,
+           *[f"-fprebuilt-module-path={module_dir}" for module_dir  in module_dirs    ],
+           *[f"-I{include_dir}"                     for include_dir in include_dirs   ],
+           *[f"-D{key}={value}"                     for key, value  in defines.items()],
+            "--precompile", "-x", "c++-module", code_file,
+            "-o",                               module_file
+        ],
+        log_command=(True, code_file),
+        log_stderr =(True, make_sarif)
+    )
+    await async_run(
+        command=[
+            self.path,
+            "-c", module_file,
+            "-o", object_file
         ]
-        self.link_flags = [
-            "-w",
-            *(["-s"] if config.type == "release" or config.type == "size" else [])
-        ]
+    )
 
-    async def preprocess_code(self, code):
-        return await run_process(
-            command=[
-                self.path,
-                *self.compile_flags,
-                *[f"-D{key}={value}" for key, value in define.items()],
-                "-E", "-x", "c++", "-",
-                "-o",              "-"
-            ],
-            input_stdin=code,
-            print_stdout=False,
-            return_stdout=True
-        )
-
-    async def compile_module(self, code_file, module_file, object_file, include_dirs, with_keyword=True):
-        create_dir(parent_path(module_file))
-        create_dir(parent_path(object_file))
-        await run_process(
-            command=[
-                self.path,
-                *self.compile_flags,
-                * [f"-I{include_dir}" for include_dir in include_dirs  ],
-                * [f"-D{key}={value}" for key, value  in define .items()],
-                *([f"-D{key}={value}" for key, value  in keyword.items()] if with_keyword else [])
-                "--precompile", "-x", "c++-module", code_file,
-                "-o",                               module_file
-            ],
-            log_command=(True, code_file)
-        )
-        await run_process(
-            command=[
-                self.path,
-                *self.compile_flags,
-                "-c", module_file,
-                "-o", object_file
-            ]
-        )
-
-    async def compile_source(self, code_file, executable_file, include_dirs, link_files, with_keyword=True):
-        create_dir(parent_path(executable_file))
-        await run_process(
-            command=[
-                self.path,
-                *self.compile_flags,
-                * [f"-I{include_dir}" for include_dir in include_dirs  ],
-                * [f"-D{key}={value}" for key, value  in define .items()],
-                *([f"-D{key}={value}" for key, value  in keyword.items()] if with_keyword else []),
-                code_file,
-                *self.link_flags,
-                *link_files,
-                "-o", executable_file
-            ],
-            log_command=(True, code_file)
-        )
-
-    def check(path):
-        try:
-            return "clang" in run_process_sync(command=[path, "--version"], return_stdout=True).lower()
-        except ProcessError:
-            return False
+@member(Clang)
+async def async_compile_source(self, code_file, executable_file, module_dirs=[], include_dirs=[], link_files=[], defines={}):
+    create_dir(parent_path(executable_file))
+    await async_run(
+        command=[
+            self.path,
+           *self.compile_flags,
+           *[f"-fprebuilt-module-path={module_dir}" for module_dir  in module_dirs    ],
+           *[f"-I{include_dir}"                     for include_dir in include_dirs   ],
+           *[f"-D{key}={value}"                     for key, value  in defines.items()],
+            code_file,
+           *self.link_flags,
+           *link_files,
+            "-o", executable_file
+        ],
+        log_command=(True, code_file),
+        log_stderr =(True, Clang._make_sarif)
+    )

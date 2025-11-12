@@ -1,7 +1,7 @@
 from cppmake.target.module      import Module
 from cppmake.target.package     import Package
 from cppmake.utility.filesystem import base_path, copy_file, remove_file, copy_dir, remove_dir, iterate_dir
-from cppmake.utility.process    import run_process
+from cppmake.utility.process    import async_run
 from cppmake.utility.scheduler  import Scheduler
 import asyncio
 import re
@@ -39,7 +39,7 @@ async def format(name, relpath='.'):
 async def _module_format(file, scheduler):
     async with scheduler.schedule():
         try:
-            await run_process(
+            await async_run(
                 command=[
                     "clang-format", 
                     "--sort-includes=false",

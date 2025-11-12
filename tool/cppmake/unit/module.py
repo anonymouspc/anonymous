@@ -16,13 +16,11 @@ class Module:
     @trace
     async def new(self, name):
         self.name           = name
-        self.root_dir       = '.' if not Package.exist(self.title) else f"./package/{self.title}"
-        self.code_file      =      f"./{self.root_dir}/module/{self.name.replace('.', '/').replace(':', '/')}.cpp"
+        self.code_file      =                      f"./module/{self.name.replace('.', '/').replace(':', '/')}.cpp" if not Package.exist(self.name.split('.')[0]) else f"./package/{self.name.split('.')[0]}/module/{self.name.replace('.', '/').replace(':', '/')}.cpp"
         self.module_file    = f"./binary/{config.type}/module/{self.name.replace('.', '.').replace(':', '-')}{compiler.module_suffix}" 
         self.object_file    = f"./binary/{config.type}/module/{self.name.replace('.', '.').replace(':', '-')}{compiler.object_suffix}"
         self.import_modules = await asyncio.gather(*[Module(name) for name in await module_dependencies_logger.get(name=self.name, code_file=self.code_file)])
         self.import_package = await Package(self.title) if Package.exist(self.title) else None
-        module_mappers_logger.log(name=self.name, module_file=self.module_file)
 
     @once
     @trace

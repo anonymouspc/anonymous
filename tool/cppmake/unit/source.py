@@ -37,7 +37,6 @@ class Source:
 
     @storetrue
     def is_compiled(self):
-        # todo: optimize with cache
         return all([module.is_compiled() for module in self.import_modules])                        and \
                exist_file(self.code_file)                                                           and \
                exist_file(self.executable_file)                                                     and \

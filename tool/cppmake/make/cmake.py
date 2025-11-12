@@ -5,14 +5,14 @@ from cppmake.target.package     import Package
 from cppmake.target.module      import Module
 from cppmake.utility.algorithm  import recursive_search
 from cppmake.utility.filesystem import remove_dir
-from cppmake.utility.process    import run_process
+from cppmake.utility.process    import async_run
 
 async def cmake(name, dir, args=[]):
     package = await Package(name)
     try:
         env=system.env.copy()
         env["CXX"] = compiler.name
-        await run_process(
+        await async_run(
             command=[
                 "cmake",
                 "-S", dir,
@@ -29,7 +29,7 @@ async def cmake(name, dir, args=[]):
         remove_dir(package.build_dir)
         raise
     try:
-        await run_process(
+        await async_run(
             command=[
                 "cmake",
                 "--build", package.build_dir,
@@ -40,7 +40,7 @@ async def cmake(name, dir, args=[]):
     except:
         raise
     try:
-        await run_process(
+        await async_run(
             command=[
                 "cmake",
                 "--install", package.build_dir,

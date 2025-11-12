@@ -1,5 +1,4 @@
 from cppmake.basic.config       import config
-from cppmake.basic.define       import define
 
 from cppmake.compiler.all       import compiler
 
@@ -19,6 +18,6 @@ from cppmake.target.source      import Source
 
 from cppmake.utility.decorator  import context
 from cppmake.utility.filesystem import absolute_path, relative_path, parent_path, base_path, exist_file, exist_dir, create_file, create_dir, remove_file, copy_file, copy_dir, remove_dir, remove_dir, iterate_dir
-from cppmake.utility.process    import run_process
+from cppmake.utility.process    import async_run
 
 from cppmake.main.main          import main

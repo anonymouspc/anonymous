@@ -1,9 +1,6 @@
 import boost;
 import bzip2;
 import clblast;
-#ifdef __CUDACC__
-import cuda;
-#endif
 import eigen;
 import fmt;
 import hwloc;
@@ -21,6 +18,7 @@ import png;
 import proxy;
 import std;
 import stdexec;
+import system;
 import tbb;
 import tiff;
 import xlnt;

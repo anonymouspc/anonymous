@@ -1,4 +1,3 @@
-from cppmake.compiler.gcc import Gcc
 import os
 import sys
 
@@ -7,7 +6,7 @@ class Linux:
     executable_suffix = ""
     static_suffix     = ".a"
     shared_suffix     = ".so"
-    default_compiler  = Gcc()
+    compiler_name     = "gcc"
     env               = os.environ
     env_seperator     = ':'
 

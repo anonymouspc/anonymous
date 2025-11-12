@@ -10,18 +10,8 @@ class ModuleDependenciesLogger:
         if name in self.content.keys() and modified_time_of_file(code_file) < self.content[name]["time"]:
             return self.content[name]["dependencies"]
         else:
-            try:
-                code = open(code_file, 'r').read()
-                code = re.sub(r'^\s*#\s*include\s+(?!<version>).*$', "", code, flags=re.MULTILINE)
-                code = await compiler.preprocess_code(code)
-            except FileNotFoundError:
-                raise LogicError(f"file {code_file} not found")
-            except UnicodeDecodeError:
-                raise LogicError(f"file {code_file} `bad encoding`")
-            import_names = [
-                import_name if not import_name.startswith(':') else f"{name.partition(':')[0]}{import_name}" 
-                for import_name in re.findall(r'^\s*(?:export\s+)?import\s+([\w\.:]+)\s*;\s*$', code, flags=re.MULTILINE)
-            ]
+            await compiler.preprocess_code(code_file)
+            import_names = [import_name if not import_name.startswith(':') else f"{name.split(':')[0]}{import_name}" for import_name in re.findall(r'^\s*(?:export\s+)?import\s+([\w\.:]+)\s*;\s*$', code, flags=re.MULTILINE)]
             self.content[name] = {
                 "time": time.time(),
                 "dependencies": import_names

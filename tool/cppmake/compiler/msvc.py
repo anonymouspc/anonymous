@@ -1,38 +1,22 @@
-from cppmake.basic.config    import config
-from cppmake.error.process   import ProcessError
-from cppmake.utility.process import run_process_sync
+from .detail.version           import async_check_version
+from cppmake.utility.decorator import member, syncable
 
+@syncable
 class Msvc:
     name          = "msvc"
     module_suffix = ".ixx"
     object_suffix = ".obj"
+    async def async_init           (self, path="clang++"): ...
+    async def async_preprocess_code(self, code_file,                                                                           defines={}): ...
+    async def async_compile_module (self, code_file, module_file, object_file, module_dirs=[], include_dirs=[],                defines={}): ...
+    async def async_compile_source (self, code_file, executable_file,          module_dirs=[], include_dirs=[], link_files=[], defines={}): ...
 
-    def __init__(self, path="g++"):
-        self.path = path
-        self.compile_flags = [
-            "/std:c++latest",
-            "/EHsc",
-            "/W4",
-            *(["/Od", "/Z7", "/DDEBUG" ] if config.type == "debug"   else
-              ["/O2",        "/DNDEBUG"] if config.type == "release" else
-              ["/O1"                   ] if config.type == "size"    else
-              [])   
-        ]
-        self.link_flags = [
-            "/MT"
-        ]
 
-    async def preprocess_file(self, code_file):
-        pass
+@member(Msvc)
+async def async_init(self, path="cl.exe"):
+    await async_check_version(command=[path], contains="msvc")
+    self.path = path
+    ...
+    return self
 
-    async def compile_module(self, code_file, module_file, object_file, include_dirs):
-        pass
-
-    async def compile_source(self, code_file, executable_file, include_dirs, link_files):
-        pass
-
-    def check(path):
-        try:
-            return "msvc" in run_process_sync(command=[path], return_stdout=True).lower()
-        except ProcessError:
-            return False
+    

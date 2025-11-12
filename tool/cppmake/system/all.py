@@ -1,4 +1,3 @@
-from cppmake.error.logic    import LogicError
 from cppmake.system.linux   import Linux
 from cppmake.system.macos   import Macos
 from cppmake.system.windows import Windows
@@ -10,4 +9,4 @@ elif Macos.check():
 elif Windows.check():
     system = Windows()
 else:
-    raise LogicError("unrecognized system")
+    assert False, "unrecognized system"

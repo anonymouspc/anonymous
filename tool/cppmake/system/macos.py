@@ -1,4 +1,3 @@
-from cppmake.compiler.clang import Clang
 import os
 import sys
 
@@ -7,7 +6,7 @@ class Macos:
     executable_suffix = ""
     static_suffix     = ".a"
     shared_suffix     = ".dylib"
-    default_compiler  = Clang()
+    default_compiler  = "clang"
     env               = os.environ
     env_seperator     = ':'
 
