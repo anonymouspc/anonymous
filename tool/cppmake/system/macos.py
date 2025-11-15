@@ -1,3 +1,5 @@
+from cppmake.error.config      import ConfigError
+from cppmake.utility.decorator import member
 import os
 import sys
 
@@ -6,9 +8,17 @@ class Macos:
     executable_suffix = ""
     static_suffix     = ".a"
     shared_suffix     = ".dylib"
-    default_compiler  = "clang"
+    compiler_path     = "clang++"
     env               = os.environ
-    env_seperator     = ':'
+    def __init__(self): ...
 
-    def check():
-        return sys.platform == "darwin"
+
+
+@member(Macos)
+def __init__(self):
+    Macos._check()
+
+@member(Macos)
+def _check():
+    if sys.platform != "darwin":
+        raise ConfigError(f"system is not macos (with sys.platform = {sys.platform})")

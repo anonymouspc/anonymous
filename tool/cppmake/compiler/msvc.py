@@ -1,22 +1,38 @@
-from .detail.version           import async_check_version
+from cppmake.error.config      import ConfigError
+from cppmake.error.subprocess  import SubprocessError
+from cppmake.execution.run     import async_run
 from cppmake.utility.decorator import member, syncable
 
-@syncable
 class Msvc:
     name          = "msvc"
     module_suffix = ".ixx"
     object_suffix = ".obj"
-    async def async_init           (self, path="clang++"): ...
-    async def async_preprocess_code(self, code_file,                                                                           defines={}): ...
-    async def async_compile_module (self, code_file, module_file, object_file, module_dirs=[], include_dirs=[],                defines={}): ...
-    async def async_compile_source (self, code_file, executable_file,          module_dirs=[], include_dirs=[], link_files=[], defines={}): ...
+    def           __init__    (self, path="cl"):                                                                                       ...
+    async def     __ainit__   (self, path="cl"):                                                                                       ...
+    def             preprocess(self, code_file,                                                                           defines={}): ...
+    async def async_preprocess(self, code_file,                                                                           defines={}): ...
+    def             precompile(self, code_file, module_file, object_file, module_dirs=[], include_dirs=[],                defines={}): ...
+    async def async_precompile(self, code_file, module_file, object_file, module_dirs=[], include_dirs=[],                defines={}): ...
+    def             compile   (self, code_file, executable_file,          module_dirs=[], include_dirs=[], link_files=[], defines={}): ...
+    async def async_compile   (self, code_file, executable_file,          module_dirs=[], include_dirs=[], link_files=[], defines={}): ...
+
 
 
 @member(Msvc)
-async def async_init(self, path="cl.exe"):
-    await async_check_version(command=[path], contains="msvc")
+@syncable
+async def __ainit__(self, path="cl"):
+    await Msvc._async_check(path)
     self.path = path
     ...
     return self
+
+@member(Msvc)
+async def _async_check(path):
+    try:
+        version = await async_run(command=[path], return_stdout=True)
+        if "msvc" not in version.lower():
+            raise ConfigError(f'"{path}" is not a msvc compiler (with "{path} --version" outputs {version.replace('\n', ' ')})')
+    except SubprocessError as e:
+        raise ConfigError(f'"{path}" is not a msvc compiler (with "{path} --version" exits {e.code})')
 
     

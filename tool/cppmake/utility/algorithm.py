@@ -1,32 +1,35 @@
-import asyncio
+from cppmake.execution.operation import when_all
 
-async def recursive_search(node, navigate, collect=None, root=True, flatten=False, on_cycle=None):
-    return await _recursive_search_with_cache(node, navigate, collect, root, flatten, on_cycle, list(), set(), list())
-    
-##### private #####
+def             recursive_collect(*args, **kwargs): ...
+async def async_recursive_collect(*args, **kwargs): ...
 
-async def _recursive_search_with_cache(node, navigate, collect, root, flatten, on_cycle, cache, visited, history):
-    if len(history) >= 1 and on_cycle is not None:
-        if collect is None:
-            return cache
-        elif node == history[0]:
-            on_cycle(history + [node])
-    if node in visited:
-        return cache
-    else:
+
+
+def recursive_collect(root, next, collect, on_root):
+    return _recursive_collect_impl(root, next, collect, on_root, cached=list(), visited=set())
+
+def _recursive_collect_impl(node, next, collect, on_root, cached, visited):
+    if node not in visited:
         visited |= {node}
-        if root == True and collect is not None:
+        if on_root:
             try:
-                new_cache = collect(node)
-                if not flatten:
-                    cache += [new_cache] if new_cache is not None else []
-                else:
-                    assert type(new_cache) is list
-                    cache += [item for item in new_cache if item is not None]
+                cached += [collect(node)]
             except AttributeError:
                 pass
-        if not asyncio.iscoroutinefunction(navigate):
-            await asyncio.gather(*[_recursive_search_with_cache(subnode, navigate, collect, True, flatten, on_cycle, cache, visited, history + [node]) for subnode in       navigate(node) if subnode is not None])
-        else:
-            await asyncio.gather(*[_recursive_search_with_cache(subnode, navigate, collect, True, flatten, on_cycle, cache, visited, history + [node]) for subnode in await navigate(node) if subnode is not None])
-        return list(set(cache))
+        for subnode in next(node):
+            _recursive_collect_impl(subnode, next, collect, True, cached, visited)
+    return cached
+
+async def async_recursive_collect(root, next, collect, on_root):
+    return await _async_recursive_collect_impl(root, next, collect, on_root, cached=list(), visited=set())
+
+async def _async_recursive_collect_impl(node, next, collect, on_root, cached, visited):
+    if node not in visited:
+        visited |= {node}
+        if on_root:
+            try:
+                cached += [collect(node)]
+            except AttributeError:
+                pass
+        await when_all([_async_recursive_collect_impl(subnode, next, collect, True, cached, visited) for subnode in await next(node)])
+    return cached

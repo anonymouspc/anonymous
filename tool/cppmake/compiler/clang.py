@@ -1,29 +1,33 @@
-from .detail.sarif              import make_sarif
-from .detail.version            import async_check_version
 from cppmake.basic.config       import config
+from cppmake.error.config       import ConfigError
+from cppmake.error.subprocess   import SubprocessError
 from cppmake.execution.run      import async_run
 from cppmake.utility.decorator  import member, syncable
 from cppmake.utility.filesystem import parent_path, create_dir
-import json
+from cppmake.utility.sarif      import make_sarif
 
-@syncable
 class Clang:
     name          = "clang"
     module_suffix = ".pcm"
     object_suffix = ".o"
-    async def async_init           (self, path="clang++"): ...
-    async def async_preprocess_code(self, code_file,                                                                           defines={}): ...
-    async def async_compile_module (self, code_file, module_file, object_file, module_dirs=[], include_dirs=[],                defines={}): ...
-    async def async_compile_source (self, code_file, executable_file,          module_dirs=[], include_dirs=[], link_files=[], defines={}): ...
+    def           __init__    (self, path="clang++"):                                                                                  ...
+    async def     __ainit__   (self, path="clang++"):                                                                                  ...
+    def             preprocess(self, code_file,                                                                           defines={}): ...
+    async def async_preprocess(self, code_file,                                                                           defines={}): ...
+    def             precompile(self, code_file, module_file, object_file, module_dirs=[], include_dirs=[],                defines={}): ...
+    async def async_precompile(self, code_file, module_file, object_file, module_dirs=[], include_dirs=[],                defines={}): ...
+    def             compile   (self, code_file, executable_file,          module_dirs=[], include_dirs=[], link_files=[], defines={}): ...
+    async def async_compile   (self, code_file, executable_file,          module_dirs=[], include_dirs=[], link_files=[], defines={}): ...
 
 
 
 @member(Clang)
-async def async_init(self, path="clang++"):
-    await async_check_version(command=[path, "--version"], contains="clang")
+@syncable
+async def __ainit__(self, path="clang++"):
+    await Clang._async_check(path)
     self.path = path
     self.compile_flags = [
-       f"-std={config.standard}",   
+       f"-std={config.std}",   
         "-fdiagnostics-color=always",
         "-Wall", "-Wno-reserved-module-identifier", "-Wno-deprecated-missing-comma-variadic-parameter",
      *(["-O0", "-g", "-DDEBUG", "-fno-inline"] if config.type == "debug"   else
@@ -35,10 +39,10 @@ async def async_init(self, path="clang++"):
      *(["-s"] if config.type == "release" or config.type == "size" else 
        [])
     ]
-    return self
 
 @member(Clang)
-async def async_preprocess_code(self, code_file, defines={}):
+@syncable
+async def async_preprocess(self, code_file, defines={}):
     return await async_run(
         command=[
             self.path,
@@ -52,7 +56,8 @@ async def async_preprocess_code(self, code_file, defines={}):
     )
 
 @member(Clang)
-async def async_compile_module(self, code_file, module_file, object_file, module_dirs=[], include_dirs=[], defines={}):
+@syncable
+async def async_precompile(self, code_file, module_file, object_file, module_dirs=[], include_dirs=[], defines={}):
     create_dir(parent_path(module_file))
     create_dir(parent_path(object_file))
     await async_run(
@@ -77,7 +82,8 @@ async def async_compile_module(self, code_file, module_file, object_file, module
     )
 
 @member(Clang)
-async def async_compile_source(self, code_file, executable_file, module_dirs=[], include_dirs=[], link_files=[], defines={}):
+@syncable
+async def async_compile(self, code_file, executable_file, module_dirs=[], include_dirs=[], link_files=[], defines={}):
     create_dir(parent_path(executable_file))
     await async_run(
         command=[
@@ -92,5 +98,14 @@ async def async_compile_source(self, code_file, executable_file, module_dirs=[],
             "-o", executable_file
         ],
         log_command=(True, code_file),
-        log_stderr =(True, Clang._make_sarif)
+        log_stderr =(True, make_sarif)
     )
+
+@member(Clang)
+async def _async_check(path):
+    try:
+        version = await async_run(command=[path, "--version"], return_stdout=True)
+        if "clang" not in version.lower():
+            raise ConfigError(f'"{path}" is not a clang compiler (with "{path} --version" outputs "{version.replace('\n', ' ')}")')
+    except SubprocessError as e:
+        raise ConfigError(f'"{path}" is not a clang compiler (with "{path} --version" exits {e.code}')

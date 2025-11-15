@@ -1,3 +1,5 @@
+from cppmake.error.config      import ConfigError
+from cppmake.utility.decorator import member
 import os
 import sys
 
@@ -6,9 +8,17 @@ class Windows:
     executable_suffix = ".exe"
     static_suffix     = ".lib"
     shared_suffix     = ".dll"
-    default_compiler  = "msvc"
+    compiler_path     = "cl.exe"
     env               = os.environ
-    env_seperator     = ';'
+    def __init__(self): ...
 
-    def check():
-        return sys.platform == "win32"
+
+
+@member(Windows)
+def __init__(self):
+    Windows._check()
+
+@member(Windows)
+def _check():
+    if sys.platform != "darwin":
+        raise ConfigError(f"system is not macos (with sys.platform = {sys.platform})")

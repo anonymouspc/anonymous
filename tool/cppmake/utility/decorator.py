@@ -1,139 +1,138 @@
-from cppmake.error.logic                import LogicError
-from cppmake.logger.module_dependencies import module_dependencies_logger
-from cppmake.utility.algorithm          import recursive_search
-from cppmake.utility.filesystem         import iterate_dir
-from cppmake.utility.scheduler          import scheduler
+from cppmake.error.logic         import LogicError
+from cppmake.execution.operation import sync_wait
 import asyncio
 import functools
+import inspect
+import threading
 
-def context(func):
-    context._value = "real"
-    def get():
-        return context._value
-    context.get = get
-    def set(new_value):
-        context._value = new_value
-    context.set = set
-    @functools.wraps(func)
-    async def wrapper(self, *args, **kwargs):
-        if not hasattr(self.__class__, "tasks"):
-               setattr(self.__class__, "tasks", [])
-        if context.get() == "real":
-            await func(self, *args, **kwargs)
-        elif context.get() == "imag":
-            innerfunc = func
-            while hasattr(innerfunc, "__wrapped__"):
-                innerfunc = innerfunc.__wrapped__
-            try:
-                innerfunc.__globals__["scheduler"] = _SkipScheduler()
-                await func(self, *args, **kwargs)
-            except _Skipped:
-                pass
-            async def task(self, *args, **kwargs):
-                innerfunc.__globals__["scheduler"] = scheduler
-                await func(self, *args, **kwargs)
-            if (hasattr(self, "is_built"   ) and not self.is_built   ()) or \
-               (hasattr(self, "is_compiled") and not self.is_compiled()):
-                if not hasattr(self, "imag_runned"):
-                       setattr(self, "imag_runned", True)
-                       self.__class__.tasks += [task(self, *args, **kwargs)]
-    wrapper.__name__ = f"{func.__name__}_context"
-    return wrapper
+def member  (cls):  ...
+def namable (func): ...
+def once    (func): ...
+def syncable(func): ...
+def trace   (func): ...
+def unique  (cls):  ...
 
-def depmod(func):
-    @functools.wraps(func)
-    async def wrapper(self, name):
-        if not hasattr(self, "depmod_ok"):
-               setattr(self, "depmod_ok", True)
-               async def navigate(name):
-                   return await module_dependencies_logger.get(name=name, code_file=f"./module/{name.replace('.', '/').replace(':', '/')}.cpp")
-               def on_cycle(history):
-                   raise LogicError(f"module import cycle [{' -> '.join(history)}]")
-               await recursive_search(name, navigate=navigate, on_cycle=on_cycle)
-        await func(self, name)
-    wrapper.__name__ = f"{func.__name__}_depmod"
-    return wrapper
 
-def deppkg(func):
-    @functools.wraps(func)
-    async def wrapper(self, name):
-        if not hasattr(self, "deppkg_ok"):
-               setattr(self, "deppkg_ok", True)
-               async def navigate(name):
-                   return await ...
-               def on_cycle(history):
-                   raise LogicError(f"package import cycle [{' -> '.join(history)}]")
-               await recursive_search(name, navigate=navigate, on_cycle=on_cycle)
-               await func(self, name)
-    wrapper.__name__ = f"{func.__name__}_deppkg"
-    return wrapper
+
+def member(cls):
+    assert inspect.isclass(cls)
+    def memberizer(func):
+        if inspect.isclass(func) or inspect.isfunction(func):
+            assert hasattr(cls, func.__name__) or func.__name__.startswith("_") # private functions which starts with '_' are not required to be pre-declared in class.
+            setattr(cls, func.__name__, func)
+        elif type(func) == _Syncable: # memberize each subfunction from syncable.
+            memberizer(func.func)
+            memberizer(func.sync_func)
+        else:
+            assert False
+    return memberizer
+
+def namable(func):
+    assert inspect.isfunction(func)
+    if not inspect.iscoroutinefunction(func):
+        @functools.wraps(func)
+        def namable_func(self, *args, **kwargs):
+            assert len(args) + len(kwargs) == 1
+            if len(args) == 1:
+                return func(self, *args)
+            else:
+                if "name" in kwargs.keys():
+                    return func(self, name=kwargs["name"])
+                else:
+                    assert hasattr(type(self), f"{next(iter(kwargs.keys()))}_to_name")
+                    return func(self, name=getattr(self, f"{next(iter(kwargs.keys()))}_to_name")(next(iter(kwargs.values()))))
+        return namable_func
+    else:
+        @functools.wraps(func)
+        async def async_namable_func(self, *args, **kwargs):
+            assert len(args) + len(kwargs) == 1
+            if len(args) == 1:
+                return await func(self, *args)
+            else:
+                if "name" in kwargs.keys():
+                    return await func(self, name=kwargs["name"])
+                else:
+                    assert hasattr(type(self), f"{next(iter(kwargs.keys()))}_to_name")
+                    return await func(self, name=getattr(self, f"{next(iter(kwargs.keys()))}_to_name")(next(iter(kwargs.values()))))
+        return async_namable_func
+                
 
 def once(func):
+    assert inspect.iscoroutinefunction(func)
     @functools.wraps(func)
-    async def wrapper(self, *args, **kwargs):
-        if not       hasattr(self, f"{func.__name__}_{context.get()}_task"):
-                     setattr(self, f"{func.__name__}_{context.get()}_task", asyncio.create_task(func(self, *args, **kwargs)))
-        return await getattr(self, f"{func.__name__}_{context.get()}_task")
-    wrapper.__name__ = f"{func.__name__}_once"
-    return wrapper
+    async def once_func(self, *args, **kwargs):
+        if not       hasattr(self, f"_once_{func.__name__}"):
+                     setattr(self, f"_once_{func.__name__}", asyncio.create_task(func(self, *args, **kwargs)))
+        return await getattr(self, f"_once_{func.__name__}")
+    return once_func
 
-def storetrue(func):
-    def wrapper(self, *args, **kwargs):
-        if not hasattr(self, f"{func.__name__}_cache"):
-               setattr(self, f"{func.__name__}_cache", False)
-        if     getattr(self, f"{func.__name__}_cache") == True:
-            return True
+def syncable(func):
+    assert inspect.iscoroutinefunction(func) 
+    assert func.__name__.startswith("async_") or func.__name__ == "__ainit__" 
+    @functools.wraps(func)
+    def sync_func(*args, **kwargs):
+        value = None
+        error = None
+        def target():
+            nonlocal value
+            nonlocal error
+            try:
+                value = sync_wait(func(*args, **kwargs))
+            except Exception as e:
+                error = e
+        thread = threading.Thread(target=target)
+        thread.start()
+        thread.join()
+        if error is None:
+            return value
         else:
-            result = func(self, *args, **kwargs)
-            if result == True:
-               setattr(self, f"{func.__name__}_cache", True)
-            return result
-    wrapper.__name__ = f"{func.__name__}_storetrue"
-    return wrapper
+            raise error
+    sync_func.__name__ = func.__name__.removeprefix("async_") if func.__name__ != "__ainit__" else "__init__"
+    return _Syncable(func, sync_func)
 
 def trace(func):
-    @functools.wraps(func)
-    async def wrapper(self, *args, **kwargs):
-        try:
-            await func(self, *args, **kwargs)
-        except LogicError as e:
-            raise e.add_prefix(f"In {self.__class__.__name__.lower()} {self.name}")
-    wrapper.__name__ = f"{func.__name__}_trace"
-    return wrapper
+    assert inspect.isfunction(func)
+    if not inspect.iscoroutinefunction(func):
+        @functools.wraps(func)
+        def trace_func(self, *args, **kwargs):
+            try:
+                return func(self, *args, **kwargs)
+            except LogicError as e:
+                raise e.add_prefix(f"In {self.name}")
+        return trace_func
+    else:
+        @functools.wraps(func)
+        async def async_trace_func(self, *args, **kwargs):
+            try:
+                return await func(self, *args, **kwargs)
+            except LogicError as e:
+                raise e.add_prefix(f"In {type(self).__qualname__.lower()} {self.name}")
+        return async_trace_func
 
 def unique(cls):
-    cls.pool = {}
-    async def __new__(cls, name):
-        if name in cls.pool.keys():
-            self = cls.pool[name]
+    assert inspect.isclass(cls)
+    setattr(cls, "_pool", {})
+    def __new__(cls, *args):
+        if args in cls._pool.keys():
+            return cls._pool[args]
         else:
             self = super(cls, cls).__new__(cls)
-            cls.pool[name] = self
-        await self.new(name)
-        return self
-    def __eq__(self1, self2):
-        return self1 is self2
-    cls.__new__ = __new__
-    cls.__eq__  = __eq__
+            cls._pool[args] = self
+            return self
+    setattr(cls, "__new__", __new__)
+    if hasattr(cls, "__ainit__"):
+        async def __anew__(*args):
+            self = cls.__new__(cls, *args)
+            if not hasattr(self, "_unique_ainit"):
+                   setattr(self ,"_unique_ainit", asyncio.create_task(self.__ainit__(*args)))
+            await self._unique_ainit
+        setattr(cls, "__anew__", __anew__)
     return cls
 
-##### private #####
-
-class _SkipScheduler:
-    max = 0
-
-    def schedule(self, *args, **kwargs):
-        return _SkipScheduler._Context()
-    
-    class _Context:
-        async def __aenter__(self):
-            raise _Skipped()
-        
-        async def __aexit__(self, *args):
-            return True
-        
-class _Skipped(Exception):
-    pass
-
-async def _throw(exception):
-    raise exception
+class _Syncable:
+    def __init__(self, func, sync_func):
+        self.func = func
+        self.sync_func = sync_func
+        setattr(__import__(sync_func.__module__), sync_func.__name__, sync_func)
+    def __call__(self, *args, **kwargs):
+        return self.func(*args, **kwargs)

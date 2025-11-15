@@ -1,3 +1,5 @@
+from cppmake.error.config      import ConfigError
+from cppmake.utility.decorator import member
 import os
 import sys
 
@@ -6,9 +8,17 @@ class Linux:
     executable_suffix = ""
     static_suffix     = ".a"
     shared_suffix     = ".so"
-    compiler_name     = "gcc"
+    compiler_path     = "g++"
     env               = os.environ
-    env_seperator     = ':'
+    def __init__(self): ...
 
-    def check():
-        return sys.platform == "linux"
+
+
+@member(Linux)
+def __init__(self):
+    Linux._check()
+
+@member(Linux)
+def _check():
+    if sys.platform != "linux":
+        raise ConfigError(f"system is not linux (with sys.platform = {sys.platform})")

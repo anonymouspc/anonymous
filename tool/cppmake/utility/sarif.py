@@ -1,2 +1,2 @@
 def make_sarif(error):
-    return None
+    return error

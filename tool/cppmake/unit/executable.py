@@ -1,23 +1,30 @@
-from cppmake.basic.config          import config
-from cppmake.logger.build_progress import build_progress_logger
-from cppmake.system.all            import system
-from cppmake.target.source         import Source
-from cppmake.utility.decorator     import once, trace, unique
-from cppmake.utility.process       import async_run
-from cppmake.utility.scheduler     import scheduler
+from cppmake.basic.config        import config
+from cppmake.execution.run       import async_run
+from cppmake.execution.scheduler import scheduler
+from cppmake.system.all          import system
+from cppmake.unit.source         import Source
+from cppmake.utility.decorator   import member, once, syncable, trace, unique
 
 @unique
 class Executable:
-    @once
-    @trace
-    async def new(self, name):
-        self.name            = name
-        self.executable_file = f"./binary/{config.type}/source/{self.name.replace('.', '/')}{system.executable_suffix}"
+    def           __init__ (self, name): ...
+    async def     __ainit__(self, name): ...
+    def             run    (self):       ...
+    async def async_run    (self):       ...
 
-    @once
-    @trace
-    async def run(self):
-        await (await Source(self.name)).compile()
-        async with scheduler.schedule():
-            build_progress_logger.log("run executable", self)
-            await async_run(command=[self.executable_file])
+@member(Executable)
+@syncable
+@trace
+async def __ainit__(self, name):
+    self.name            = name
+    self.executable_file = f"binary/{config.type}/source/{self.name.replace('.', '/')}{system.executable_suffix}"
+
+@member(Executable)
+@syncable
+@once
+@trace
+async def async_run(self):
+    await (await Source.__anew__(self.name)).async_compile()
+    async with scheduler.schedule():
+        await async_run(command=[self.executable_file])
+

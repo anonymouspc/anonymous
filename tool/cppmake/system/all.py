@@ -1,12 +1,21 @@
+from cppmake.error.config   import ConfigError
 from cppmake.system.linux   import Linux
 from cppmake.system.macos   import Macos
 from cppmake.system.windows import Windows
 
-if Linux.check():
-    system = Linux()
-elif Macos.check():
-    system = Macos()
-elif Windows.check():
-    system = Windows()
+system = ...
+
+
+
+suberrors = []
+for System in (Linux, Macos, Windows):
+    try:
+        system = System()
+        break
+    except ConfigError as e:
+        suberrors += [e]
 else:
-    assert False, "unrecognized system"
+    raise ConfigError(
+        f'system is not supported, because\n'
+        ''.join([f'  {error}\n' for error in suberrors])
+    )

@@ -1,12 +1,11 @@
-import cppmake
+from cppmake import *
 
-async def build():
-    await cppmake.cmake(
-        name="bzip2",
-        dir="./package/bzip2",
+def configure():
+    cmake.configure(
+        package=Package("bzip2"),
         args=[
             "-DENABLE_WERROR=false",
-           f"-DENABLE_DEBUG={cppmake.config.type=='debug'}",
+           f"-DENABLE_DEBUG={config.type=='debug'}",
             "-DENABLE_APP=false",
             "-DENABLE_TESTS=false",
             "-DENABLE_DOCS=false",
@@ -15,6 +14,16 @@ async def build():
             "-DENABLE_STATIC_LIB=true",
             "-DENABLE_SHARED_LIB=false"
         ]
+    )
+
+def build():
+    cmake.build(
+        package=Package("bzip2")
+    )
+
+def install():
+    cmake.install(
+        package=Package("bzip2")
     )
 
 """

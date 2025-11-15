@@ -1,4 +1,31 @@
-import cppmake
+from cppmake import *
+
+def configure():
+    makefile.configure(
+        package=Package("icu"),
+        file="icu4c/source/configure",
+        args=[
+            "--disable-icu-config",
+            "--enable-debug"    if config.type == "debug"   else "",
+            "--disable-release" if config.type != "release" else "",
+            "--disable-shared",
+            "--enable-static",
+            "--disable-dyload",
+            "--disable-tests",
+            "--disable-samples"
+        ]
+    )
+
+def build():
+    makefile.make(
+        package=Package("icu"),
+        dir="icu4c/source"
+    )
+
+def install():
+    makefile.install(
+        package=Package("icu")
+    )
 
 async def build():
     await cppmake.configure(

@@ -1,7 +1,7 @@
 import cppmake
 
 async def build():
-    await cppmake.cmake(
+    await cppmake.cmake.build_package(
         name="boost",
         dir="./package/boost",
         args=[

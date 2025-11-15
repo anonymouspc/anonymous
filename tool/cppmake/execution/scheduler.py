@@ -1,73 +1,81 @@
-from cppmake.basic.config import config
+from cppmake.basic.config      import config
+from cppmake.utility.decorator import member
 import asyncio
 
-class Scheduler():
-    def __init__(self, value=config.parallel):
-        if value < 0:
-            raise ValueError("Scheduler initial value must be >= 0")
-        self._waiters = None
-        self._value = value
-        self.max = value
+class Scheduler:
+    def __init__(self, value=config.parallel): ...
+    def schedule(self, weight=1):              ...
 
-    def schedule(self, weight=1):
-        return Scheduler._Context(self, weight)
+scheduler = ...
 
-    def _locked(self, compare_to):
-        return self._value < compare_to or (
-            any(not w.cancelled() for w in (self._waiters.keys() if self._waiters is not None else [])))
 
-    async def _acquire(self, weight=1):
-        if not self._locked(compare_to=weight):
-            self._value -= weight
-            return True
 
-        if self._waiters is None:
-            self._waiters = {}
-        fut = asyncio.get_event_loop().create_future()
-        self._waiters[fut] = weight
+@member(Scheduler)
+def __init__(self, value=config.parallel):
+    if value < 0:
+        raise ValueError("parallel < 0")
+    self.max      = value
+    self._value   = value
+    self._waiters = {}
 
+@member(Scheduler)
+def schedule(self, weight=1):
+    return Scheduler._Context(self, weight)
+
+@member(Scheduler)
+async def _acquire(self, weight=1):
+    if self._value >= weight and all(waiter.cancelled() for waiter in self._waiters.keys()):
+        self._value -= weight
+        return
+    future = asyncio.get_event_loop().create_future()
+    self._waiters[future] = weight
+    try:
         try:
-            try:
-                await fut
-            finally:
-                self._waiters.pop(fut)
-        except asyncio.CancelledError:
-            if fut.done() and not fut.cancelled():
-                self._value += weight
-            raise
-
+            await future
         finally:
-            while self._value > 0:
-                if not self._wake_up_next():
-                    break
-        return True
+            self._waiters.pop(future)
+    except asyncio.CancelledError:
+        if future.done() and not future.cancelled():
+            self._value += weight
+        raise
+    finally:
+        while self._value > 0:
+            woke = self._notify_one()
+            if not woke:
+                break
+    return
 
-    def release(self, weight=1):
-        self._value += weight
-        self._wake_up_next()
+@member(Scheduler)
+def _release(self, weight=1):
+    self._value += weight
+    self._notify_one()
 
-    ##### private #####
+@member(Scheduler)
+def _notify_one(self):
+    for future in self._waiters.keys():
+        if not future.done() and self._value >= self._waiters[future]:
+            self._value -= self._waiters[future]
+            future.set_result(True)
+            return True
+    return False
 
-    def _wake_up_next(self):
-        if not self._waiters:
-            return False
+@member(Scheduler)
+class _Context:
+    def       __init__  (self, scheduler, weight): ...
+    async def __aenter__(self):                    ...
+    async def __aexit__ (self, *args):             ...
 
-        for fut in self._waiters.keys():
-            if not fut.done() and self._value >= self._waiters[fut]:
-                self._value -= self._waiters[fut]
-                fut.set_result(True)
-                return True
-        return False
-    
-    class _Context:
-        def __init__(self, scheduler, weight):
-            self._scheduler = scheduler
-            self._weight    = weight
+@member(Scheduler._Context)
+def __init__(self, scheduler, weight):
+    self._scheduler = scheduler
+    self._weight    = weight
 
-        async def __aenter__(self):
-            return await self._scheduler._acquire(self._weight)
+@member(Scheduler._Context)
+async def __aenter__(self):
+    return await self._scheduler._acquire(self._weight)
 
-        async def __aexit__(self, *args):
-            self._scheduler.release(self._weight)
+@member(Scheduler._Context)
+async def __aexit__(self, *args):
+    self._scheduler._release(self._weight)
 
 scheduler = Scheduler()
