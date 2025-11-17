@@ -1,10 +1,11 @@
-from cppmake.utility.decorator  import member
-from cppmake.utility.filesystem import absolute_path, create_dir
+from cppmake.basic.main        import on_exit
+from cppmake.file.file_system  import absolute_path, create_dir
+from cppmake.utility.decorator import member
 import json
 
 class CompileCommandsLogger:
     def __init__   (self):                     ...
-    def __del__    (self):                     ...
+    def __exit__   (self):                     ...
     def log_command(self, command, code_file): ...
     
 compile_commands_logger = ...
@@ -18,11 +19,11 @@ def __init__(self):
         self._content = json.load(open("binary/cache/compile_commands.json", 'r'))
     except:
         self._content = []
-    self._writer = open("binary/cache/compile_commands.json", 'w')
+    on_exit(self.__exit__)
 
 @member(CompileCommandsLogger)
-def __del__(self):
-    json.dump(self._content, self._writer, indent=4)
+def __exit__(self):
+    json.dump(self._content, open("binary/cache/compile_commands.json", 'w'), indent=4)
 
 @member(CompileCommandsLogger)
 def log_command(self, command, code_file):
@@ -34,5 +35,7 @@ def log_command(self, command, code_file):
         "file"     : code_file,
         "command"  : ' '.join(command)
     })
+
+
 
 compile_commands_logger = CompileCommandsLogger()

@@ -2,8 +2,8 @@ from cppmake.basic.config       import config
 from cppmake.error.config       import ConfigError
 from cppmake.error.subprocess   import SubprocessError
 from cppmake.execution.run      import async_run
+from cppmake.file.file_system   import parent_path, create_dir
 from cppmake.utility.decorator  import member, syncable
-from cppmake.utility.filesystem import parent_path, create_dir
 from cppmake.utility.sarif      import make_sarif
 
 class Clang:
@@ -42,15 +42,16 @@ async def __ainit__(self, path="clang++"):
 
 @member(Clang)
 @syncable
-async def async_preprocess(self, code_file, defines={}):
+async def async_preprocess(self, code, defines={}):
     return await async_run(
         command=[
             self.path,
            *self.compile_flags,
            *[f"-D{key}={value}" for key, value in defines.items()],
-            "-E", code_file,
+            "-E", "-x", "c++", "-",
             "-o", "-"
         ],
+        input_stdin=code,
         print_stdout=False,
         return_stdout=True
     )
@@ -106,6 +107,6 @@ async def _async_check(path):
     try:
         version = await async_run(command=[path, "--version"], return_stdout=True)
         if "clang" not in version.lower():
-            raise ConfigError(f'"{path}" is not a clang compiler (with "{path} --version" outputs "{version.replace('\n', ' ')}")')
-    except SubprocessError as e:
-        raise ConfigError(f'"{path}" is not a clang compiler (with "{path} --version" exits {e.code}')
+            raise ConfigError(f'{path} is not a clang compiler (with "{path} --version" outputs "{version.replace('\n', ' ')}")')
+    except SubprocessError as error:
+        raise ConfigError(f'{path} is not a clang compiler (with "{path} --version" exits {error.code}')

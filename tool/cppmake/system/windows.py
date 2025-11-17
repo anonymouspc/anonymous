@@ -21,4 +21,4 @@ def __init__(self):
 @member(Windows)
 def _check():
     if sys.platform != "darwin":
-        raise ConfigError(f"system is not macos (with sys.platform = {sys.platform})")
+        raise ConfigError(f"system is not windows (with sys.platform = {sys.platform})")

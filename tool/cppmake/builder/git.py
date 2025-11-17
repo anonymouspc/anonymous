@@ -42,23 +42,17 @@ async def async_status(self, git_dir):
             self.path,
             "-C", git_dir,
             "status", "--short"
-        ]
+        ],
+        return_stdout=True
     )
 
 @member(Git)
 async def _async_check():
     try:
-        try:
-            version = await async_run(command=[Git.path, "--version"], return_stdout=True)
-        except TypeError as e:
-            print(e)
-            print(type(async_run))
-            print('='*30)
-            exit(-1)
-        
+        version = await async_run(command=[Git.path, "--version"], return_stdout=True)
         if "git" not in version.lower():
-            raise ConfigError(f'"git" is not installed (with "{Git.path} --version" outputs "{version.replace('\n', ' ')}")')
-    except SubprocessError as e:
-        raise ConfigError(f'"git" is not installed (with "{Git.path} --version" exits {e.code}')
+            raise ConfigError(f'git is not installed (with "{Git.path} --version" outputs "{version.replace('\n', ' ')}")')
+    except SubprocessError as error:
+        raise ConfigError(f'git is not installed (with "{Git.path} --version" exits {error.code}')
         
 git = Git()

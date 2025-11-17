@@ -1,7 +1,7 @@
 from cppmake import *
 
-def configure():
-    cmake.configure(
+def build():
+    cmake.build(
         package=Package("bzip2"),
         args=[
             "-DENABLE_WERROR=false",
@@ -14,16 +14,6 @@ def configure():
             "-DENABLE_STATIC_LIB=true",
             "-DENABLE_SHARED_LIB=false"
         ]
-    )
-
-def build():
-    cmake.build(
-        package=Package("bzip2")
-    )
-
-def install():
-    cmake.install(
-        package=Package("bzip2")
     )
 
 """

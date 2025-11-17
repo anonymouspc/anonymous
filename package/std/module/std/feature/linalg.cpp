@@ -1,4 +1,5 @@
 export module std:feature.linalg;
+import        eigen;
 
 export namespace std
 {

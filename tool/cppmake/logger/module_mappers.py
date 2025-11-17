@@ -1,6 +1,6 @@
-from cppmake.basic.config       import config
-from cppmake.utility.filesystem import create_dir
-from cppmake.utility.decorator  import member
+from cppmake.basic.config      import config
+from cppmake.file.file_system  import create_dir
+from cppmake.utility.decorator import member
 
 class ModuleMappersLogger:
     def __init__  (self):                  ...

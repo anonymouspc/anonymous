@@ -12,8 +12,8 @@ for System in (Linux, Macos, Windows):
     try:
         system = System()
         break
-    except ConfigError as e:
-        suberrors += [e]
+    except ConfigError as error:
+        suberrors += [error]
 else:
     raise ConfigError(
         f'system is not supported, because\n'

@@ -6,7 +6,7 @@ module;
 #include <unsupported/Eigen/CXX11/Tensor>
 
 export module eigen;
-import        std;
+// import std; This module might be depended by std:linalg by std.
 
 export namespace Eigen
 {

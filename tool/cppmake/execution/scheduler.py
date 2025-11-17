@@ -12,8 +12,7 @@ scheduler = ...
 
 @member(Scheduler)
 def __init__(self, value=config.parallel):
-    if value < 0:
-        raise ValueError("parallel < 0")
+    assert value >= 0
     self.max      = value
     self._value   = value
     self._waiters = {}

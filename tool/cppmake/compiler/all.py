@@ -13,8 +13,8 @@ for Compiler in (Clang, Gcc, Msvc):
     try:
         compiler = Compiler(config.compiler)
         break
-    except ConfigError as e:
-        suberrors += [e]
+    except ConfigError as error:
+        suberrors += [error]
 else:
     raise ConfigError(
         f'compiler "{config.compiler}" is not supported, because\n'

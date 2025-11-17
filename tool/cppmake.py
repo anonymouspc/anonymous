@@ -1,3 +1,7 @@
 from cppmake import *
 
-Source("main").compile()
+def build():
+    Source("main").compile()
+
+
+build()

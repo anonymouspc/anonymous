@@ -9,8 +9,8 @@ from cppmake.utility.decorator   import member, once, syncable, trace, unique
 class Executable:
     def           __init__ (self, name): ...
     async def     __ainit__(self, name): ...
-    def             run    (self):       ...
-    async def async_run    (self):       ...
+    def             execute(self):       ...
+    async def async_execute(self):       ...
 
 @member(Executable)
 @syncable
@@ -23,7 +23,7 @@ async def __ainit__(self, name):
 @syncable
 @once
 @trace
-async def async_run(self):
+async def async_execute(self):
     await (await Source.__anew__(self.name)).async_compile()
     async with scheduler.schedule():
         await async_run(command=[self.executable_file])

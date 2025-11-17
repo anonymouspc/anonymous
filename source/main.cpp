@@ -3,7 +3,7 @@ import test;
 
 int main ( )
 {
-    std::println("{}", func());
+
 }
 
 
