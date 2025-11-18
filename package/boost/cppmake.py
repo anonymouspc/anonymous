@@ -1,5 +1,7 @@
 from cppmake import *
 
+defines = {}
+
 def build():
     cmake.build(
         package=Package("boost")
