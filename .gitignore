@@ -1,9 +1,1 @@
 binary
-
-*.o
-*.lib
-*.a
-*.dll
-*.so
-*.dylib
-*.pyc

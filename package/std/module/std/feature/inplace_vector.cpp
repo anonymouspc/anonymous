@@ -5,7 +5,7 @@ export namespace std
 {
     template < class type, size_t len >
     class inplace_vector
-        extends public vector<type>
+        : public vector<type>
     {
 
     };

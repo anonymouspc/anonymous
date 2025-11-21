@@ -1,3 +1,3 @@
 export module std;
 export import    :compiler;
-export import    :feature;
+// export import    :feature;

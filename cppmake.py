@@ -1,11 +1,12 @@
-from cppmake import *
+from cppmakelib import *
 
-define_macros = {
-    "in": ':'
+Package("anonymous").define_macros = {
+    "abstract"   : ":",
+    "extends"    : ":",
+    "in"         : ":",
+    "reflexpr(x)": "(^^x)",
+    "self"       : "(*this)",
 }
 
-import_packages = [
-    "bzip2"
-]
-
-Source("main").compile()
+def make():
+    Source(file="source/main.cpp").compile()

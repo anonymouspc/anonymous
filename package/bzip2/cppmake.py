@@ -1,8 +1,6 @@
-from cppmake import *
+from cppmakelib import *
 
-defines = {}
-
-def build():
+def package():
     cmake.build(
         package=Package("bzip2"),
         args=[
