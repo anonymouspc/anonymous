@@ -9,6 +9,9 @@
 [submodule "package/clblast"]
 	path = package/clblast/git
 	url = https://github.com/CNugteren/CLBlast
+[submodule "package/cpptrace/git"]
+	path = package/cpptrace/git
+	url = https://github.com/jeremy-rifkin/cpptrace
 [submodule "package/eigen"]
 	path = package/eigen/git
 	url = https://gitlab.com/libeigen/eigen
@@ -63,6 +66,3 @@
 [submodule "package/zstd"]
 	path = package/zstd/git
 	url = https://github.com/facebook/zstd
-[submodule "package/cpptrace/git"]
-	path = package/cpptrace/git
-	url = https://github.com/jeremy-rifkin/cpptrace

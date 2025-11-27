@@ -14,3 +14,8 @@ def make():
 def test():
     for file in iterate_dir("source/test"):
         Executable(Source(file=file).name).execute()
+
+def clangd():
+    compiler = Clang()
+    for file in iterate_dir("module"):
+        Module(file=file).precompile()

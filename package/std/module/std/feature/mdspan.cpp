@@ -390,7 +390,7 @@ public:
         // Right-hand-side construction was ok, and m now thinks its range is 10 not 5
         assert(
             (_Values::__static_value(__r) == dynamic_extent) ||
-                (static_cast<index_type>(__other.extent(__r)) == static_cast<index_type>(_Values::__static_value(__r))),
+                (static_cast<index_type>(__other.extent(__r)) == static_cast<index_type>(_Values::__static_value(__r))) &&
             "extents construction: mismatch of provided arguments with static extents.");
       }
     }
@@ -592,7 +592,7 @@ public:
               if (static_cast<_CommonType>(stride(__r)) != static_cast<_CommonType>(__other.stride(__r)))
                 return false;
             return true;
-          }()),
+          }()) &&
           "layout_left::mapping from layout_stride ctor: strides are not compatible with layout_left.");
       assert(
           __mdspan_detail::__is_representable_as<index_type>(__other.required_span_size()) &&
@@ -746,7 +746,7 @@ public:
               if (static_cast<_CommonType>(stride(__r)) != static_cast<_CommonType>(__other.stride(__r)))
                 return false;
             return true;
-          }()),
+          }()) &&
           "layout_right::mapping from layout_stride ctor: strides are not compatible with layout_right.");
       assert(
           __mdspan_detail::__is_representable_as<index_type>(__other.required_span_size()) &&
@@ -958,7 +958,7 @@ public:
           } else {
             return ((static_cast<index_type>(__strides[_Pos]) > static_cast<index_type>(0)) && ... && true);
           }
-        }(make_index_sequence<__rank_>())),
+        }(make_index_sequence<__rank_>())) &&
         "layout_stride::mapping ctor: all strides must be greater than 0");
     assert(
         __required_span_size_is_representable(__ext, __strides) &&
@@ -976,7 +976,7 @@ public:
                   static_cast<index_type>(__strides[__permute[__i - 1]]) * __extents_.extent(__permute[__i - 1]))
                 return false;
             return true;
-          }(make_index_sequence<__rank_>())),
+          }(make_index_sequence<__rank_>())) && 
           "layout_stride::mapping ctor: the provided extents and strides lead to a non-unique mapping");
     }
   }
@@ -1012,7 +1012,7 @@ public:
       assert(
           ([&]<size_t... _Pos>(index_sequence<_Pos...>) {
             return ((static_cast<index_type>(__other.stride(_Pos)) > static_cast<index_type>(0)) && ... && true);
-          }(make_index_sequence<__rank_>())),
+          }(make_index_sequence<__rank_>())) &&
           "layout_stride::mapping converting ctor: all strides must be greater than 0");
     }
     assert(
@@ -1247,7 +1247,7 @@ public:
         //        mdspan<int, dextents<unsigned, 1>, non_checking_layout>(ptr, 200); leads to an extent of -56 on m
         assert(
             (static_extent(__r) == dynamic_extent) ||
-                (static_cast<index_type>(__other.extent(__r)) == static_cast<index_type>(static_extent(__r))),
+                (static_cast<index_type>(__other.extent(__r)) == static_cast<index_type>(static_extent(__r))) &&
             "mdspan: conversion mismatch of source dynamic extents with static extents");
       }
     }
@@ -1296,7 +1296,7 @@ public:
         false == ([&]<size_t... _Idxs>(index_sequence<_Idxs...>) {
           size_type __prod = 1;
           return (__builtin_mul_overflow(__prod, extent(_Idxs), &__prod) || ... || false);
-        }(make_index_sequence<rank()>())),
+        }(make_index_sequence<rank()>())) &&
         "mdspan: size() is not representable as size_type");
     return [&]<size_t... _Idxs>(index_sequence<_Idxs...>) {
       return ((static_cast<size_type>(__map_.extents().extent(_Idxs))) * ... * size_type(1));

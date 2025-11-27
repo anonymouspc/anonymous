@@ -17,7 +17,7 @@ def build():
     )
 
 """
->>> cat ./package/bzip2/CMakeOptions.txt | grep option
+>>> cat package/bzip2/git/CMakeOptions.txt | grep option
 option(ENABLE_WERROR     "Turn on compile time warnings")
 option(ENABLE_DEBUG      "Turn on debug output")
 option(ENABLE_APP        "Build applications (bzip2, and bzip2recover)"

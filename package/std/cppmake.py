@@ -20,6 +20,7 @@ def build():
     else:
         assert False
     try:
+        create_dir(package.include_dir)
         with open(std_file, 'r') as reader:
             content = reader.read().split("export module std;")
         with open(include_file, 'w') as writer:

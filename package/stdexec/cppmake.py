@@ -2,6 +2,6 @@ from cppmakelib import *
 
 def build():
     include(
-        package=Package("stdexec"),
+        package=package,
         dir    ="include"
     )

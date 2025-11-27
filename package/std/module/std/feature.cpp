@@ -2,7 +2,7 @@ module;
 #include <version>
 
 export module std:feature;
-#ifndef __cpp_lib_aligned_accessor
+#if not defined(__cpp_lib_aligned_accessor) and not defined(__clang__)
 export import    :feature.aligned_accessor;
 #endif
 #ifndef __cpp_lib_hive
@@ -14,13 +14,13 @@ export import    :feature.inplace_vector;
 #ifndef __cpp_lib_is_layout_compatible
 export import    :feature.is_layout_compatible;
 #endif
-#ifndef __cpp_lib_linalg
-export import    :feature.linalg;
-#endif
-#ifndef __cpp_lib_mdspan
+// #ifndef __cpp_lib_linalg
+// export import    :feature.linalg;
+// #endif
+#if not defined(__cpp_lib_mdspan) and not defined(__clang__)
 export import    :feature.mdspan;
 #endif
-export import    :feature.ranges;
+// export import    :feature.ranges;
 #ifndef __cpp_lib_sender
 export import    :feature.sender;
 #endif
