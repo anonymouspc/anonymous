@@ -9,15 +9,9 @@
 [submodule "package/clblast"]
 	path = package/clblast/git
 	url = https://github.com/CNugteren/CLBlast
-[submodule "package/ctre"]
-	path = package/ctre/git
-	url = https://github.com/hanickadot/compile-time-regular-expressions
 [submodule "package/eigen"]
 	path = package/eigen/git
 	url = https://gitlab.com/libeigen/eigen
-[submodule "package/fmt"]
-	path = package/fmt/git
-	url = https://github.com/fmtlib/fmt
 [submodule "package/hwloc"]
 	path = package/hwloc/git
 	url = https://github.com/open-mpi/hwloc
@@ -31,16 +25,9 @@
 [submodule "package/lz4"]
 	path = package/lz4/git
 	url = https://github.com/lz4/lz4
-[submodule "package/openal"]
-	path = package/openal/git
-	url = https://github.com/kcat/openal-soft
 [submodule "package/opencl"]
 	path = package/opencl/git
 	url = https://github.com/KhronosGroup/OpenCL-Headers
-[submodule "package/opengl"]
-	path = package/opengl/git
-	url = https://github.com/KhronosGroup/OpenGL-Registry
-    shallow = true
 [submodule "package/openssl"]
 	path = package/openssl/git
 	url = https://github.com/openssl/openssl
@@ -52,9 +39,6 @@
 [submodule "package/png"]
 	path = package/png/git
 	url = https://github.com/pnggroup/libpng
-[submodule "package/proxy"]
-	path = package/proxy/git
-	url = https://github.com/microsoft/proxy
 [submodule "package/pybind11"]
 	path = package/pybind11/git
 	url = https://github.com/pybind/pybind11
@@ -67,10 +51,6 @@
 [submodule "package/tiff"]
 	path = package/tiff/git
 	url = https://gitlab.com/libtiff/libtiff
-[submodule "package/vulkan"]
-	path = package/vulkan/git
-	url = https://github.com/KhronosGroup/Vulkan-Headers
-    shallow = true
 [submodule "package/xlnt"]
 	path = package/xlnt/git
 	url = https://github.com/xlnt-community/xlnt
@@ -83,3 +63,6 @@
 [submodule "package/zstd"]
 	path = package/zstd/git
 	url = https://github.com/facebook/zstd
+[submodule "package/cpptrace/git"]
+	path = package/cpptrace/git
+	url = https://github.com/jeremy-rifkin/cpptrace
