@@ -1,8 +1,3 @@
-[submodule "package/boost"]
-	path = package/boost/git
-	url = https://github.com/boostorg/boost
-	branch = develop
-    shallow = true
 [submodule "package/bzip2"]
 	path = package/bzip2/git
 	url = https://gitlab.com/bzip2/bzip2
@@ -15,9 +10,6 @@
 [submodule "package/eigen"]
 	path = package/eigen/git
 	url = https://gitlab.com/libeigen/eigen
-[submodule "package/hwloc"]
-	path = package/hwloc/git
-	url = https://github.com/open-mpi/hwloc
 [submodule "package/icu"]
 	path = package/icu/git
 	url = https://github.com/unicode-org/icu
@@ -36,9 +28,6 @@
 	url = https://github.com/openssl/openssl
 	shallow = true
 	fetchRecurseSubmodules = false
-[submodule "package/plf"]
-	path = package/plf/git
-	url = https://github.com/mattreecebentley/plf_hive
 [submodule "package/png"]
 	path = package/png/git
 	url = https://github.com/pnggroup/libpng
@@ -48,9 +37,6 @@
 [submodule "package/stdexec"]
 	path = package/stdexec/git
 	url = https://github.com/bemanproject/execution
-[submodule "package/tbb"]
-	path = package/tbb/git
-	url = https://github.com/uxlfoundation/oneTBB
 [submodule "package/tiff"]
 	path = package/tiff/git
 	url = https://gitlab.com/libtiff/libtiff
