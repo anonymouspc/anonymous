@@ -1,8 +1,8 @@
 from cppmakelib import *
 
-def package():
+def build():
     cmake.build(
-        package=Package("bzip2"),
+        package=package,
         args=[
             "-DENABLE_WERROR=false",
            f"-DENABLE_DEBUG={config.type=='debug'}",

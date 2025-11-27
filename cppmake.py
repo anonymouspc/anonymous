@@ -1,6 +1,6 @@
 from cppmakelib import *
 
-Package("anonymous").define_macros = {
+package.define_macros = {
     "abstract"   : ":",
     "extends"    : ":",
     "in"         : ":",
@@ -9,4 +9,8 @@ Package("anonymous").define_macros = {
 }
 
 def make():
-    Source(file="source/main.cpp").compile()
+    Source("main").compile()
+
+def test():
+    for file in iterate_dir("source/test"):
+        Executable(Source(file=file).name).execute()

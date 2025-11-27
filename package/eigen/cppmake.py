@@ -1,13 +1,13 @@
 from cppmakelib import *
 
-def package():
+def build():
     include(
-        package=Package("eigen"),
+        package=package,
         dir    ="Eigen",
         relpath="Eigen"
     )
     include(
-        package=Package("eigen"),
+        package=package,
         dir    ="unsupported/Eigen",
         relpath="unsupported/Eigen"
     )

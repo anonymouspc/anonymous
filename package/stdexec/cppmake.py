@@ -1,4 +1,4 @@
-from cppmake import *
+from cppmakelib import *
 
 def build():
     include(

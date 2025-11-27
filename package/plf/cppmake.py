@@ -1,7 +1,7 @@
 from cppmakelib import *
 
-def package():
+def build():
     include(
-        package=Package("plf"),
+        package=package,
         file   ="plf_hive.h"
     )
