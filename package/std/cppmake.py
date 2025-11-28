@@ -1,5 +1,5 @@
 from cppmakelib import *
-import shutil
+import re
 
 if type(compiler) == Clang or type(compiler) == Emcc:
     package.compile_flags += [
@@ -8,31 +8,12 @@ if type(compiler) == Clang or type(compiler) == Emcc:
     ]
         
 def build():
-    include_file = f"{package.include_dir}/include"
-    export_file  = f"{package.include_dir}/export"
-    if type(compiler) == Clang:
-        libcxx_dir = f"{run(command=[compiler.path, "--print-resource-dir"], return_stdout=True).removesuffix('\n')}/../../../share/libc++/v1"
-        std_file   = f"{libcxx_dir}/std.cppm"
-        copy_dir(libcxx_dir, package.include_dir)
-    elif type(compiler) == Emcc:
-        libcxx_dir = f"{run(command=[Clang().path, "--print-resource-dir"], return_stdout=True).removesuffix('\n')}/../../../share/libc++/v1"
-        std_file   = f"{libcxx_dir}/std.cppm"
-        copy_dir(libcxx_dir, package.include_dir)
-    elif type(compiler) == Gcc:
-        libstdcxx_dir = f"{parent_path(shutil.which(compiler.path))}/../include/c++/{compiler.version[0]}"
-        std_file      = f"{libstdcxx_dir}/bits/std.cc"
-    else:
-        assert False
-    try:
-        create_dir(package.include_dir)
-        with open(std_file, 'r') as reader:
-            content = reader.read().split("export module std;")
-        with open(include_file, 'w') as writer:
-            writer.write(content[0].replace("module;", ""))
-        with open(export_file, 'w') as writer:
-            writer.write(content[1])
-    except FileNotFoundError as error:
-        raise LogicError(f'std module file {error.filename} not found (with compiler = {compiler.path})')
-        
-
-        
+    std_module = compiler.std_module()
+    create_dir(package.include_dir)
+    copy_dir(parent_path(std_module), package.include_dir)
+    with open(std_module, 'r') as reader:
+        content = reader.read().split("export module std;")
+    with open(f"{package.include_dir}/include", 'w') as writer:
+        writer.write(content[0].replace("module;", ""))
+    with open(f"{package.include_dir}/export", 'w') as writer:
+        writer.write(content[1])

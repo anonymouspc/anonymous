@@ -1,6 +1,5 @@
 import std;
 
-[[clang::noinline]]
 template < class... types >
 void func ( )
 {
