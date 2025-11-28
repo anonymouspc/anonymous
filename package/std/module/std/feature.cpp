@@ -12,9 +12,6 @@ export module std:feature;
 #ifndef __cpp_lib_sender
 export import    :feature.sender;
 #endif
-// #ifndef __cpp_lib_stacktrace
-// export import    :feature.stacktrace;
-// #endif
-#ifndef __cpp_lib_text_encoding
-export import    :feature.text_encoding;
+#ifndef __cpp_lib_stacktrace
+export import    :feature.stacktrace;
 #endif

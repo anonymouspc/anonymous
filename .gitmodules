@@ -4,9 +4,6 @@
 [submodule "package/clblast"]
 	path = package/clblast/git
 	url = https://github.com/CNugteren/CLBlast
-[submodule "package/cpptrace/git"]
-	path = package/cpptrace/git
-	url = https://github.com/jeremy-rifkin/cpptrace
 [submodule "package/eigen"]
 	path = package/eigen/git
 	url = https://gitlab.com/libeigen/eigen
@@ -35,7 +32,7 @@
 	path = package/pybind11/git
 	url = https://github.com/pybind/pybind11
 [submodule "package/stdexec"]
-	path = package/stdexec/git
+	path = package/beman/git
 	url = https://github.com/bemanproject/execution
 [submodule "package/tiff"]
 	path = package/tiff/git

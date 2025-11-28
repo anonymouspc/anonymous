@@ -1,7 +1,7 @@
 from cppmakelib import *
 import shutil
 
-if type(compiler) is Clang:
+if type(compiler) == Clang or type(compiler) == Emcc:
     package.compile_flags += [
         "-Wno-include-angled-in-module-purview",
         "-Wno-reserved-module-identifier"
@@ -10,13 +10,17 @@ if type(compiler) is Clang:
 def build():
     include_file = f"{package.include_dir}/include"
     export_file  = f"{package.include_dir}/export"
-    if type(compiler) is Gcc:
-        libstdcxx_dir = f"{parent_path(shutil.which(compiler.path))}/../include/c++/{compiler.version[0]}"
-        std_file      = f"{libstdcxx_dir}/bits/std.cc"
-    elif type(compiler) is Clang:
+    if type(compiler) == Clang:
         libcxx_dir = f"{run(command=[compiler.path, "--print-resource-dir"], return_stdout=True).removesuffix('\n')}/../../../share/libc++/v1"
         std_file   = f"{libcxx_dir}/std.cppm"
         copy_dir(libcxx_dir, package.include_dir)
+    elif type(compiler) == Emcc:
+        libcxx_dir = f"{run(command=[Clang().path, "--print-resource-dir"], return_stdout=True).removesuffix('\n')}/../../../share/libc++/v1"
+        std_file   = f"{libcxx_dir}/std.cppm"
+        copy_dir(libcxx_dir, package.include_dir)
+    elif type(compiler) == Gcc:
+        libstdcxx_dir = f"{parent_path(shutil.which(compiler.path))}/../include/c++/{compiler.version[0]}"
+        std_file      = f"{libstdcxx_dir}/bits/std.cc"
     else:
         assert False
     try:

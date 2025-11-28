@@ -3,10 +3,10 @@ module;
 #include <beman/execution/functional.hpp>
 #include <beman/execution/stop_token.hpp>
 
-export module stdexec;
+export module beman;
 // import std; This module might be depended by std:feature.sender by std:feature by std.
 
-export namespace stdexec
+export namespace beman
 {
     using beman::execution::completion_signatures;
  // using beman::execution::forward_progress_guarantee;
