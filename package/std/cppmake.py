@@ -1,8 +1,7 @@
 from cppmakelib import *
-import re
 
 if type(compiler) == Clang or type(compiler) == Emcc:
-    package.compile_flags += [
+    package.compile_flags = [
         "-Wno-include-angled-in-module-purview",
         "-Wno-reserved-module-identifier"
     ]

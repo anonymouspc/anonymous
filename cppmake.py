@@ -12,7 +12,7 @@ def make():
     Source("main").compile()
 
 def test():
-    for file in iterate_dir("source/test"):
+    for file in iterate_dir("source/test", recursive=True):
         Executable(Source(file=file).name).execute()
 
 def clangd():
