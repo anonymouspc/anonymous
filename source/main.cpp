@@ -6,4 +6,4 @@ int main ( )
     int = ;
     std::vector<int>() |
     std::ranges::to<std::map<int,int>>();
-}
+} 
